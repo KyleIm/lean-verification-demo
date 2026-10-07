@@ -24,7 +24,7 @@ ray.β = data.α
 
 ## Primitive Physics Reused
 
-The demo reuses the existing Snell-law API from Math2Physics/PhyslibTemp:
+The demo uses the minimal PhyslibTemp Snell-law API vendored in this repository:
 
 ```lean
 def SnellLaw
@@ -36,10 +36,12 @@ def SnellLaw
 This is imported from:
 
 ```text
-Math2Physics.PhyslibTemp.Optics.Refraction
+LeanVerificationDemo.PhyslibTemp.Optics.Refraction
 ```
 
-No duplicate Snell law is introduced.
+The vendored module keeps the original `Math2Physics.PhyslibTemp.Optics`
+namespace, so the proof code uses the same optics API shape without requiring a
+sibling Math2Physics checkout.
 
 ## Finite Stratified Model
 

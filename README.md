@@ -1,7 +1,7 @@
 # Lean Verification Demo
 
 Minimal working prototype of a four-stage verification pipeline for one
-mathematical problem and one Lean proof.
+mathematical proof and one physics proof.
 
 Demonstration problem:
 
@@ -164,7 +164,8 @@ formal target selected by a human.
 
 ## Physics Layering
 
-The physics demo reuses the existing PhyslibTemp Snell-law API:
+The physics demo uses the minimal PhyslibTemp Snell-law API vendored in this
+repository:
 
 ```lean
 def SnellLaw
@@ -176,10 +177,12 @@ def SnellLaw
 This lives in:
 
 ```text
-/home/hea/math2physics/Lean/Math2Physics/PhyslibTemp/Optics/Refraction.lean
+LeanVerificationDemo/PhyslibTemp/Optics/Refraction.lean
 ```
 
-No duplicate Snell law is introduced in this demo.
+No sibling Math2Physics checkout is required. The vendored file keeps the
+original `Math2Physics.PhyslibTemp.Optics` namespace so the demo math and
+physics proofs use the same API shape as before.
 
 The new theorem:
 
@@ -236,51 +239,24 @@ finite parallel-layer Snell-law consequence as the derived physics evidence.
 
 ## Commands
 
-This repository is intentionally small and does not vendor Mathlib, Physlib, or
-the Math2Physics `PhyslibTemp` files. The Lake project expects a sibling
-checkout of `math2physics`:
-
-```text
-parent-directory/
-├── lean-verification-demo/
-└── math2physics/
-    └── Lean/
-```
-
-The dependency paths are encoded in `lakefile.lean`:
+This repository vendors only the small PhyslibTemp optics module needed by the
+physics demo. Lake fetches Mathlib directly from GitHub at the Lean 4.33.0
+compatible tag:
 
 ```lean
-packagesDir := "../math2physics/Lean/physlib/.lake/packages"
-require mathlib from "../math2physics/Lean/physlib/.lake/packages/mathlib"
-require Math2Physics from "../math2physics/Lean"
+require mathlib from git
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.33.0"
 ```
 
 ### Reproduce From A Fresh Clone
 
-Clone this demo and the Math2Physics dependency as siblings:
+Prerequisite: install Elan/Lean so the `lake` command is available on `PATH`.
+The repository pins the Lean toolchain in `lean-toolchain`.
 
 ```bash
-mkdir lean-demo-workspace
-cd lean-demo-workspace
 git clone https://github.com/KyleIm/lean-verification-demo.git
-git clone https://github.com/mohsenhariri/math2physics.git
-```
-
-Prepare Math2Physics, Physlib, and Mathlib:
-
-```bash
-cd math2physics/Lean
+cd lean-verification-demo
 lake update
-lake exe cache get
-lake build
-```
-
-Then build and run this demo:
-
-```bash
-cd ../../lean-verification-demo
-source ../math2physics/Lean/.elan/env
-export ELAN_HOME=../math2physics/Lean/.elan
 lake build
 python3 scripts/verify.py
 ```
@@ -288,21 +264,10 @@ python3 scripts/verify.py
 If `lake exe cache get` cannot fetch precompiled Mathlib artifacts, `lake build`
 may compile more from source and take substantially longer.
 
-### Current Local Workspace
-
-The workspace where this prototype was developed already has Lean 4.33.0, Lake,
-Math2Physics, Physlib, and Mathlib installed under:
-
-```text
-/home/hea/math2physics/Lean/.elan
-/home/hea/math2physics/Lean/physlib/.lake/packages/mathlib
-```
-
-From this directory, set the local Lean toolchain path:
+Optional cache step after `lake update`:
 
 ```bash
-source /home/hea/math2physics/Lean/.elan/env
-export ELAN_HOME=/home/hea/math2physics/Lean/.elan
+lake exe cache get
 ```
 
 Build the valid project:
@@ -342,10 +307,13 @@ More detail:
 ## Actual `lake build` Output
 
 ```text
-✔ [3016/3019] Built LeanVerificationDemo.Physics.Verify (2.2s)
-✔ [3017/3019] Built LeanVerificationDemo.Physics.CandidateAnnotated (2.3s)
-✔ [3018/3019] Built LeanVerificationDemo (2.2s)
-Build completed successfully (3019 jobs).
+✔ [3010/3016] Built LeanVerificationDemo.PhyslibTemp.Optics.Refraction (2.4s)
+✔ [3011/3016] Built LeanVerificationDemo.Physics.Problem (2.3s)
+✔ [3012/3016] Built LeanVerificationDemo.Physics.Candidate (2.3s)
+✔ [3013/3016] Built LeanVerificationDemo.Physics.CandidateAnnotated (2.3s)
+✔ [3014/3016] Built LeanVerificationDemo.Physics.Verify (2.1s)
+✔ [3015/3016] Built LeanVerificationDemo (2.1s)
+Build completed successfully (3016 jobs).
 ```
 
 ## Actual Verification Output
@@ -357,7 +325,7 @@ Original sqrt(2) problem and physics plate problem
 
 [Stage 1] Structural / Compilation Verification
 $ lake build
-Build completed successfully (3019 jobs).
+Build completed successfully (3016 jobs).
 PASS
 
 [Stage 2] Problem-Solution Consistency Verification

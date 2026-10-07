@@ -9,8 +9,7 @@ from typing import NamedTuple
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ELAN_HOME = ROOT.parent / "math2physics" / "Lean" / ".elan"
-LAKE = ELAN_HOME / "bin" / "lake"
+LAKE = os.environ.get("LAKE", "lake")
 
 
 class MutationCase(NamedTuple):
@@ -35,16 +34,12 @@ UNRELATED_FAILURE_MARKERS = (
 
 
 def run_command(label: str, command: list[str]) -> subprocess.CompletedProcess[str]:
-    resolved = [str(LAKE) if part == "lake" and LAKE.exists() else part for part in command]
-    display = ["lake" if part == str(LAKE) else part for part in resolved]
+    resolved = [LAKE if part == "lake" else part for part in command]
+    display = ["lake" if part == LAKE else part for part in resolved]
     print(f"$ {' '.join(display)}")
-    env = None
-    if LAKE.exists():
-        env = {"ELAN_HOME": str(ELAN_HOME), **dict(os.environ)}
     result = subprocess.run(
         resolved,
         cwd=ROOT,
-        env=env,
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,

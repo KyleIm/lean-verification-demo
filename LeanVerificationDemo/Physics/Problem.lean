@@ -1,4 +1,4 @@
-import Math2Physics.PhyslibTemp.Optics.Refraction
+import LeanVerificationDemo.PhyslibTemp.Optics.Refraction
 import Mathlib.Topology.Basic
 
 namespace LeanVerificationDemo

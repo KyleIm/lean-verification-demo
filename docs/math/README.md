@@ -66,8 +66,6 @@ python3 scripts/verify.py
 To run only the math Stage 2 check:
 
 ```bash
-source ../math2physics/Lean/.elan/env
-export ELAN_HOME=../math2physics/Lean/.elan
 lake env lean LeanVerificationDemo/Verify.lean
 ```
 
