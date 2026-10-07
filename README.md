@@ -262,7 +262,7 @@ Clone this demo and the Math2Physics dependency as siblings:
 ```bash
 mkdir lean-demo-workspace
 cd lean-demo-workspace
-git clone <THIS_REPOSITORY_URL> lean-verification-demo
+git clone https://github.com/KyleIm/lean-verification-demo.git
 git clone https://github.com/mohsenhariri/math2physics.git
 ```
 
