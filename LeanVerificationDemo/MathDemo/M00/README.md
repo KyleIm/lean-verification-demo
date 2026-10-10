@@ -39,6 +39,17 @@ The problem verifier compiles:
 - `Problem.lean`
 - `Candidate.lean`
 
+It runs the equivalent of:
+
+```bash
+lake env lean LeanVerificationDemo/MathDemo/M00/Problem.lean
+lake env lean LeanVerificationDemo/MathDemo/M00/Candidate.lean
+```
+
+Lake supplies the pinned Lean/Mathlib environment.  Lean parses and elaborates
+each source file, and Lean's trusted kernel validates the resulting
+declarations.
+
 ## Stage 2 — Proposition / Proof Pairing
 
 The explicit pairing is:
@@ -48,7 +59,17 @@ example : SqrtTwoIrrationalProblem :=
   Candidate.solution
 ```
 
-Lean elaborates this declaration and checks the resulting type judgment.
+The required judgment is:
+
+```text
+LeanVerificationDemo.MathDemo.M00.Candidate.solution
+  : LeanVerificationDemo.MathDemo.M00.SqrtTwoIrrationalProblem
+```
+
+`Verify.lean` explicitly asks Lean to accept this judgment.  Python does not
+compare strings or theorem names; it launches Lean through `lake env`.  Lean
+elaborates the declaration, and Lean's trusted kernel checks that the candidate
+proof inhabits the trusted proposition.
 
 ## Stage 3 — Six-Mutation Summary
 

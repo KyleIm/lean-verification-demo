@@ -67,6 +67,16 @@ The problem verifier compiles:
 - `Problem.lean`
 - `Candidate.lean`
 
+It runs the equivalent of:
+
+```bash
+lake env lean LeanVerificationDemo/PhysicsDemo/P01/Problem.lean
+lake env lean LeanVerificationDemo/PhysicsDemo/P01/Candidate.lean
+```
+
+Lake supplies the pinned project environment.  Lean parses and elaborates each
+source file, and Lean's trusted kernel validates the resulting declarations.
+
 ## Stage 2 — Proposition / Proof Pairing
 
 The explicit pairing is:
@@ -77,7 +87,18 @@ example (data : PlateData) (ray : RayThroughPlate data) :
   Candidate.solution data ray
 ```
 
-Lean elaborates this declaration and checks the resulting type judgment.
+The required judgment is:
+
+```text
+LeanVerificationDemo.PhysicsDemo.P01.Candidate.solution data ray
+  : LeanVerificationDemo.PhysicsDemo.P01.TrustedPhysicsProblem data ray
+```
+
+`Verify.lean` explicitly requires this type.  The candidate proof is accepted
+only if it proves the trusted physics proposition for the same `data` and
+`ray`.  Python only orchestrates the Lean command and reads its result; Lean
+elaborates the declaration, and Lean's trusted kernel performs the logical type
+check.
 
 ## Stage 3 — Six-Mutation Summary
 

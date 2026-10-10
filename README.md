@@ -22,6 +22,40 @@ For each problem:
 The six mutation tests are part of Stage 3.  They are not six separate
 verification stages.
 
+## Execution Path
+
+```text
+scripts/verify.py
+  ↓
+lake env
+  ↓
+pinned Lean / Mathlib environment
+  ↓
+lean <selected file>
+  ↓
+parsing + elaboration + type checking
+  ↓
+Lean kernel validates the resulting declaration
+```
+
+`scripts/verify.py` orchestrates commands and interprets results.  `lake env`
+supplies the repository's pinned Lean/Mathlib environment.  Lean parses and
+elaborates the selected source file, and Lean's trusted kernel validates the
+resulting declaration/type judgment.
+
+Stage 1 uses `lake env lean <file>` to check that the selected problem's
+`Problem.lean` and `Candidate.lean` are individually valid Lean source files.
+Stage 2 runs `Verify.lean`, which explicitly requires the candidate proof to
+inhabit the trusted proposition, such as:
+
+```text
+Candidate.solution : SqrtTwoIrrationalProblem
+Candidate.solution data ray : TrustedPhysicsProblem data ray
+```
+
+`lake build` remains a repository-level validation command for the valid Lake
+project.
+
 ## Current Problems
 
 | Area | Problem ID | Code | Documentation |
