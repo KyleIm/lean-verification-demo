@@ -90,7 +90,13 @@ Lean statement is the only possible formalization of the informal problem.
 
 ## How To Run This Problem
 
-Until the problem-centric runner is updated:
+Use the problem-centric verifier:
+
+```bash
+python3 scripts/verify.py M00
+```
+
+For manual/direct Lean checks:
 
 ```bash
 lake build

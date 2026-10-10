@@ -120,7 +120,13 @@ CandidateAnnotated.lean                        PASS
 
 ## How To Run This Problem
 
-Until the problem-centric runner is updated:
+Use the problem-centric verifier:
+
+```bash
+python3 scripts/verify.py P01
+```
+
+For manual/direct Lean checks:
 
 ```bash
 lake build
