@@ -38,8 +38,10 @@ def SqrtTwoIrrationalProblem : Prop :=
 - `LeanVerificationDemo/Problem.lean`: trusted formal problem statement.
 - `LeanVerificationDemo/Candidate.lean`: candidate proof.
 - `LeanVerificationDemo/Verify.lean`: Stage 2 type check that the candidate proves the trusted statement.
+- `LeanVerificationDemo/PairingWalkthrough.lean`: explicit Stage 2 problem/solution pairing walkthrough.
 - `LeanVerificationDemo/CandidateAnnotated.lean`: compiling proof with natural-language comments.
 - `mutations/`: intentionally broken variants for mutation testing.
+- `mutations/manifest.json`: human-readable mutation metadata and expected outcomes.
 - `scripts/verify.py`: orchestration script for all four stages.
 - `docs/math/README.md`: detailed guide to the math demo.
 - `docs/physics/README.md`: detailed guide to the physics demo.
@@ -77,15 +79,28 @@ example : LeanVerificationDemo.SqrtTwoIrrationalProblem :=
   LeanVerificationDemo.Candidate.solution
 ```
 
-This prevents the candidate from changing the target theorem. The candidate
-proof must have exactly the trusted problem type.
+The visible pairing is:
+
+```text
+Problem A  = LeanVerificationDemo.SqrtTwoIrrationalProblem
+Candidate B = LeanVerificationDemo.Candidate.solution
+Check       = Lean elaborates and validates B : A
+```
+
+This prevents the candidate from changing the target theorem. The explicit
+typed declaration in `Verify.lean` connects the candidate proof to the trusted
+target. Lake runs the build or Lean command, Lean elaborates the source, and the
+kernel validates the resulting declaration/type judgment.
 
 ## Stage 3: Human-Guided Mutation Verification
 
 Stage 3 is mutation testing around Stages 1 and 2, not another Lean proof layer.
 
-It deliberately corrupts the problem/proof pair and checks that Lean rejects the
-corruption.
+It deliberately perturbs the problem/proof pair and compares the expected Lean
+outcome with the actual Lean outcome.
+
+Some mutations should be rejected. Some mutations should be accepted. A mutation
+test passes when the expected outcome matches the actual outcome.
 
 Stage 3 uses the same three-part decomposition as the annotated proof:
 
@@ -95,11 +110,36 @@ Stage 3 uses the same three-part decomposition as the annotated proof:
   `True` instead of `False`.
 - Conclusion mutation: keeps the contradiction argument but changes the final
   claimed result to rationality of `sqrt(2)`.
+- Target substitution: changes the trusted target from irrationality of
+  `sqrt(2)` to irrationality of `sqrt(3)` while keeping the original candidate
+  proof.
+- Irrelevant addition: inserts an unused proof of `(1 : Nat) + 1 = 2` and then
+  proves the original target normally.
+- Required-step deletion: removes the conversion from the non-square fact to
+  irrationality, so the proof no longer reaches the trusted target.
+
+| ID | Category | Expected | Why |
+| --- | --- | --- | --- |
+| `MATH-M001` | Assumption replacement | `REJECT` | The contradiction block expects a rationality assumption. |
+| `MATH-M002` | Contradiction corruption | `REJECT` | `True` does not close a goal of `False`. |
+| `MATH-M003` | Conclusion replacement | `REJECT` | A proof of irrationality does not directly prove rationality. |
+| `MATH-M004` | Target substitution | `REJECT` | The unchanged proof of `sqrt(2)` irrationality has the wrong type for the `sqrt(3)` target. |
+| `MATH-M005` | Irrelevant addition | `ACCEPT` | Lean checks validity, not relevance or minimality. |
+| `MATH-M006` | Required-step deletion | `REJECT` | The deleted step is required to derive contradiction from the rationality assumption. |
+
+For target substitution, `sqrt(2)` irrationality is true and `sqrt(3)`
+irrationality is also true. The mutation is rejected because the unchanged
+candidate proof proves the `sqrt(2)` target, not the `sqrt(3)` target.
+
+For irrelevant addition, the inserted fact `(1 : Nat) + 1 = 2` may be accepted.
+This is expected: Lean verifies that the final term has the requested type; it
+does not require every intermediate fact to be relevant or necessary.
 
 Expected Lean failures count as successful mutation tests only when the runner
 finds the intended proof/type mismatch in the compiler output. Missing files,
 bad imports, syntax errors, environment failures, or unrelated Lean failures
-make the mutation test fail.
+make the mutation test fail. Expected Lean acceptances also count as successful
+mutation tests when Lean accepts the file.
 
 ## Stage 4: Natural-Language Proof Audit
 

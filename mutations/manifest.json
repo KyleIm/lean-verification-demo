@@ -1,0 +1,105 @@
+[
+  {
+    "id": "MATH-M001",
+    "domain": "math",
+    "category": "Assumption replacement",
+    "name": "assumption mutation",
+    "mutated_object": "candidate proof",
+    "original": "Assume Real.sqrt 2 is rational.",
+    "mutated": "Assume Real.sqrt 2 is irrational instead.",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/AssumptionMutation.lean"],
+    "rationale": "The contradiction block still expects a rationality assumption, so the mutated assumption has the wrong type.",
+    "expected_error_fragments": [
+      "Application type mismatch",
+      "hAssumption",
+      "has type\n  Irrational √2",
+      "is expected to have type\n  √2 ∈ Set.range Rat.cast"
+    ]
+  },
+  {
+    "id": "MATH-M002",
+    "domain": "math",
+    "category": "Contradiction corruption",
+    "name": "contradiction mutation",
+    "mutated_object": "candidate proof",
+    "original": "From the rationality assumption, derive False.",
+    "mutated": "Derive only True, which is not a contradiction.",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/ContradictionMutation.lean"],
+    "rationale": "The proof of irrationality must turn a rationality assumption into False; True cannot close that goal.",
+    "expected_error_fragments": [
+      "Type mismatch",
+      "hContradiction",
+      "has type\n  True",
+      "is expected to have type\n  False"
+    ]
+  },
+  {
+    "id": "MATH-M003",
+    "domain": "math",
+    "category": "Conclusion replacement",
+    "name": "conclusion mutation",
+    "mutated_object": "trusted problem",
+    "original": "Conclude Irrational (Real.sqrt 2).",
+    "mutated": "Conclude that Real.sqrt 2 is rational.",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/ConclusionMutation.lean"],
+    "rationale": "A function from rationality to False is a proof of irrationality, not a direct proof of rationality.",
+    "expected_error_fragments": [
+      "Type mismatch",
+      "hContradictionFromRational",
+      "has type\n  (∃ q, ↑q = √2) → False",
+      "is expected to have type\n  MutatedProblem"
+    ]
+  },
+  {
+    "id": "MATH-M004",
+    "domain": "math",
+    "category": "Target substitution",
+    "name": "target substitution",
+    "mutated_object": "trusted problem",
+    "original": "Irrational (Real.sqrt 2)",
+    "mutated": "Irrational (Real.sqrt 3)",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/TargetSubstitutionMutation.lean"],
+    "rationale": "Both propositions are true, but Candidate.solution proves sqrt(2) irrationality and therefore has the wrong type for the mutated sqrt(3) target.",
+    "expected_error_fragments": [
+      "Type mismatch",
+      "Candidate.solution",
+      "has type\n  SqrtTwoIrrationalProblem",
+      "is expected to have type\n  MutatedProblem"
+    ]
+  },
+  {
+    "id": "MATH-M005",
+    "domain": "math",
+    "category": "Irrelevant addition",
+    "name": "irrelevant addition",
+    "mutated_object": "candidate proof",
+    "original": "Prove the original sqrt(2) target without the unused arithmetic fact.",
+    "mutated": "Insert an unused proof of (1 : Nat) + 1 = 2, then prove the original target normally.",
+    "expected": "ACCEPT",
+    "command": ["lake", "env", "lean", "mutations/IrrelevantAdditionMutation.lean"],
+    "rationale": "Lean verifies logical/type correctness. It does not require every intermediate fact to be relevant or necessary.",
+    "expected_error_fragments": []
+  },
+  {
+    "id": "MATH-M006",
+    "domain": "math",
+    "category": "Required-step deletion",
+    "name": "required-step deletion",
+    "mutated_object": "candidate proof",
+    "original": "Convert the non-square fact into Irrational (Real.sqrt 2), then apply it to the rationality assumption.",
+    "mutated": "Omit that conversion and try to close the contradiction with the non-square fact itself.",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/RequiredStepDeletionMutation.lean"],
+    "rationale": "The deleted step is necessary because a non-square fact is not itself a contradiction from the rationality assumption.",
+    "expected_error_fragments": [
+      "Type mismatch",
+      "hNotSquare",
+      "has type\n  ¬IsSquare 2",
+      "is expected to have type\n  False"
+    ]
+  }
+]

@@ -2,14 +2,16 @@
 from __future__ import annotations
 
 import os
+import json
 import subprocess
 import sys
 from pathlib import Path
-from typing import NamedTuple
+from typing import Any, NamedTuple
 
 
 ROOT = Path(__file__).resolve().parents[1]
 LAKE = os.environ.get("LAKE", "lake")
+MUTATION_MANIFEST = ROOT / "mutations" / "manifest.json"
 
 
 class MutationCase(NamedTuple):
@@ -19,6 +21,28 @@ class MutationCase(NamedTuple):
     mutated: str
     command: list[str]
     expected_fragments: tuple[str, ...]
+
+
+class ManifestMutationCase(NamedTuple):
+    id: str
+    domain: str
+    category: str
+    name: str
+    mutated_object: str
+    original: str
+    mutated: str
+    expected: str
+    command: list[str]
+    rationale: str
+    expected_error_fragments: tuple[str, ...]
+
+
+class MutationResult(NamedTuple):
+    id: str
+    category: str
+    expected: str
+    actual: str
+    passed: bool
 
 
 UNRELATED_FAILURE_MARKERS = (
@@ -55,6 +79,126 @@ def print_stage_result(result: subprocess.CompletedProcess[str]) -> bool:
         return True
     print("FAIL")
     return False
+
+
+def print_pairing_check(
+    label: str,
+    trusted_problem: str,
+    candidate_proof: str,
+    command: list[str],
+    proof_application: str | None = None,
+) -> bool:
+    print(f"\n[PAIRING CHECK - {label}]")
+    print("\nTrusted problem/type:")
+    print(f"  {trusted_problem}")
+    print("\nCandidate proof term:")
+    print(f"  {candidate_proof}")
+    print("\nRequired judgment:")
+    judgment_term = proof_application or candidate_proof
+    print(f"  {judgment_term}")
+    print(f"    : {trusted_problem}")
+    print("\nRunning Lean type check...")
+    result = run_command(label, command)
+    print("\nResult:")
+    if result.returncode == 0:
+        print("  ACCEPTED")
+        return True
+    print("  REJECTED")
+    return False
+
+
+def load_manifest_cases(domain: str) -> list[ManifestMutationCase]:
+    with MUTATION_MANIFEST.open(encoding="utf-8") as manifest_file:
+        raw_cases: list[dict[str, Any]] = json.load(manifest_file)
+
+    cases: list[ManifestMutationCase] = []
+    for raw in raw_cases:
+        if raw["domain"] != domain:
+            continue
+        cases.append(
+            ManifestMutationCase(
+                id=raw["id"],
+                domain=raw["domain"],
+                category=raw["category"],
+                name=raw["name"],
+                mutated_object=raw["mutated_object"],
+                original=raw["original"],
+                mutated=raw["mutated"],
+                expected=raw["expected"],
+                command=list(raw["command"]),
+                rationale=raw["rationale"],
+                expected_error_fragments=tuple(raw.get("expected_error_fragments", ())),
+            )
+        )
+    return cases
+
+
+def manifest_mutation_test(case: ManifestMutationCase) -> MutationResult:
+    print(f"\n[{case.id}]")
+    print("\nDomain:")
+    print(f"  {case.domain}")
+    print("\nCategory:")
+    print(f"  {case.category}")
+    print("\nMutated object:")
+    print(f"  {case.mutated_object}")
+    print("\nOriginal:")
+    print(f"  {case.original}")
+    print("\nMutated:")
+    print(f"  {case.mutated}")
+    print("\nExpected outcome:")
+    print(f"  {case.expected}")
+    print("\nRunning Lean...")
+
+    result = run_command(case.name, case.command)
+    actual = "ACCEPT" if result.returncode == 0 else "REJECT"
+    output = result.stdout
+
+    if case.expected == "REJECT":
+        fragments_ok = all(
+            fragment in output for fragment in case.expected_error_fragments
+        )
+        unrelated_failure = any(marker in output for marker in UNRELATED_FAILURE_MARKERS)
+        passed = actual == case.expected and fragments_ok and not unrelated_failure
+    else:
+        passed = actual == case.expected
+
+    print("\nActual outcome:")
+    print(f"  {actual}")
+    if actual == "ACCEPT":
+        print("\nLean accepted this mutation.")
+
+    print("\nRationale:")
+    print(f"  {case.rationale}")
+    print("\nTEST RESULT:")
+    print(f"  {'PASS' if passed else 'FAIL'}")
+
+    if actual == "REJECT" and case.expected == "REJECT" and not passed:
+        print("\nReason:")
+        print("  Lean rejected the file, but the error did not match the expected mutation signature.")
+    elif actual != case.expected:
+        print("\nReason:")
+        print(f"  Expected {case.expected}, got {actual}.")
+
+    return MutationResult(
+        id=case.id,
+        category=case.category,
+        expected=case.expected,
+        actual=actual,
+        passed=passed,
+    )
+
+
+def print_mutation_summary(results: list[MutationResult]) -> None:
+    if not results:
+        return
+    print("\nMutation summary")
+    print(f"{'ID':<12}{'Category':<28}{'Expected':<11}{'Actual':<9}Test")
+    for result in results:
+        test = "PASS" if result.passed else "FAIL"
+        print(
+            f"{result.id:<12}{result.category:<28}"
+            f"{result.expected:<11}{result.actual:<9}{test}"
+        )
 
 
 def mutation_test(case: MutationCase) -> bool:
@@ -96,64 +240,27 @@ def main() -> int:
     ok_stage1 = print_stage_result(stage1)
 
     print("\n[Stage 2] Problem-Solution Consistency Verification")
-    print("\nSqrt(2) problem")
-    stage2_math = run_command(
-        "lake env lean LeanVerificationDemo/Verify.lean",
+    ok_stage2_math = print_pairing_check(
+        "MATH",
+        "LeanVerificationDemo.SqrtTwoIrrationalProblem",
+        "LeanVerificationDemo.Candidate.solution",
         ["lake", "env", "lean", "LeanVerificationDemo/Verify.lean"],
     )
-    ok_stage2_math = print_stage_result(stage2_math)
 
-    print("\nPhysics plate problem")
-    stage2_physics = run_command(
-        "lake env lean LeanVerificationDemo/Physics/Verify.lean",
+    ok_stage2_physics = print_pairing_check(
+        "PHYSICS",
+        "TrustedPhysicsProblem data ray",
+        "Candidate.solution data ray",
         ["lake", "env", "lean", "LeanVerificationDemo/Physics/Verify.lean"],
+        proof_application="Candidate.solution data ray",
     )
-    ok_stage2_physics = print_stage_result(stage2_physics)
 
     print("\n[Stage 3] Human-Guided Mutation Verification")
     print("\nSqrt(2) mutations")
-    math_mutation_cases = [
-        MutationCase(
-            number=1,
-            name="assumption mutation",
-            original="Assume sqrt(2) is rational.",
-            mutated="Assume sqrt(2) is irrational instead.",
-            command=["lake", "env", "lean", "mutations/AssumptionMutation.lean"],
-            expected_fragments=(
-                "Application type mismatch",
-                "hAssumption",
-                "has type\n  Irrational √2",
-                "is expected to have type\n  √2 ∈ Set.range Rat.cast",
-            ),
-        ),
-        MutationCase(
-            number=2,
-            name="contradiction mutation",
-            original="From the rationality assumption, derive False.",
-            mutated="Derive only True, which is not a contradiction.",
-            command=["lake", "env", "lean", "mutations/ContradictionMutation.lean"],
-            expected_fragments=(
-                "Type mismatch",
-                "hContradiction",
-                "has type\n  True",
-                "is expected to have type\n  False",
-            ),
-        ),
-        MutationCase(
-            number=3,
-            name="conclusion mutation",
-            original="Conclude that sqrt(2) is irrational.",
-            mutated="Conclude that sqrt(2) is rational.",
-            command=["lake", "env", "lean", "mutations/ConclusionMutation.lean"],
-            expected_fragments=(
-                "Type mismatch",
-                "hContradictionFromRational",
-                "has type\n  (∃ q, ↑q = √2) → False",
-                "is expected to have type\n  MutatedProblem",
-            ),
-        ),
+    math_mutation_results = [
+        manifest_mutation_test(case) for case in load_manifest_cases("math")
     ]
-    math_mutation_results = [mutation_test(case) for case in math_mutation_cases]
+    print_mutation_summary(math_mutation_results)
 
     print("\nPhysics mutations")
     physics_mutation_cases = [
@@ -232,7 +339,7 @@ def main() -> int:
         ok_stage1
         and ok_stage2_math
         and ok_stage2_physics
-        and all(math_mutation_results)
+        and all(result.passed for result in math_mutation_results)
         and all(physics_mutation_results)
         and ok_stage4_math
         and ok_stage4_physics
