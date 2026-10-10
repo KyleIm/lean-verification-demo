@@ -54,12 +54,12 @@ Lean elaborates this declaration and checks the resulting type judgment.
 
 | ID | Category | Expected | Details |
 | --- | --- | --- | --- |
-| `MATH-M001` | Assumption replacement | REJECT | [M001](../../../../mutations/MathDemo/M00/M001.md) |
-| `MATH-M002` | Contradiction corruption | REJECT | [M002](../../../../mutations/MathDemo/M00/M002.md) |
-| `MATH-M003` | Conclusion replacement | REJECT | [M003](../../../../mutations/MathDemo/M00/M003.md) |
-| `MATH-M004` | Target substitution | REJECT | [M004](../../../../mutations/MathDemo/M00/M004.md) |
-| `MATH-M005` | Irrelevant addition | ACCEPT | [M005](../../../../mutations/MathDemo/M00/M005.md) |
-| `MATH-M006` | Required-step deletion | REJECT | [M006](../../../../mutations/MathDemo/M00/M006.md) |
+| `MATH-M001` | Assumption replacement | REJECT | [M001](../../../mutations/MathDemo/M00/M001.md) |
+| `MATH-M002` | Contradiction corruption | REJECT | [M002](../../../mutations/MathDemo/M00/M002.md) |
+| `MATH-M003` | Conclusion replacement | REJECT | [M003](../../../mutations/MathDemo/M00/M003.md) |
+| `MATH-M004` | Target substitution | REJECT | [M004](../../../mutations/MathDemo/M00/M004.md) |
+| `MATH-M005` | Irrelevant addition | ACCEPT | [M005](../../../mutations/MathDemo/M00/M005.md) |
+| `MATH-M006` | Required-step deletion | REJECT | [M006](../../../mutations/MathDemo/M00/M006.md) |
 
 ## Stage 4 — Annotated Proof
 

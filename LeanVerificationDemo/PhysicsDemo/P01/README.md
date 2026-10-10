@@ -83,12 +83,12 @@ Lean elaborates this declaration and checks the resulting type judgment.
 
 | ID | Category | Expected | Details |
 | --- | --- | --- | --- |
-| `PHYS-P001` | Entrance relation corruption | REJECT | [P001](../../../../mutations/PhysicsDemo/P01/P001.md) |
-| `PHYS-P002` | Internal relation corruption | REJECT | [P002](../../../../mutations/PhysicsDemo/P01/P002.md) |
-| `PHYS-P003` | Exit relation corruption | REJECT | [P003](../../../../mutations/PhysicsDemo/P01/P003.md) |
-| `PHYS-P004` | Target specialization | REJECT | [P004](../../../../mutations/PhysicsDemo/P01/P004.md) |
-| `PHYS-P005` | Irrelevant addition | ACCEPT | [P005](../../../../mutations/PhysicsDemo/P01/P005.md) |
-| `PHYS-P006` | Required internal-link deletion | REJECT | [P006](../../../../mutations/PhysicsDemo/P01/P006.md) |
+| `PHYS-P001` | Entrance relation corruption | REJECT | [P001](../../../mutations/PhysicsDemo/P01/P001.md) |
+| `PHYS-P002` | Internal relation corruption | REJECT | [P002](../../../mutations/PhysicsDemo/P01/P002.md) |
+| `PHYS-P003` | Exit relation corruption | REJECT | [P003](../../../mutations/PhysicsDemo/P01/P003.md) |
+| `PHYS-P004` | Target specialization | REJECT | [P004](../../../mutations/PhysicsDemo/P01/P004.md) |
+| `PHYS-P005` | Irrelevant addition | ACCEPT | [P005](../../../mutations/PhysicsDemo/P01/P005.md) |
+| `PHYS-P006` | Required internal-link deletion | REJECT | [P006](../../../mutations/PhysicsDemo/P01/P006.md) |
 
 ## Stage 4 — Annotated Proof
 
