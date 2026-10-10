@@ -1,0 +1,15 @@
+{
+  "id": "physics-stratified-plate",
+  "title": "Stratified transparent plate",
+  "code": "P01",
+  "domain": "physics",
+  "problem_file": "LeanVerificationDemo/PhysicsDemo/P01/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/PhysicsDemo/P01/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/PhysicsDemo/P01/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/PhysicsDemo/P01/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P01/PairingWalkthrough.lean",
+  "mutation_manifest": "mutations/PhysicsDemo/P01/manifest.json",
+  "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P01.TrustedPhysicsProblem data ray",
+  "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P01.Candidate.solution data ray",
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P01.Candidate.solution data ray : LeanVerificationDemo.PhysicsDemo.P01.TrustedPhysicsProblem data ray"
+}

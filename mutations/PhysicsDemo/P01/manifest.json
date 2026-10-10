@@ -1,0 +1,105 @@
+[
+  {
+    "id": "PHYS-P001",
+    "domain": "physics",
+    "category": "Entrance relation corruption",
+    "name": "entrance relation corruption",
+    "mutated_object": "entrance Snell-law relation",
+    "original": "n₀ sin α = n₁ sin θ₁",
+    "mutated": "n₀ sin θ₁ = n₁ sin α",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/PhysicsDemo/P01/EntranceSnellMutation.lean"],
+    "rationale": "The refractive indices are paired with the wrong angles at the entrance.",
+    "expected_error_fragments": [
+      "Type mismatch",
+      "ray.entrance_snell",
+      "has type\n  SnellLaw data.n₀ data.n₁ data.α (ray.stack.angle 0)",
+      "is expected to have type\n  snellExpression data.n₀ (ray.stack.angle 0) = snellExpression data.n₁ data.α"
+    ]
+  },
+  {
+    "id": "PHYS-P002",
+    "domain": "physics",
+    "category": "Internal relation corruption",
+    "name": "internal relation corruption",
+    "mutated_object": "local adjacent-interface Snell relation",
+    "original": "nᵢ sin θᵢ = nᵢ₊₁ sin θᵢ₊₁",
+    "mutated": "nᵢ sin θᵢ = nᵢ₊₁ sin θᵢ",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/PhysicsDemo/P01/InternalStratifiedMutation.lean"],
+    "rationale": "The transmitted medium index is incorrectly paired with the incident angle.",
+    "expected_error_fragments": [
+      "Type mismatch",
+      "hCorrect",
+      "SnellLaw (ray.stack.index i) (ray.stack.index (i + 1))",
+      "snellExpression (ray.stack.index (i + 1)) (ray.stack.angle i)"
+    ]
+  },
+  {
+    "id": "PHYS-P003",
+    "domain": "physics",
+    "category": "Exit relation corruption",
+    "name": "exit relation corruption",
+    "mutated_object": "exit Snell-law relation",
+    "original": "n₂ sin θ₂ = n₀ sin β",
+    "mutated": "n₂ sin β = n₀ sin θ₂",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/PhysicsDemo/P01/ExitSnellMutation.lean"],
+    "rationale": "The internal and outgoing angles are paired with the wrong refractive indices.",
+    "expected_error_fragments": [
+      "Type mismatch",
+      "ray.exit_snell",
+      "has type\n  SnellLaw data.n₂ data.n₀ (ray.stack.angle ray.stack.layerCount) ray.β",
+      "is expected to have type\n  snellExpression data.n₂ ray.β = snellExpression data.n₀ (ray.stack.angle ray.stack.layerCount)"
+    ]
+  },
+  {
+    "id": "PHYS-P004",
+    "domain": "physics",
+    "category": "Target specialization",
+    "name": "target specialization",
+    "mutated_object": "trusted problem",
+    "original": "β = α",
+    "mutated": "assume α = π/6 and require β = π/6",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/PhysicsDemo/P01/TargetSpecializationMutation.lean"],
+    "rationale": "The specialized problem is valid, but the original proof term must be transformed using the specialization assumption before it matches the new target.",
+    "expected_error_fragments": [
+      "Type mismatch",
+      "Candidate.solution data ray",
+      "has type\n  TrustedPhysicsProblem data ray",
+      "is expected to have type\n  ray.β = Real.pi / 6"
+    ]
+  },
+  {
+    "id": "PHYS-P005",
+    "domain": "physics",
+    "category": "Irrelevant addition",
+    "name": "physics irrelevant addition",
+    "mutated_object": "candidate proof",
+    "original": "Prove the original physics target without the unused arithmetic fact.",
+    "mutated": "Insert an unused proof of (1 : Nat) + 1 = 2, then use the original candidate proof.",
+    "expected": "ACCEPT",
+    "command": ["lake", "env", "lean", "mutations/PhysicsDemo/P01/IrrelevantAdditionMutation.lean"],
+    "rationale": "Lean checks logical/type correctness of the final proof. It does not require every intermediate fact to be relevant, necessary, or minimal.",
+    "expected_error_fragments": []
+  },
+  {
+    "id": "PHYS-P006",
+    "domain": "physics",
+    "category": "Required internal-link deletion",
+    "name": "required internal-link deletion",
+    "mutated_object": "candidate proof chain",
+    "original": "Entrance -> Internal stratified relation -> Exit",
+    "mutated": "Entrance -> [missing] -> Exit",
+    "expected": "REJECT",
+    "command": ["lake", "env", "lean", "mutations/PhysicsDemo/P01/RequiredInternalLinkDeletionMutation.lean"],
+    "rationale": "The endpoint expressions no longer connect, so equality transitivity cannot build the external relation.",
+    "expected_error_fragments": [
+      "Application type mismatch",
+      "hExit",
+      "has type\n  snellExpression data.n₂ (ray.stack.angle ray.stack.layerCount) = snellExpression data.n₀ ray.β",
+      "is expected to have type\n  snellExpression data.n₁ (ray.stack.angle 0) = snellExpression data.n₀ ray.β"
+    ]
+  }
+]

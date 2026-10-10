@@ -1,0 +1,15 @@
+{
+  "id": "math-sqrt2-irrational",
+  "title": "sqrt(2) is irrational",
+  "code": "M00",
+  "domain": "mathematics",
+  "problem_file": "LeanVerificationDemo/MathDemo/M00/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/MathDemo/M00/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/MathDemo/M00/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/MathDemo/M00/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/MathDemo/M00/PairingWalkthrough.lean",
+  "mutation_manifest": "mutations/MathDemo/M00/manifest.json",
+  "trusted_type_display": "LeanVerificationDemo.MathDemo.M00.SqrtTwoIrrationalProblem",
+  "candidate_term_display": "LeanVerificationDemo.MathDemo.M00.Candidate.solution",
+  "required_judgment_display": "LeanVerificationDemo.MathDemo.M00.Candidate.solution : LeanVerificationDemo.MathDemo.M00.SqrtTwoIrrationalProblem"
+}

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import os
+import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -11,20 +12,29 @@ from typing import Any, NamedTuple
 
 ROOT = Path(__file__).resolve().parents[1]
 LAKE = os.environ.get("LAKE", "lake")
-MUTATION_MANIFEST = ROOT / "mutations" / "manifest.json"
 
 
-class ManifestMutationCase(NamedTuple):
+class ProblemConfig(NamedTuple):
     id: str
+    title: str
+    code: str
     domain: str
+    problem_file: Path
+    candidate_file: Path
+    verify_file: Path
+    annotated_file: Path
+    pairing_walkthrough_file: Path
+    mutation_manifest: Path
+    trusted_type_display: str
+    candidate_term_display: str
+    required_judgment_display: str
+
+
+class MutationCase(NamedTuple):
+    id: str
     category: str
-    name: str
-    mutated_object: str
-    original: str
-    mutated: str
     expected: str
     command: list[str]
-    rationale: str
     expected_error_fragments: tuple[str, ...]
 
 
@@ -34,6 +44,10 @@ class MutationResult(NamedTuple):
     expected: str
     actual: str
     passed: bool
+    output: str
+    command_display: str
+    diagnostic_ok: bool
+    unrelated_failure: bool
 
 
 UNRELATED_FAILURE_MARKERS = (
@@ -48,127 +62,167 @@ UNRELATED_FAILURE_MARKERS = (
 )
 
 
-def run_command(label: str, command: list[str]) -> subprocess.CompletedProcess[str]:
+def rel(path: Path) -> str:
+    return str(path.relative_to(ROOT))
+
+
+def dotted(label: str, value: str, width: int = 32) -> str:
+    return f"  {label} {'.' * max(1, width - len(label))} {value}"
+
+
+def command_display(command: list[str]) -> str:
+    return " ".join("lake" if part == LAKE else part for part in command)
+
+
+def run_command(command: list[str]) -> subprocess.CompletedProcess[str]:
     resolved = [LAKE if part == "lake" else part for part in command]
-    display = ["lake" if part == LAKE else part for part in resolved]
-    print(f"$ {' '.join(display)}")
-    result = subprocess.run(
+    return subprocess.run(
         resolved,
         cwd=ROOT,
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
     )
-    if result.stdout.strip():
-        print(result.stdout.rstrip())
-    return result
 
 
-def print_stage_result(result: subprocess.CompletedProcess[str]) -> bool:
-    if result.returncode == 0:
-        print("PASS")
-        return True
-    print("FAIL")
-    return False
+def lean_file(path: Path) -> list[str]:
+    return ["lake", "env", "lean", rel(path)]
 
 
-def print_pairing_check(
-    label: str,
-    trusted_problem: str,
-    candidate_proof: str,
-    command: list[str],
-    proof_application: str | None = None,
-) -> bool:
-    print(f"\n[PAIRING CHECK - {label}]")
-    print("\nTrusted problem/type:")
-    print(f"  {trusted_problem}")
-    print("\nCandidate proof term:")
-    print(f"  {candidate_proof}")
-    print("\nRequired judgment:")
-    judgment_term = proof_application or candidate_proof
-    print(f"  {judgment_term}")
-    print(f"    : {trusted_problem}")
-    print("\nRunning Lean type check...")
-    result = run_command(label, command)
-    print("\nResult:")
-    if result.returncode == 0:
-        print("  ACCEPTED")
-        return True
-    print("  REJECTED")
-    return False
-
-
-def load_manifest_cases(domain: str) -> list[ManifestMutationCase]:
-    with MUTATION_MANIFEST.open(encoding="utf-8") as manifest_file:
-        raw_cases: list[dict[str, Any]] = json.load(manifest_file)
-
-    cases: list[ManifestMutationCase] = []
-    for raw in raw_cases:
-        if raw["domain"] != domain:
-            continue
-        cases.append(
-            ManifestMutationCase(
+def discover_problems() -> list[ProblemConfig]:
+    configs: list[ProblemConfig] = []
+    for path in sorted((ROOT / "LeanVerificationDemo").rglob("verification.json")):
+        raw: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
+        configs.append(
+            ProblemConfig(
                 id=raw["id"],
+                title=raw["title"],
+                code=raw["code"],
                 domain=raw["domain"],
-                category=raw["category"],
-                name=raw["name"],
-                mutated_object=raw["mutated_object"],
-                original=raw["original"],
-                mutated=raw["mutated"],
-                expected=raw["expected"],
-                command=list(raw["command"]),
-                rationale=raw["rationale"],
-                expected_error_fragments=tuple(raw.get("expected_error_fragments", ())),
+                problem_file=ROOT / raw["problem_file"],
+                candidate_file=ROOT / raw["candidate_file"],
+                verify_file=ROOT / raw["verify_file"],
+                annotated_file=ROOT / raw["annotated_file"],
+                pairing_walkthrough_file=ROOT / raw["pairing_walkthrough_file"],
+                mutation_manifest=ROOT / raw["mutation_manifest"],
+                trusted_type_display=raw["trusted_type_display"],
+                candidate_term_display=raw["candidate_term_display"],
+                required_judgment_display=raw["required_judgment_display"],
             )
         )
-    return cases
+    return configs
 
 
-def manifest_mutation_test(case: ManifestMutationCase) -> MutationResult:
-    print(f"\n[{case.id}]")
-    print("\nDomain:")
-    print(f"  {case.domain}")
-    print("\nCategory:")
-    print(f"  {case.category}")
-    print("\nMutated object:")
-    print(f"  {case.mutated_object}")
-    print("\nOriginal:")
-    print(f"  {case.original}")
-    print("\nMutated:")
-    print(f"  {case.mutated}")
-    print("\nExpected outcome:")
-    print(f"  {case.expected}")
-    print("\nRunning Lean...")
+def print_problem_list(configs: list[ProblemConfig]) -> None:
+    print("Available problems:\n")
+    for config in configs:
+        print(f"  {config.code:<4} {config.id:<28} {config.title}")
+    print("\nRun:")
+    for config in configs:
+        print(f"  python3 scripts/verify.py {config.code}")
 
-    result = run_command(case.name, case.command)
-    actual = "ACCEPT" if result.returncode == 0 else "REJECT"
+
+def select_problem(configs: list[ProblemConfig], selector: str | None) -> ProblemConfig | None:
+    lookup: dict[str, ProblemConfig] = {}
+    for config in configs:
+        lookup[config.code.lower()] = config
+        lookup[config.id.lower()] = config
+
+    if selector:
+        return lookup.get(selector.lower())
+
+    print_problem_list(configs)
+    try:
+        response = input("\nProblem code or ID: ").strip()
+    except EOFError:
+        return None
+    if not response:
+        return None
+    return lookup.get(response.lower())
+
+
+def load_mutations(manifest: Path) -> list[MutationCase]:
+    raw_cases: list[dict[str, Any]] = json.loads(manifest.read_text(encoding="utf-8"))
+    return [
+        MutationCase(
+            id=raw["id"],
+            category=raw["category"],
+            expected=raw["expected"],
+            command=list(raw["command"]),
+            expected_error_fragments=tuple(raw.get("expected_error_fragments", ())),
+        )
+        for raw in raw_cases
+    ]
+
+
+def print_output_if_needed(output: str) -> None:
+    if output.strip():
+        print(output.rstrip())
+
+
+def run_stage1(config: ProblemConfig, verbose: bool) -> bool:
+    print("Stage 1 - Valid source compilation\n")
+    checks = [
+        ("Problem.lean", config.problem_file),
+        ("Candidate.lean", config.candidate_file),
+    ]
+    results: list[bool] = []
+    for label, path in checks:
+        result = run_command(lean_file(path))
+        ok = result.returncode == 0
+        results.append(ok)
+        print(dotted(label, "PASS" if ok else "FAIL", width=30))
+        if verbose or not ok:
+            print(f"  $ {command_display(lean_file(path))}")
+            print_output_if_needed(result.stdout)
+    stage_ok = all(results)
+    print()
+    print(dotted("Stage 1 result", "PASS" if stage_ok else "FAIL", width=30))
+    return stage_ok
+
+
+def run_stage2(config: ProblemConfig, verbose: bool) -> bool:
+    print("\nStage 2 - Proposition / proof pairing\n")
+    print("  Trusted proposition:")
+    print(f"    {config.trusted_type_display}")
+    print("\n  Candidate proof:")
+    print(f"    {config.candidate_term_display}")
+    print("\n  Required judgment:")
+    print(f"    {config.required_judgment_display}")
+
+    result = run_command(lean_file(config.verify_file))
+    ok = result.returncode == 0
+    print("\n  Lean result:")
+    print(f"    {'ACCEPT' if ok else 'REJECT'}")
+    if verbose or not ok:
+        print(f"\n  $ {command_display(lean_file(config.verify_file))}")
+        print_output_if_needed(result.stdout)
+    print()
+    print(dotted("Stage 2 result", "PASS" if ok else "FAIL", width=30))
+    return ok
+
+
+def run_mutation(case: MutationCase, verbose: bool) -> MutationResult:
+    result = run_command(case.command)
     output = result.stdout
+    actual = "ACCEPT" if result.returncode == 0 else "REJECT"
+    diagnostic_ok = True
+    unrelated_failure = False
 
     if case.expected == "REJECT":
-        fragments_ok = all(
-            fragment in output for fragment in case.expected_error_fragments
-        )
+        diagnostic_ok = all(fragment in output for fragment in case.expected_error_fragments)
         unrelated_failure = any(marker in output for marker in UNRELATED_FAILURE_MARKERS)
-        passed = actual == case.expected and fragments_ok and not unrelated_failure
+        passed = actual == case.expected and diagnostic_ok and not unrelated_failure
     else:
         passed = actual == case.expected
 
-    print("\nActual outcome:")
-    print(f"  {actual}")
-    if actual == "ACCEPT":
-        print("\nLean accepted this mutation.")
-
-    print("\nRationale:")
-    print(f"  {case.rationale}")
-    print("\nTEST RESULT:")
-    print(f"  {'PASS' if passed else 'FAIL'}")
-
-    if actual == "REJECT" and case.expected == "REJECT" and not passed:
-        print("\nReason:")
-        print("  Lean rejected the file, but the error did not match the expected mutation signature.")
-    elif actual != case.expected:
-        print("\nReason:")
-        print(f"  Expected {case.expected}, got {actual}.")
+    if verbose or not passed:
+        print(f"\n  [{case.id}] $ {command_display(case.command)}")
+        print_output_if_needed(output)
+        if actual == "REJECT" and case.expected == "REJECT" and not diagnostic_ok:
+            print("  Diagnostic signature did not match expected fragments.")
+        if unrelated_failure:
+            print("  Rejection looked like an unrelated environment/import/file failure.")
 
     return MutationResult(
         id=case.id,
@@ -176,105 +230,97 @@ def manifest_mutation_test(case: ManifestMutationCase) -> MutationResult:
         expected=case.expected,
         actual=actual,
         passed=passed,
+        output=output,
+        command_display=command_display(case.command),
+        diagnostic_ok=diagnostic_ok,
+        unrelated_failure=unrelated_failure,
     )
 
 
-def print_mutation_summary(results: list[MutationResult]) -> None:
-    if not results:
-        return
+def run_stage3(config: ProblemConfig, verbose: bool) -> bool:
+    print("\nStage 3 - Mutation verification\n")
+    cases = load_mutations(config.mutation_manifest)
+    results = [run_mutation(case, verbose) for case in cases]
+
     category_width = max(28, *(len(result.category) + 2 for result in results))
-    print("\nMutation summary")
-    print(f"{'ID':<12}{'Category':<{category_width}}{'Expected':<11}{'Actual':<9}Test")
     for result in results:
         test = "PASS" if result.passed else "FAIL"
-        print(
-            f"{result.id:<12}{result.category:<{category_width}}"
-            f"{result.expected:<11}{result.actual:<9}{test}"
-        )
+        transition = f"{result.expected} -> {result.actual}"
+        print(f"  {result.id:<11}{result.category:<{category_width}}{transition:<18}{test}")
+
+    passed_count = sum(1 for result in results if result.passed)
+    stage_ok = passed_count == len(results)
+    print()
+    print(dotted("Mutation result", f"{passed_count} / {len(results)} PASS", width=30))
+    return stage_ok
+
+
+def run_stage4(config: ProblemConfig, verbose: bool) -> bool:
+    print("\nStage 4 - Human-readable proof audit\n")
+    result = run_command(lean_file(config.annotated_file))
+    ok = result.returncode == 0
+    print(dotted("CandidateAnnotated.lean", "PASS" if ok else "FAIL", width=30))
+    if verbose or not ok:
+        print(f"  $ {command_display(lean_file(config.annotated_file))}")
+        print_output_if_needed(result.stdout)
+    print("\n  Lean checks the Lean code in the annotated file.")
+    print("  The English comments are a human-audit layer, not a machine-checked proof.")
+    print()
+    print(dotted("Stage 4 result", "PASS" if ok else "FAIL", width=30))
+    return ok
+
+
+def verify_problem(config: ProblemConfig, verbose: bool) -> int:
+    print("=" * 60)
+    print(f"Problem: {config.code} ({config.id})")
+    print(config.title)
+    print("=" * 60)
+    print()
+
+    ok_stage1 = run_stage1(config, verbose)
+    ok_stage2 = run_stage2(config, verbose)
+    ok_stage3 = run_stage3(config, verbose)
+    ok_stage4 = run_stage4(config, verbose)
+
+    all_ok = ok_stage1 and ok_stage2 and ok_stage3 and ok_stage4
+    print("\n" + "=" * 60)
+    print(f"PROBLEM RESULT: {'PASS' if all_ok else 'FAIL'}")
+    print("=" * 60)
+    return 0 if all_ok else 1
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Verify one formalized Lean problem.",
+        add_help=True,
+    )
+    parser.add_argument("problem", nargs="?", help="Problem code or ID, e.g. M00 or P01.")
+    parser.add_argument("--list", action="store_true", help="List available problems.")
+    parser.add_argument("--verbose", action="store_true", help="Show raw Lean diagnostics.")
+    return parser.parse_args()
 
 
 def main() -> int:
-    print("LEAN 4-STAGE VERIFICATION DEMO\n")
-    print("Original sqrt(2) problem and physics plate problem\n")
+    args = parse_args()
+    configs = discover_problems()
+    if not configs:
+        print("No verification.json files found under LeanVerificationDemo/.")
+        return 1
 
-    print("[Stage 1] Structural / Compilation Verification")
-    stage1 = run_command("lake build", ["lake", "build"])
-    ok_stage1 = print_stage_result(stage1)
-
-    print("\n[Stage 2] Problem-Solution Consistency Verification")
-    ok_stage2_math = print_pairing_check(
-        "MATH",
-        "LeanVerificationDemo.SqrtTwoIrrationalProblem",
-        "LeanVerificationDemo.Candidate.solution",
-        ["lake", "env", "lean", "LeanVerificationDemo/Verify.lean"],
-    )
-
-    ok_stage2_physics = print_pairing_check(
-        "PHYSICS",
-        "TrustedPhysicsProblem data ray",
-        "Candidate.solution data ray",
-        ["lake", "env", "lean", "LeanVerificationDemo/Physics/Verify.lean"],
-        proof_application="Candidate.solution data ray",
-    )
-
-    print("\n[Stage 3] Human-Guided Mutation Verification")
-    print("\nSqrt(2) mutations")
-    math_mutation_results = [
-        manifest_mutation_test(case) for case in load_manifest_cases("math")
-    ]
-    print_mutation_summary(math_mutation_results)
-
-    print("\nPhysics mutations")
-    physics_mutation_results = [
-        manifest_mutation_test(case) for case in load_manifest_cases("physics")
-    ]
-    print_mutation_summary(physics_mutation_results)
-
-    print("\n[Stage 4] Natural-Language Proof Audit")
-    print("\nSqrt(2) annotated proof")
-    annotated = ROOT / "LeanVerificationDemo" / "CandidateAnnotated.lean"
-    if annotated.exists():
-        print("Annotated proof exists")
-        stage4 = run_command(
-            "lake env lean LeanVerificationDemo/CandidateAnnotated.lean",
-            ["lake", "env", "lean", "LeanVerificationDemo/CandidateAnnotated.lean"],
-        )
-        ok_stage4_math = print_stage_result(stage4)
-    else:
-        print("Annotated proof is missing")
-        print("FAIL")
-        ok_stage4_math = False
-
-    print("\nPhysics annotated proof")
-    physics_annotated = ROOT / "LeanVerificationDemo" / "Physics" / "CandidateAnnotated.lean"
-    if physics_annotated.exists():
-        print("Annotated proof exists")
-        stage4_physics = run_command(
-            "lake env lean LeanVerificationDemo/Physics/CandidateAnnotated.lean",
-            ["lake", "env", "lean", "LeanVerificationDemo/Physics/CandidateAnnotated.lean"],
-        )
-        ok_stage4_physics = print_stage_result(stage4_physics)
-    else:
-        print("Annotated proof is missing")
-        print("FAIL")
-        ok_stage4_physics = False
-
-    all_ok = (
-        ok_stage1
-        and ok_stage2_math
-        and ok_stage2_physics
-        and all(result.passed for result in math_mutation_results)
-        and all(result.passed for result in physics_mutation_results)
-        and ok_stage4_math
-        and ok_stage4_physics
-    )
-    print()
-    if all_ok:
-        print("FINAL RESULT: ALL VERIFICATION TESTS PASSED")
+    if args.list:
+        print_problem_list(configs)
         return 0
 
-    print("FINAL RESULT: VERIFICATION TESTS FAILED")
-    return 1
+    config = select_problem(configs, args.problem)
+    if config is None:
+        if args.problem:
+            print(f"Unknown problem: {args.problem}\n")
+            print_problem_list(configs)
+            return 2
+        print("No problem selected.")
+        return 2
+
+    return verify_problem(config, args.verbose)
 
 
 if __name__ == "__main__":
