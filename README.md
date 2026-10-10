@@ -168,7 +168,19 @@ For the physics demo, Stage 3 perturbs:
 
 1. The entrance Snell-law relation.
 2. The internal stratified/parallel-layer relation.
-3. The final conclusion `β = α`.
+3. The exit Snell-law relation.
+4. A valid target specialization from `β = α` to `β = π/6`.
+5. A logically irrelevant addition.
+6. Removal of the required internal derived-physics link.
+
+| ID | Category | Expected | Why |
+| --- | --- | --- | --- |
+| `PHYS-P001` | Entrance relation corruption | `REJECT` | The entrance refractive indices are paired with the wrong angles. |
+| `PHYS-P002` | Internal relation corruption | `REJECT` | The transmitted medium index is incorrectly paired with the incident angle. |
+| `PHYS-P003` | Exit relation corruption | `REJECT` | The internal and outgoing angles are paired with the wrong refractive indices. |
+| `PHYS-P004` | Target specialization | `REJECT` | The specialized target is valid, but the unchanged proof of `β = α` must be transformed before it proves `β = π/6`. |
+| `PHYS-P005` | Irrelevant addition | `ACCEPT` | Lean checks validity, not relevance or minimality. |
+| `PHYS-P006` | Required internal-link deletion | `REJECT` | Without the internal stratified relation, the entrance and exit equalities cannot be chained. |
 
 Stage 4 explains the same physics proof blocks:
 
@@ -336,7 +348,7 @@ The script also works directly:
 4. A physics proof demo for a stratified transparent plate.
 5. A finite-layer model that stores only local adjacent-interface Snell-law evidence.
 6. A Lean-derived finite-layer Snell invariant proved by induction/equality chaining.
-7. Physics mutation tests for entrance Snell corruption, internal local-link corruption, and conclusion corruption.
+7. Physics mutation tests for entrance, internal, exit, target-specialization, irrelevant-addition, and internal-link-deletion cases.
 8. Human-audit annotated proofs for both demos.
 
 More detail:
@@ -370,155 +382,39 @@ PASS
 
 [Stage 2] Problem-Solution Consistency Verification
 
-Sqrt(2) problem
+[PAIRING CHECK - MATH]
 $ lake env lean LeanVerificationDemo/Verify.lean
-PASS
+Result:
+  ACCEPTED
 
-Physics plate problem
+[PAIRING CHECK - PHYSICS]
 $ lake env lean LeanVerificationDemo/Physics/Verify.lean
-PASS
+Result:
+  ACCEPTED
 
 [Stage 3] Human-Guided Mutation Verification
 
 Sqrt(2) mutations
-
-Mutation 1: assumption mutation
-
-Original:
-Assume sqrt(2) is rational.
-
-Mutated:
-Assume sqrt(2) is irrational instead.
-
-Expected result:
-REJECTED
-
-Actual Lean failure:
-$ lake env lean mutations/AssumptionMutation.lean
-mutations/AssumptionMutation.lean:32:15: error: Application type mismatch: The argument
-  hAssumption
-has type
-  Irrational √2
-but is expected to have type
-  √2 ∈ Set.range Rat.cast
-in the application
-  hIrr hAssumption
-EXPECTED FAILURE - PASS
-
-Mutation 2: contradiction mutation
-
-Original:
-From the rationality assumption, derive False.
-
-Mutated:
-Derive only True, which is not a contradiction.
-
-Expected result:
-REJECTED
-
-Actual Lean failure:
-$ lake env lean mutations/ContradictionMutation.lean
-mutations/ContradictionMutation.lean:22:2: error: Type mismatch
-  hContradiction
-has type
-  True
-but is expected to have type
-  False
-EXPECTED FAILURE - PASS
-
-Mutation 3: conclusion mutation
-
-Original:
-Conclude that sqrt(2) is irrational.
-
-Mutated:
-Conclude that sqrt(2) is rational.
-
-Expected result:
-REJECTED
-
-Actual Lean failure:
-$ lake env lean mutations/ConclusionMutation.lean
-mutations/ConclusionMutation.lean:25:2: error: Type mismatch
-  hContradictionFromRational
-has type
-  (∃ q, ↑q = √2) → False
-but is expected to have type
-  MutatedProblem
-EXPECTED FAILURE - PASS
+...
+Mutation summary
+ID          Category                    Expected   Actual   Test
+MATH-M001   Assumption replacement      REJECT     REJECT   PASS
+MATH-M002   Contradiction corruption    REJECT     REJECT   PASS
+MATH-M003   Conclusion replacement      REJECT     REJECT   PASS
+MATH-M004   Target substitution         REJECT     REJECT   PASS
+MATH-M005   Irrelevant addition         ACCEPT     ACCEPT   PASS
+MATH-M006   Required-step deletion      REJECT     REJECT   PASS
 
 Physics mutations
-
-Mutation 1: entrance Snell-law corruption
-
-Original:
-At the upper interface, n₀ sin α = n₁ sin θ₁.
-
-Mutated:
-Use an incompatible relation starting from the lower-index expression instead.
-
-Expected result:
-REJECTED
-
-Actual Lean failure:
-$ lake env lean mutations/physics/EntranceSnellMutation.lean
-mutations/physics/EntranceSnellMutation.lean:30:4: error: Type mismatch
-  Eq.trans hEntranceCorrupt (Eq.trans hInternal hExit)
-has type
-  snellExpression data.n₂ (ray.stack.angle ray.stack.layerCount) = snellExpression data.n₀ ray.β
-but is expected to have type
-  snellExpression data.n₀ data.α = snellExpression data.n₀ ray.β
-EXPECTED FAILURE - PASS
-
-Mutation 2: internal stratified-medium corruption
-
-Original:
-Each adjacent parallel interface satisfies Snell's law in the forward layer direction.
-
-Mutated:
-Pair the transmitted refractive index with the incident angle instead of the transmitted angle.
-
-Expected result:
-REJECTED
-
-Actual Lean failure:
-$ lake env lean mutations/physics/InternalStratifiedMutation.lean
-mutations/physics/InternalStratifiedMutation.lean:26:10: error: Type mismatch
-  hCorrect
-has type
-  SnellLaw (ray.stack.index i) (ray.stack.index (i + 1)) (ray.stack.angle i) (ray.stack.angle (i + 1))
-but is expected to have type
-  snellExpression (ray.stack.index i) (ray.stack.angle i) =
-    snellExpression (ray.stack.index (i + 1)) (ray.stack.angle i)
-mutations/physics/InternalStratifiedMutation.lean:27:8: error: Type mismatch
-  hWrongAngle
-has type
-  snellExpression (ray.stack.index i) (ray.stack.angle i) =
-    snellExpression (ray.stack.index (i + 1)) (ray.stack.angle i)
-but is expected to have type
-  SnellLaw (ray.stack.index i) (ray.stack.index (i + 1)) (ray.stack.angle i) (ray.stack.angle (i + 1))
-EXPECTED FAILURE - PASS
-
-Mutation 3: physics conclusion mutation
-
-Original:
-Conclude that the outgoing angle equals the incident angle: β = α.
-
-Mutated:
-Claim the incompatible conclusion β ≠ α.
-
-Expected result:
-REJECTED
-
-Actual Lean failure:
-$ lake env lean mutations/physics/PhysicsConclusionMutation.lean
-mutations/physics/PhysicsConclusionMutation.lean:15:2: error: Type mismatch
-  Candidate.solution data ray
-has type
-  TrustedPhysicsProblem data ray
-but is expected to have type
-  MutatedPhysicsProblem data ray
-EXPECTED FAILURE - PASS
+...
+Mutation summary
+ID          Category                         Expected   Actual   Test
+PHYS-P001   Entrance relation corruption     REJECT     REJECT   PASS
+PHYS-P002   Internal relation corruption     REJECT     REJECT   PASS
+PHYS-P003   Exit relation corruption         REJECT     REJECT   PASS
+PHYS-P004   Target specialization            REJECT     REJECT   PASS
+PHYS-P005   Irrelevant addition              ACCEPT     ACCEPT   PASS
+PHYS-P006   Required internal-link deletion  REJECT     REJECT   PASS
 
 [Stage 4] Natural-Language Proof Audit
 

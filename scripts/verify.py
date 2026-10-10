@@ -14,15 +14,6 @@ LAKE = os.environ.get("LAKE", "lake")
 MUTATION_MANIFEST = ROOT / "mutations" / "manifest.json"
 
 
-class MutationCase(NamedTuple):
-    number: int
-    name: str
-    original: str
-    mutated: str
-    command: list[str]
-    expected_fragments: tuple[str, ...]
-
-
 class ManifestMutationCase(NamedTuple):
     id: str
     domain: str
@@ -191,44 +182,15 @@ def manifest_mutation_test(case: ManifestMutationCase) -> MutationResult:
 def print_mutation_summary(results: list[MutationResult]) -> None:
     if not results:
         return
+    category_width = max(28, *(len(result.category) + 2 for result in results))
     print("\nMutation summary")
-    print(f"{'ID':<12}{'Category':<28}{'Expected':<11}{'Actual':<9}Test")
+    print(f"{'ID':<12}{'Category':<{category_width}}{'Expected':<11}{'Actual':<9}Test")
     for result in results:
         test = "PASS" if result.passed else "FAIL"
         print(
-            f"{result.id:<12}{result.category:<28}"
+            f"{result.id:<12}{result.category:<{category_width}}"
             f"{result.expected:<11}{result.actual:<9}{test}"
         )
-
-
-def mutation_test(case: MutationCase) -> bool:
-    print(f"\nMutation {case.number}: {case.name}")
-    print("\nOriginal:")
-    print(case.original)
-    print("\nMutated:")
-    print(case.mutated)
-    print("\nExpected result:")
-    print("REJECTED")
-    print("\nActual Lean failure:")
-    result = run_command(case.name, case.command)
-    output = result.stdout
-
-    has_expected_failure = (
-        result.returncode != 0
-        and all(fragment in output for fragment in case.expected_fragments)
-        and not any(marker in output for marker in UNRELATED_FAILURE_MARKERS)
-    )
-
-    if has_expected_failure:
-        print("EXPECTED FAILURE - PASS")
-        return True
-
-    print("UNEXPECTED SUCCESS - FAIL")
-    if result.returncode == 0:
-        print("Reason: the corrupted pair was accepted by Lean.")
-    else:
-        print("Reason: Lean failed, but not with the expected proof/type mismatch.")
-    return False
 
 
 def main() -> int:
@@ -263,48 +225,10 @@ def main() -> int:
     print_mutation_summary(math_mutation_results)
 
     print("\nPhysics mutations")
-    physics_mutation_cases = [
-        MutationCase(
-            number=1,
-            name="entrance Snell-law corruption",
-            original="At the upper interface, n₀ sin α = n₁ sin θ₁.",
-            mutated="Use an incompatible relation starting from the lower-index expression instead.",
-            command=["lake", "env", "lean", "mutations/physics/EntranceSnellMutation.lean"],
-            expected_fragments=(
-                "Type mismatch",
-                "hEntranceCorrupt",
-                "snellExpression data.n₂ (ray.stack.angle ray.stack.layerCount) = snellExpression data.n₀ ray.β",
-                "snellExpression data.n₀ data.α = snellExpression data.n₀ ray.β",
-            ),
-        ),
-        MutationCase(
-            number=2,
-            name="internal stratified-medium corruption",
-            original="Each adjacent parallel interface satisfies Snell's law in the forward layer direction.",
-            mutated="Pair the transmitted refractive index with the incident angle instead of the transmitted angle.",
-            command=["lake", "env", "lean", "mutations/physics/InternalStratifiedMutation.lean"],
-            expected_fragments=(
-                "Type mismatch",
-                "hCorrect",
-                "SnellLaw (ray.stack.index i) (ray.stack.index (i + 1))",
-                "snellExpression (ray.stack.index (i + 1)) (ray.stack.angle i)",
-            ),
-        ),
-        MutationCase(
-            number=3,
-            name="physics conclusion mutation",
-            original="Conclude that the outgoing angle equals the incident angle: β = α.",
-            mutated="Claim the incompatible conclusion β ≠ α.",
-            command=["lake", "env", "lean", "mutations/physics/PhysicsConclusionMutation.lean"],
-            expected_fragments=(
-                "Type mismatch",
-                "Candidate.solution data ray",
-                "has type\n  TrustedPhysicsProblem data ray",
-                "is expected to have type\n  MutatedPhysicsProblem data ray",
-            ),
-        ),
+    physics_mutation_results = [
+        manifest_mutation_test(case) for case in load_manifest_cases("physics")
     ]
-    physics_mutation_results = [mutation_test(case) for case in physics_mutation_cases]
+    print_mutation_summary(physics_mutation_results)
 
     print("\n[Stage 4] Natural-Language Proof Audit")
     print("\nSqrt(2) annotated proof")
@@ -340,7 +264,7 @@ def main() -> int:
         and ok_stage2_math
         and ok_stage2_physics
         and all(result.passed for result in math_mutation_results)
-        and all(physics_mutation_results)
+        and all(result.passed for result in physics_mutation_results)
         and ok_stage4_math
         and ok_stage4_physics
     )
