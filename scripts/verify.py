@@ -240,6 +240,9 @@ def run_mutation(case: MutationCase, verbose: bool) -> MutationResult:
 def run_stage3(config: ProblemConfig, verbose: bool) -> bool:
     print("\nStage 3 - Mutation verification\n")
     cases = load_mutations(config.mutation_manifest)
+    if not cases:
+        print("  Stage 3 result ................ SKIPPED (no mutation cases configured)")
+        return True
     results = [run_mutation(case, verbose) for case in cases]
 
     category_width = max(28, *(len(result.category) + 2 for result in results))

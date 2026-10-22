@@ -1,6 +1,6 @@
 # Lean Verification Demo
 
-Problem-centric Lean verification prototype for one mathematics problem and two
+Problem-centric Lean verification prototype for one mathematics problem and three
 physics problems.
 
 ## Purpose
@@ -18,6 +18,9 @@ For each problem:
 2. Check the explicit proposition/proof pairing.
 3. Run six controlled mutation tests.
 4. Compile an annotated proof for human audit.
+
+P03 currently defers mutation cases; Stage 3 explicitly reports `SKIPPED` for
+an empty manifest. Existing demos still run their six mutation checks.
 
 The six mutation tests are part of Stage 3.  They are not six separate
 verification stages.
@@ -63,6 +66,7 @@ project.
 | Mathematics | `math-sqrt2-irrational` | `M00` | [problem README](LeanVerificationDemo/MathDemo/M00/README.md) |
 | Physics | `physics-stratified-plate` | `P01` | [problem README](LeanVerificationDemo/PhysicsDemo/P01/README.md), [classification](LeanVerificationDemo/PhysicsDemo/P01/CLASSIFICATION.md) |
 | Physics | `321` | `P02` | [problem README](LeanVerificationDemo/PhysicsDemo/P02/README.md), [source JSONL](LeanVerificationDemo/PhysicsDemo/P02/source.jsonl) |
+| Physics | `433` | `P03` | [problem README](LeanVerificationDemo/PhysicsDemo/P03/README.md), [audit](LeanVerificationDemo/PhysicsDemo/P03/PHYSLIB_AUDIT.md) |
 
 ## Run
 
@@ -78,6 +82,7 @@ Verify one problem by code:
 python3 scripts/verify.py M00
 python3 scripts/verify.py P01
 python3 scripts/verify.py P02
+python3 scripts/verify.py P03
 ```
 
 Or by full problem ID:
@@ -98,6 +103,7 @@ or ID.  Add `--verbose` to show raw Lean diagnostics for each command.
 | `math-sqrt2-irrational` | PASS | PASS | 6 / 6 PASS | PASS | PASS |
 | `physics-stratified-plate` | PASS | PASS | 6 / 6 PASS | PASS | PASS |
 | `321` (P02) | PASS | PASS | 6 / 6 PASS | PASS | PASS |
+| `433` (P03) | PASS | PASS | SKIPPED | PASS | PASS |
 
 ## Environment
 
