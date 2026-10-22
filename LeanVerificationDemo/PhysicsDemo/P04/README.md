@@ -25,9 +25,20 @@ that their twelve cube edges match the caption exactly. Every edge has one
 capacitor symbol and label C, and A/B have outward wire stubs. It does not read
 the solution, Lean proof or any reduced circuit.
 
-Unlike earlier demos, the input includes a **diagram caption** defining connectivity.
-No original image was provided or visually reconstructed. The eight names and
-all twelve undirected links are transcribed into `Problem.diagramEdges`:
+The original scanned problem diagram was provided by the user. Its factual
+connectivity was manually transcribed into a **diagram caption**. Lean does not
+use the image itself as trusted structured input. The provenance chain is:
+
+```text
+user-provided original scanned diagram
+→ manually extracted factual caption
+→ explicit edge list / topology
+→ Lean formalization
+```
+
+The reconstructed SVG is generated from that caption-derived topology only,
+without consulting solution facts. The eight names and all twelve undirected
+links are transcribed into `Problem.diagramEdges`:
 
 ```text
 A–1, A–2, A–3,
@@ -61,7 +72,7 @@ Maxwell or circuit-current theorem. Neutrality is an explicit physical condition
 **equipotential layers are never an input assumption**.
 
 Reuse the existing Physlib-backed `Charge`, `Voltage` and `Capacitance` aliases
-(C, V, F) from the generic capacitor module. No `PlaneCapacitor` gap or optional
+(C, V, F) from `PhyslibTemp/Electromagnetism/CapacitorBasics.lean`. No `PlaneCapacitor` gap or optional
 breakdown specification is needed. Values are fixed coherent-SI coordinates with
 dimension tags; no general unit-covariance theorem is claimed.
 
@@ -114,8 +125,9 @@ literal invocation of reusable series/parallel reduction theorems.
 `CubeData` contains only C and C > 0. No layer equality or answer is trusted input.
 The reusable `HasEquivalentCapacitance` requires:
 
-1. For every a,b, some potential assignment has terminal values a,b and neutral interior.
-2. For every neutral-interior assignment, QA = Ceq (VA−VB).
+1. Ceq is nonnegative (`0 ≤ Ceq.val`).
+2. For every a,b, some potential assignment has terminal values a,b and neutral interior.
+3. For every neutral-interior assignment, QA = Ceq (VA−VB).
 
 ```lean
 def TrustedPhysicsProblem (data : CubeData) : Prop :=
@@ -125,7 +137,8 @@ Candidate.solution data : TrustedPhysicsProblem data
 ```
 
 `answer data` is the claimed coordinate `(6/5) * data.C.val`, in farads. Its charge
-law and solvability are proved; they are not stored as evidence fields.
+law, nonnegativity and solvability are proved; they are not stored as evidence fields.
+`Candidate.answer_pos` additionally proves `0 < (answer data).val` from C > 0.
 `Verify.lean` also checks that `CubeData` is inhabited, avoiding inconsistent input
 assumptions. The annotated proof repeats the checked derivation with explanatory
 comments; the English comments themselves are not machine-verified.
@@ -145,7 +158,7 @@ No dependency pins or previous demo APIs were changed.
 
 ## Verified results
 
-- `lake build`: PASS (3186 jobs), with the existing module interoperability warnings.
+- `lake build`: PASS (3187 jobs), with the existing module interoperability warnings.
 - `scripts/verify.py --list`: P04 registered with its descriptive ID.
 - P04: compilation, explicit pairing and annotated proof PASS; mutations SKIPPED.
 - M00, P01 and P02: PASS, with their six existing mutations each.
@@ -156,3 +169,37 @@ No dependency pins or previous demo APIs were changed.
 
 Validation reused the installed toolchain and local upstream caches; an independent
 empty-cache installation was not tested.
+
+## Shared module boundaries and API changes
+
+```text
+Physlib.Units.WithDim.Basic
+└── CapacitorBasics (Charge, Voltage, Capacitance)
+    ├── PlaneCapacitor (single uniform-gap capacitor physics)
+    │   └── DielectricBreakdown (optional failure specification)
+    └── CapacitorNetwork (finite coupling matrix and nodal electrostatics)
+```
+
+The network imports `CapacitorBasics` directly and has no dependency on plane
+geometry or breakdown. `FieldMagnitude` and `Separation` remain in
+`PlaneCapacitor`, since the network does not need them. P04 imports numerical
+proof tactics explicitly rather than relying on the former plane-module import.
+
+| Old declaration location/name | New location/name | Reason |
+| --- | --- | --- |
+| `PlaneCapacitor.lean`, `Charge` | `CapacitorBasics.lean`, same qualified name | Shared quantity, independent of geometry |
+| `PlaneCapacitor.lean`, `Voltage` | `CapacitorBasics.lean`, same qualified name | Shared quantity, independent of geometry |
+| `PlaneCapacitor.lean`, `Capacitance` | `CapacitorBasics.lean`, same qualified name | Shared quantity, independent of geometry |
+
+All three retain namespace `LeanVerificationDemo.PhyslibTemp.Electromagnetism`.
+No existing declarations were renamed. `HasEquivalentCapacitance` retains its
+name but now explicitly includes nonnegativity as its first conjunct. This
+formally strengthens `TrustedPhysicsProblem`; the nodal solvability/charge-law
+clauses and physical answer 6C/5 are unchanged. The new `Candidate.answer_pos`
+proves a source-specific stronger sign statement (also in the annotated replica).
+
+Trusted input remains the problem statement, caption topology, identical edge C
+and C > 0, with neutral internal conductors in the model. Equipotential grouping,
+internal potentials and the terminal coefficient are derived in the candidate.
+No series-capacitor API, parallel-reduction solver, additional circuit-graph
+semantics or solution facts in the trusted premises were introduced.

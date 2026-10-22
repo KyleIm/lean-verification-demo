@@ -4,6 +4,8 @@ namespace LeanVerificationDemo.PhysicsDemo.P04.Verifier
 
 example (data : CubeData) : TrustedPhysicsProblem data := Candidate.solution data
 
+example (data : CubeData) : 0 < (answer data).val := Candidate.answer_pos data
+
 -- Consistency of source assumptions: the common capacitance can be any positive value.
 example : Nonempty CubeData := ⟨{ C := ⟨1⟩, C_pos := by norm_num }⟩
 

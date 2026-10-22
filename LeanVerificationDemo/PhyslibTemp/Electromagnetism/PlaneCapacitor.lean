@@ -1,4 +1,4 @@
-import Physlib.Units.WithDim.Basic
+import LeanVerificationDemo.PhyslibTemp.Electromagnetism.CapacitorBasics
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.Linarith
@@ -6,8 +6,9 @@ import Mathlib.Tactic.Linarith
 /-!
 # Ideal plane capacitors in fixed coherent SI coordinates
 
-Reuse Physlib's LTMCT dimension basis and `WithDim`. These type abbreviations
-name existing generic coordinate quantities, not a new unit framework.
+Shared charge, voltage and capacitance coordinates come from `CapacitorBasics`.
+The plane-specific field and separation aliases specialize Physlib `WithDim`;
+no new unit framework is introduced.
 The model assumes a uniform field, linear dielectric, negligible fringe effects
 and leakage. Voltages/charges are magnitudes. Breakdown is an optional additional
 specification provided by `DielectricBreakdown.lean`; it is not intrinsic capacitor data.
@@ -16,12 +17,6 @@ namespace LeanVerificationDemo.PhyslibTemp.Electromagnetism
 
 open Dimension
 
-/-- Charge coordinate in coulombs. -/
-abbrev Charge := WithDim C𝓭 ℝ
-/-- Voltage coordinate in volts (energy per charge). -/
-abbrev Voltage := WithDim (M𝓭 * L𝓭 ^ 2 / T𝓭 ^ 2 / C𝓭) ℝ
-/-- Capacitance coordinate in farads (charge per voltage). -/
-abbrev Capacitance := WithDim (C𝓭 / (M𝓭 * L𝓭 ^ 2 / T𝓭 ^ 2 / C𝓭)) ℝ
 /-- Uniform electric-field magnitude in volts per metre. -/
 abbrev FieldMagnitude := WithDim (M𝓭 * L𝓭 / T𝓭 ^ 2 / C𝓭) ℝ
 /-- Separation coordinate in metres. -/

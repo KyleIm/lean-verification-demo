@@ -1,4 +1,4 @@
-import LeanVerificationDemo.PhyslibTemp.Electromagnetism.PlaneCapacitor
+import LeanVerificationDemo.PhyslibTemp.Electromagnetism.CapacitorBasics
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 /-!
@@ -36,11 +36,12 @@ def DirichletState (net : CapacitorNetwork ι) (A B : ι) (a b : Voltage)
     (φ : ι → Voltage) : Prop :=
   φ A = a ∧ φ B = b ∧ net.NeutralInterior A B φ
 
-/-- An equivalent capacitance requires a state for every pair of boundary potentials
-and the terminal charge law for every neutral-interior state. This is stronger
+/-- An equivalent capacitance is nonnegative and requires a state for every pair of
+boundary potentials and the terminal charge law for every neutral-interior state. This is stronger
 than evaluating one selected state. Voltages may be equal; no division by ΔV occurs. -/
 def HasEquivalentCapacitance (net : CapacitorNetwork ι) (A B : ι)
     (Ceq : Capacitance) : Prop :=
+  0 ≤ Ceq.val ∧
   (∀ a b, ∃ φ, net.DirichletState A B a b φ) ∧
   ∀ φ, net.NeutralInterior A B φ →
     (net.nodeCharge φ A).val = Ceq.val * ((φ A).val - (φ B).val)

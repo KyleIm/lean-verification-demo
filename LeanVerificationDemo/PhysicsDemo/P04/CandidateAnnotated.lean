@@ -1,4 +1,7 @@
 import LeanVerificationDemo.PhysicsDemo.P04.Problem
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.Linarith
 
 namespace LeanVerificationDemo.PhysicsDemo.P04.CandidateAnnotated
 open PhyslibTemp.Electromagnetism Vertex
@@ -76,12 +79,14 @@ lemma terminal_charge (data : CubeData) (φ : Vertex → Voltage)
   rw [h2, h3, h1]
   ring
 
+/-- Positive edge capacitance gives a strictly positive claimed equivalent capacitance. -/
+lemma answer_pos (data : CubeData) : 0 < (answer data).val := by
+  exact mul_pos (by norm_num : (0 : ℝ) < 6 / 5) data.C_pos
+
 /-- The original caption network, with neutral internal conductors, realizes 6C/5. -/
 theorem solution (data : CubeData) : TrustedPhysicsProblem data := by
-  -- Establish existence for all boundary potentials before proving the charge law.
-  constructor
-  · intro a b
-    exact ⟨equilibrium a b, equilibrium_is_state data a b⟩
-  · exact terminal_charge data
+  refine ⟨(answer_pos data).le, ?_, terminal_charge data⟩
+  intro a b
+  exact ⟨equilibrium a b, equilibrium_is_state data a b⟩
 
 end LeanVerificationDemo.PhysicsDemo.P04.CandidateAnnotated

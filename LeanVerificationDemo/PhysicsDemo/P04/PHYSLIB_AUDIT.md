@@ -33,8 +33,10 @@ result, not a claim that general graph/algebra infrastructure is absent.
 | same file:82 | `PeriodicGraph.translateIso (g : PeriodicGraph C) (a : G) : g.toSimpleGraph ≃g g.toSimpleGraph` | Translation symmetry, not cube diagonal symmetry plus uniqueness of electrostatic equilibrium |
 | `Physlib/SpaceAndTime/Space/Derivatives/Laplacian.lean` | Spatial differential Laplacian (continuum calculus) | Different object from a finite weighted capacitor matrix; not used |
 
-P03 already provides `PhyslibTemp.Electromagnetism.Charge`, `Voltage` and
-`Capacitance`, all aliases of existing Physlib `WithDim` types. These are reused.
+The shared `PhyslibTemp.Electromagnetism.Charge`, `Voltage` and `Capacitance`
+aliases specialize existing Physlib `WithDim` types. Originally housed in
+`PlaneCapacitor.lean`, they now live in `CapacitorBasics.lean` with unchanged
+qualified names. The network imports that base module directly.
 The existing `PlaneCapacitor.voltage` implements U = Q/C but requires a capacitor
 gap, which is irrelevant to the cube once C is supplied. The new signed node-charge
 sum uses the same constitutive law in Q = C ΔV form, not an independent competing
@@ -71,7 +73,7 @@ capacitance-reduction theorem. No Alpha module is imported by P04.
   coordinates and dimension algebra.
 - **New PhyslibTemp:** a finite symmetric nonnegative capacitance matrix with
   zero diagonal; signed node-charge sum; neutral-interior and boundary-state
-  predicates; equivalent capacitance defined through existence and the terminal
+  predicates; equivalent capacitance defined through nonnegativity, existence and the terminal
   charge law. These definitions mention no cube, caption labels, C/5 or source answer.
 - **P04-specific:** exact caption transcription, identical C > 0, finite residuals,
   solution of the six interior equations and the 6C/5 coefficient.
@@ -83,3 +85,23 @@ Source links at the pinned revision:
 [units](https://github.com/leanprover-community/physlib/blob/96a6bc5e3c50a2856c64a6c9951c0a1c23790b58/Physlib/Units/WithDim/Basic.lean#L33),
 [periodic crystal graph](https://github.com/leanprover-community/physlib/blob/96a6bc5e3c50a2856c64a6c9951c0a1c23790b58/Physlib/CondensedMatter/Crystal/PeriodicGraph.lean#L61),
 [Alpha wire-junction result](https://github.com/leanprover-community/physlib/blob/96a6bc5e3c50a2856c64a6c9951c0a1c23790b58/PhyslibAlpha/Electromagnetism/TemperedDistributional/WireJunction.lean#L264).
+
+## Provenance and focused cleanup
+
+The user provided the original scanned diagram. A factual caption was manually
+extracted, then transcribed into the explicit edge list used by Lean. The bitmap
+is not trusted structured Lean input. The existing SVG remains caption-only:
+no solution, equipotential grouping or reduced circuit is used by its generator.
+
+Shared quantities now belong to `CapacitorBasics`; `PlaneCapacitor` and
+`CapacitorNetwork` independently import it. `DielectricBreakdown` continues to
+import `PlaneCapacitor` and remains optional. Network physics no longer imports
+plane geometry merely to acquire quantity aliases. This changes local module
+boundaries, not the upstream audit findings or dependency pins.
+
+`HasEquivalentCapacitance` now requires `0 ≤ Ceq.val` as its first conjunct,
+followed by the existing solvability and universal charge-law clauses. P04 proves
+the stronger `Candidate.answer_pos` (`0 < (answer data).val`) using C > 0.
+The trusted proposition is thus explicitly strengthened in sign, while retaining
+the original nodal derivation and answer. No spectral machinery, general solver,
+series/parallel API or extra circuit-graph interpretation was introduced.
