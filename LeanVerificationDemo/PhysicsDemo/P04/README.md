@@ -6,6 +6,25 @@ Problem, diagram caption and source solution: [source.jsonl](source.jsonl).
 
 ## Diagram caption is part of the input
 
+![Reconstructed problem figure: perspective cube with vertices A, B, 1–6, a capacitor C on each of its twelve edges, and external leads at A and B.](problem_diagram.svg)
+
+*Problem figure reconstructed from the caption alone.* The cube projection is a
+chosen layout, not a reproduction of the original scan. Dashed lines denote rear
+wires only; crossings without a vertex dot are not connections. No solution-based
+grouping or reduction is used in this figure.
+
+Regenerate deterministically from the stored caption topology:
+
+```bash
+python3 LeanVerificationDemo/PhysicsDemo/P04/generate_problem_diagram.py
+```
+
+The generator reads only `diagram_caption` and `diagram_edges` in `source.jsonl`.
+It places the labeled corners in a chosen affine cube projection and verifies
+that their twelve cube edges match the caption exactly. Every edge has one
+capacitor symbol and label C, and A/B have outward wire stubs. It does not read
+the solution, Lean proof or any reduced circuit.
+
 Unlike earlier demos, the input includes a **diagram caption** defining connectivity.
 No original image was provided or visually reconstructed. The eight names and
 all twelve undirected links are transcribed into `Problem.diagramEdges`:
@@ -21,26 +40,9 @@ terminals. The orientation of pairs is bookkeeping; `Adj` inserts both direction
 All other pairs have zero coupling. Every listed edge has the same positive C.
 `Verify.lean` checks 12 distinct edges and the caption's 3–6–3 layer counts.
 
-```mermaid
-graph LR
-  A --- v1[1]
-  A --- v2[2]
-  A --- v3[3]
-  v1 --- v4[4]
-  v1 --- v6[6]
-  v2 --- v5[5]
-  v2 --- v6
-  v3 --- v4
-  v3 --- v5
-  v4 --- B
-  v5 --- B
-  v6 --- B
-```
-
-This is a connectivity drawing, not a geometric rendering of the cube. The caption
-is the sole source of connectivity in the trusted problem. Candidate residual
-formulas are checked by expanding the generic charge sum over that edge list;
-they are not a second unverified wiring specification.
+The caption is the sole source of connectivity in the trusted problem.
+Candidate residual formulas are checked by expanding the generic charge sum over
+that edge list; they are not a second unverified wiring specification.
 
 ## Physical model and units
 
