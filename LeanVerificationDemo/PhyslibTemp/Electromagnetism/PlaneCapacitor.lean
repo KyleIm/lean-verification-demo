@@ -9,7 +9,8 @@ import Mathlib.Tactic.Linarith
 Reuse Physlib's LTMCT dimension basis and `WithDim`. These type abbreviations
 name existing generic coordinate quantities, not a new unit framework.
 The model assumes a uniform field, linear dielectric, negligible fringe effects
-and leakage. Voltages/charges are magnitudes. The breakdown threshold is inclusive.
+and leakage. Voltages/charges are magnitudes. Breakdown is an optional additional
+specification provided by `DielectricBreakdown.lean`; it is not intrinsic capacitor data.
 -/
 namespace LeanVerificationDemo.PhyslibTemp.Electromagnetism
 
@@ -26,14 +27,13 @@ abbrev FieldMagnitude := WithDim (M𝓭 * L𝓭 / T𝓭 ^ 2 / C𝓭) ℝ
 /-- Separation coordinate in metres. -/
 abbrev Separation := WithDim L𝓭 ℝ
 
-/-- Ideal linear plane capacitor with a positive gap and breakdown field. -/
+/-- Ideal linear plane capacitor with positive capacitance and gap.
+No dielectric-failure specification is required to use this basic model. -/
 structure PlaneCapacitor where
   C : Capacitance
   gap : Separation
-  breakdownField : FieldMagnitude
   C_pos : 0 < C.val
   gap_pos : 0 < gap.val
-  breakdown_pos : 0 < breakdownField.val
 
 namespace PlaneCapacitor
 
@@ -45,45 +45,19 @@ noncomputable def voltage (c : PlaneCapacitor) (q : Charge) : Voltage :=
 noncomputable def field (c : PlaneCapacitor) (q : Charge) : FieldMagnitude :=
   ⟨(c.voltage q).val / c.gap.val⟩
 
-/-- Threshold voltage E_break d for this uniform-gap model. -/
-noncomputable def breakdownVoltage (c : PlaneCapacitor) : Voltage :=
-  ⟨c.breakdownField.val * c.gap.val⟩
-
-/-- Inclusive idealized breakdown admissibility for nonnegative charge magnitude. -/
-def Admissible (c : PlaneCapacitor) (q : Charge) : Prop :=
-  0 ≤ q.val ∧ (c.voltage q).val ≤ c.breakdownVoltage.val
-
-/-- The voltage bound is exactly the field breakdown bound for positive gap. -/
-lemma field_le_iff (c : PlaneCapacitor) (q : Charge) :
-    (c.field q).val ≤ c.breakdownField.val ↔
-      (c.voltage q).val ≤ c.breakdownVoltage.val := by
-  exact div_le_iff₀ c.gap_pos
-
 /-- Uniform-field voltage relation U = E d. -/
 lemma voltage_eq_field_mul_gap (c : PlaneCapacitor) (q : Charge) :
     (c.voltage q).val = (c.field q).val * c.gap.val := by
   dsimp [field]
   exact (div_mul_cancel₀ _ c.gap_pos.ne').symm
 
-/-- Charge that reaches this capacitor's idealized breakdown threshold. -/
-noncomputable def chargeAtLimit (c : PlaneCapacitor) : Charge :=
-  ⟨c.C.val * c.breakdownVoltage.val⟩
-
-lemma voltage_at_limit (c : PlaneCapacitor) :
-    (c.voltage c.chargeAtLimit).val = c.breakdownVoltage.val := by
-  dsimp [voltage, chargeAtLimit]
-  exact mul_div_cancel_left₀ _ c.C_pos.ne'
-
-lemma admissible_at_limit (c : PlaneCapacitor) : c.Admissible c.chargeAtLimit := by
-  constructor
-  · exact mul_nonneg c.C_pos.le (mul_nonneg c.breakdown_pos.le c.gap_pos.le)
-  · exact (c.voltage_at_limit).le
-
 end PlaneCapacitor
 
 /-- At fixed plate area and separation, a relative-permittivity factor multiplies
-capacitance. This is a supplied constitutive premise for equal-area plates;
-area is not independently modeled. It does not solve Maxwell equations. -/
+capacitance. Equal gap is represented explicitly. Equal plate area and the
+remaining fixed-geometry assumptions are supplied externally: plate area is not
+a field of `PlaneCapacitor`. This is a constitutive premise, not a derivation
+from C = ε A/d or Maxwell equations. -/
 def DielectricScaling (reference filled : PlaneCapacitor) (εr : ℝ) : Prop :=
   filled.gap = reference.gap ∧ filled.C.val = εr * reference.C.val
 

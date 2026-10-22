@@ -1,4 +1,4 @@
-import LeanVerificationDemo.PhyslibTemp.Electromagnetism.PlaneCapacitor
+import LeanVerificationDemo.PhyslibTemp.Electromagnetism.DielectricBreakdown
 
 namespace LeanVerificationDemo.PhysicsDemo.P03
 
@@ -10,14 +10,16 @@ string with initially uncharged isolated intermediate conductors. -/
 structure BatteryData where
   air : PlaneCapacitor
   glass : PlaneCapacitor
+  airBreakdown : BreakdownSpec air
+  glassBreakdown : BreakdownSpec glass
   εr : ℝ
   εr_pos : 0 < εr
   scaling : DielectricScaling air glass εr
 
 /-- Supplied physical data converted exactly from V/cm and cm to SI. -/
 structure SourceData (data : BatteryData) : Prop where
-  air_field : data.air.breakdownField.val = 3000000
-  glass_field : data.glass.breakdownField.val = 9000000
+  air_field : data.airBreakdown.breakdownField.val = 3000000
+  glass_field : data.glassBreakdown.breakdownField.val = 9000000
   gap : data.air.gap.val = 7 / 1000
   permittivity : data.εr = 7
 
@@ -31,7 +33,7 @@ noncomputable def mixedTotal (data : BatteryData) (q : Charge) : ℝ :=
 
 /-- All components satisfy their own inclusive breakdown condition. -/
 def mixedAdmissible (data : BatteryData) (q : Charge) : Prop :=
-  data.air.Admissible q ∧ data.glass.Admissible q
+  data.airBreakdown.Admissible q ∧ data.glassBreakdown.Admissible q
 
 /-- A maximum means both an upper bound and an admissible state attaining it. -/
 def MaximumVoltage (allowed : Charge → Prop) (total : Charge → ℝ) (U : ℝ) : Prop :=
@@ -40,8 +42,8 @@ def MaximumVoltage (allowed : Charge → Prop) (total : Charge → ℝ) (U : ℝ
 /-- Problem 433: both attained maximum voltages and a strict glass safety margin
 at the operating point where air reaches its breakdown threshold. -/
 def TrustedPhysicsProblem (data : BatteryData) : Prop :=
-  MaximumVoltage data.air.Admissible (airTotal data) 84000 ∧
+  MaximumVoltage data.airBreakdown.Admissible (airTotal data) 84000 ∧
   MaximumVoltage (mixedAdmissible data) (mixedTotal data) 66000 ∧
-  (data.glass.voltage data.air.chargeAtLimit).val < data.glass.breakdownVoltage.val
+  (data.glass.voltage data.airBreakdown.chargeAtLimit).val < data.glassBreakdown.breakdownVoltage.val
 
 end LeanVerificationDemo.PhysicsDemo.P03

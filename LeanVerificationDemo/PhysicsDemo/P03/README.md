@@ -36,9 +36,22 @@ Stable Physlib supplies units and general electric field/potential relations,
 but the audit found no capacitor, dielectric-scaling or breakdown API.
 The minimal temporary module is
 `LeanVerificationDemo/PhyslibTemp/Electromagnetism/PlaneCapacitor.lean`.
-It defines `U = Q/C`, the uniform-gap relation, breakdown threshold/admissibility,
-and a fixed-geometry dielectric scaling relation. These contain no P03 numerical
-constants or air/glass/four-component configuration.
+It defines `U = Q/C`, the uniform-gap relation and fixed-geometry dielectric
+scaling independently of any failure model. `DielectricBreakdown.lean` imports
+that basic module and adds an optional `BreakdownSpec (c : PlaneCapacitor)` with
+threshold/admissibility and threshold-charge results. Neither module contains
+P03 numerical constants or air/glass/four-component configuration.
+
+The basic capacitor stores only C, gap and their positivity proofs. P03's
+`BatteryData` separately supplies `airBreakdown : BreakdownSpec air` and
+`glassBreakdown : BreakdownSpec glass`. Other capacitor problems need not import
+the breakdown module or supply a breakdown field. `SourceData` continues to
+supply only the two material field values, gap and relative permittivity.
+
+`DielectricScaling` represents equal gaps explicitly. Equal plate area and the
+remaining fixed-geometry assumptions are supplied externally; plate area is not
+a capacitor field. This relation is a constitutive premise, not a derivation
+from C = ε A/d or Maxwell equations.
 
 The source route is retained:
 
@@ -50,7 +63,8 @@ Uglass = Q/Cglass = Uair/εr
 
 The Lean implementation uses the algebraically equivalent primitive `U = Q/C`
 instead of first solving `Q=CU`. Common Q and dielectric scaling are supplied
-physical premises. It does not derive equal charge from a formal circuit graph
+physical premises. The common q is a supplied ideal-series model, not a theorem
+derived from a formal circuit graph. It does not derive equal charge from a formal circuit graph
 or capacitance scaling from plate area or a Gaussian-units formula.
 
 ## Symbolic derivation and actual maxima
@@ -87,15 +101,25 @@ G = 9,000,000 × 0.007 = 63,000 V
 3,000 V < 63,000 V
 ```
 
+The named P03 helper `Candidate.glass_voltage_at_air_limit data source` explicitly
+proves `(data.glass.voltage data.airBreakdown.chargeAtLimit).val = 3000` from the
+air field, gap and εr in `SourceData`. The final solution uses this helper to
+establish the strict comparison with the computed glass threshold. This helper
+is P03-specific derived data; 3000 is not exported into PhyslibTemp.
 The glass safety comparison is an explicit conclusion, not an input assumption.
+
+Historical wording corresponds to “punctured” / “puncturing field intensity”.
+This repository normalizes those terms to modern “dielectric breakdown” /
+“breakdown field”; it does not claim those modern phrases are literal source
+wording. `source.jsonl` is the normalized English working transcription.
 
 ## Trusted proposition and candidate pairing
 
 ```lean
 def TrustedPhysicsProblem (data : BatteryData) : Prop :=
-  MaximumVoltage data.air.Admissible (airTotal data) 84000 ∧
+  MaximumVoltage data.airBreakdown.Admissible (airTotal data) 84000 ∧
   MaximumVoltage (mixedAdmissible data) (mixedTotal data) 66000 ∧
-  (data.glass.voltage data.air.chargeAtLimit).val < data.glass.breakdownVoltage.val
+  (data.glass.voltage data.airBreakdown.chargeAtLimit).val < data.glassBreakdown.breakdownVoltage.val
 
 Candidate.solution data source : TrustedPhysicsProblem data
 ```
@@ -124,7 +148,7 @@ passed, with mutation coverage deferred.
 
 ## Verified results
 
-- `lake build`: PASS (3179 jobs); existing module-system interoperability warnings remain.
+- `lake build`: PASS (3180 jobs); existing module-system interoperability warnings remain.
 - `scripts/verify.py --list`: includes P03 / 433.
 - `scripts/verify.py P03`: compilation, trusted pairing and annotated proof PASS;
   mutation stage explicitly SKIPPED.
@@ -134,3 +158,20 @@ passed, with mutation coverage deferred.
 
 Validation reused installed toolchains and local dependency caches. A separate
 empty-cache installation was not tested. Dependency pins remain unchanged.
+
+## API migration
+
+The basic `PlaneCapacitor.voltage`, `field`, `voltage_eq_field_mul_gap`,
+`DielectricScaling` and `voltage_of_dielectric_scaling` remain independent of
+breakdown and retain their names. The six breakdown declarations moved from
+namespace `PlaneCapacitor` to `BreakdownSpec` in `DielectricBreakdown.lean`:
+`breakdownVoltage`, `Admissible`, `field_le_iff`, `chargeAtLimit`,
+`voltage_at_limit`, `admissible_at_limit`. Their receiver is now the optional
+specification, whose type indexes the capacitor.
+
+The final candidate still has judgment
+`Candidate.solution data source : TrustedPhysicsProblem data`. The trusted
+proposition's meaning is unchanged: two attained maxima and the strict glass
+margin. Its syntax now refers to explicit breakdown specifications.
+`MaximumVoltage` is unchanged. No dependency pins, P01/P02 APIs or mutation cases
+were changed by this refactor.

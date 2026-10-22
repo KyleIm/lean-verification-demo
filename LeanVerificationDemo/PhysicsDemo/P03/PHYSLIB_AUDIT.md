@@ -86,7 +86,7 @@ Dimension.C𝓭 : Dimension LTMCTDimensionBase
 | B: common charge in series | No lumped series-capacitor circuit/charge API found | One common charge argument in the problem model; no redundant equality predicate or claimed circuit derivation |
 | C: dielectric capacitance scaling | Vacuum ε₀ exists but neither relative εr nor a parallel-plate capacitance theorem was found | Reusable `DielectricScaling` relation for fixed geometry, no Gaussian formula |
 | D: `U = E d` | Related general field/potential identity exists; scalar plate specialization is not supplied | Temporary uniform-gap model `field := voltage/gap` and derived `voltage_eq_field_mul_gap` |
-| E: breakdown criterion | No breakdown model found | Reusable positive threshold and `Admissible`; prove equivalence to the field bound |
+| E: breakdown criterion | No breakdown model found | Reusable optional `BreakdownSpec` with positive threshold and `Admissible`; prove equivalence to the field bound |
 
 D could be connected to a linear scalar potential by additional geometry and
 calculus. This implementation does not claim the general field relation is
@@ -96,8 +96,9 @@ lumped uniform-gap specialization and states its modeling assumptions explicitly
 ## Implementation split and boundaries
 
 - From Physlib: generic quantity and dimension algebra, imported rather than copied.
-- PhyslibTemp: ideal plane-capacitor coordinates, linear voltage law, uniform-gap
-  field/threshold, admissibility, charge attaining the threshold, dielectric
+- PhyslibTemp: ideal plane-capacitor coordinates, linear voltage law and uniform-gap
+  field independent of failure data; optional `BreakdownSpec` in a separate module
+  with threshold, admissibility and charge attaining it; dielectric
   scaling, and a derived inverse-voltage-scaling lemma. No declaration contains
   four components, the air/glass materials or the source numerical constants.
 - P03: four identical air components or three air plus glass, additive series
@@ -115,3 +116,28 @@ Sources at the immutable revision:
 [quantity wrapper](https://github.com/leanprover-community/physlib/blob/96a6bc5e3c50a2856c64a6c9951c0a1c23790b58/Physlib/Units/WithDim/Basic.lean#L33),
 [electric-field relation](https://github.com/leanprover-community/physlib/blob/96a6bc5e3c50a2856c64a6c9951c0a1c23790b58/Physlib/Electromagnetism/Kinematics/ElectricField.lean#L67),
 [vacuum permittivity](https://github.com/leanprover-community/physlib/blob/96a6bc5e3c50a2856c64a6c9951c0a1c23790b58/Physlib/Electromagnetism/Dynamics/Basic.lean#L52).
+
+## Modularity follow-up (no upstream audit change)
+
+`PlaneCapacitor.lean` now contains only the basic positive C/gap model, voltage,
+field and `U = Ed` result, plus dielectric scaling/inverse voltage scaling.
+`DielectricBreakdown.lean` imports it and introduces `BreakdownSpec c`, an optional
+additional specification; the basic module does not import the failure module.
+
+The six former `PlaneCapacitor` declarations `breakdownVoltage`, `Admissible`,
+`field_le_iff`, `chargeAtLimit`, `voltage_at_limit`, `admissible_at_limit` now live
+in namespace `BreakdownSpec`. Positive breakdown field and its proof likewise
+belong to the specification rather than the capacitor. This is a local module
+boundary refactor, not a new claim about absent or present upstream APIs.
+
+Equal gap is explicit in `DielectricScaling`; plate area is not represented.
+Equal area/other fixed-geometry conditions remain external physical assumptions.
+Common q remains a problem-level premise, not a derived circuit-graph law.
+The threshold remains inclusive by modeling convention. “Dielectric breakdown”
+is normalized terminology for historical puncturing, not literal source wording.
+
+The new `P03.Candidate.glass_voltage_at_air_limit` is numerical derived data:
+source Ea = 3×10^6 V/m, d = 7/1000 m and εr = 7 imply 3000 V. It remains in P03
+(and its annotated proof), and no numerical capacitor result is in PhyslibTemp.
+The source conditions, existing maximum definition and final physical conclusions
+are unchanged. Dependency pins and other demos are unchanged.
