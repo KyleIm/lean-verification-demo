@@ -10,7 +10,7 @@
 | `MolarMass`, `MolarGasConstant` aliases | PhyslibTemp primitive/reusable definition | Missing named derived-quantity specializations, kg/mol and J/(mol K) |
 | `amountOfSubstanceFromMass` | PhyslibTemp primitive/reusable definition | Coordinate quotient `m/μ` with amount dimension |
 | `MassAmountRelation` | PhyslibTemp primitive/reusable definition | Positive μ and sample amount equal to the quotient |
-| `MolarIdealGasLaw` | PhyslibTemp primitive/reusable definition | Phenomenological molar relation `pV = nRT` with explicit R; definition of a relation, no axiom |
+| `MolarIdealGasLaw` | PhyslibTemp primitive/reusable definition | Phenomenological molar relation `pV = nRT` with symbolic parameter R, no fixed universal numerical value; definition of a relation, no axiom |
 | `GasData`, `GasEvidence` | Problem-specific modeling | One sample, physical-domain signs, independent evidence of both relations |
 | `TrustedPhysicsProblem` | Problem-specific modeling | Statement of the arbitrary-mass target |
 | `Candidate.solution`, `CandidateAnnotated.solution` | Derived physics | Combine two reusable physical relations to establish the target |
@@ -30,3 +30,10 @@ amount to m and μ; the final arbitrary-mass equation is never an input field.
 All equations compare coordinates in fixed coherent SI units. The present API
 checks quantity dimensions but does not establish covariance under arbitrary
 unit changes, nor derive the phenomenological law from a microscopic model.
+
+The four coordinate aliases are retained after the named-quantity review; see
+[the README](README.md#why-retain-the-isq-aliases) for the Mass, Pressure, Volume
+and Temperature comparison. No new conversion infrastructure was added.
+The mass/amount API's upstream placement remains a design question. A numerical
+`universalGasConstant`, Avogadro constant, `N = n N_A` conversion and `R = N_A k_B`
+bridge are deferred; none is a premise or implementation dependency of P02.

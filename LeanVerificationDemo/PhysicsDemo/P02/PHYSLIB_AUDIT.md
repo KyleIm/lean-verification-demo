@@ -295,3 +295,28 @@ theorem adiabatic_relation_UaUbVaVb
       entropy c R s0 U0 V0 N0 Ub Vb N) :
     (Real.rpow (Ua / Ub) c) * (Va / Vb) = 1
 ```
+
+## Follow-up: named quantity reuse
+
+The review retained the ISQ aliases after checking the pinned sources:
+
+- `Physlib/Units/WithDim/Mass.lean:11` promises a mass type in its prose, but
+  the file ends without any quantity declaration. `MassUnit` at
+  `Physlib/ClassicalMechanics/Mass/MassUnit.lean:38` is a unit scale, not sample mass.
+- Root `DimPressure : Type` at `Physlib/Units/WithDim/Pressure.lean:24` abbreviates
+  `Dimensionful (WithDim (M𝓭 * L𝓭⁻¹ * T𝓭⁻¹ * T𝓭⁻¹) ℝ)` over LTMCT.
+  It is not definitionally P02's ISQ `Pressure`; both the basis and wrapper differ.
+- Searching the stable tree with
+  `rg -n '^(noncomputable )?(abbrev|def|structure|inductive) (DimMass|Mass|DimVolume|Volume|Temperature)\b|namespace (DimMass|Volume|DimVolume)\b' Physlib`
+  found only `Temperature`; no named mass or volume quantity declaration.
+- Root `Temperature : Type` at `Physlib/Thermodynamics/Temperature/Basic.lean:32`
+  has `val : ℝ≥0`. `Temperature.toReal : Temperature → ℝ` (line 43) provides a
+  numerical coordinate, not a conversion into an ISQ `WithDim` type. This is a
+  representation mismatch rather than an LTMCT basis mismatch.
+
+Basis embeddings and explicit coordinate conversions could connect some of these
+representations, but are unnecessary for the current proof. No alias, physical
+relation, candidate proof or dependency was changed by this documentation review.
+R remains a symbolic parameter, not a fixed numerical universal constant. The
+mass/amount API's upstream placement, a numerical `universalGasConstant`, Avogadro
+constant and the `N = n N_A` / `R = N_A k_B` bridges are deferred design topics.

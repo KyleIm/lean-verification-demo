@@ -18,11 +18,16 @@ SI unit choices and `WithDim`; its aliases do not implement new quantity/unit
 foundations. This repository pins Physlib commit
 `96a6bc5e3c50a2856c64a6c9951c0a1c23790b58`, Lean/Mathlib `4.35.0`.
 
-The known `IdealGas.ideal_gas_law` is a normalized finite-particle result with
-natural particle count and R = 1. It cannot be instantiated with arbitrary real
+The theorem in `Physlib/StatisticalMechanics/MicroCanonicalEnsemble/IdealGas.lean`
+has Lean declaration name `IdealGas.ideal_gas_law` (the module path is not its
+Lean namespace). It is a normalized microscopic result with `n : ℕ` as particle
+count and local `R := 1`. It cannot be instantiated with arbitrary real
 m/μ, and no existing molar conversion was found. The temporary API consequently
 adds a phenomenological molar relation with explicit R and a mass/amount relation.
-It does not claim a microscopic derivation of that relation.
+It does not claim a microscopic derivation of that relation. P02's law instead
+uses `n : Amount` and `R : MolarGasConstant`; the declarations are not directly
+interchangeable. R is an explicit symbolic molar-gas-constant parameter; this
+module does not fix the numerical value of the universal gas constant.
 
 `GasData` stores dimension-tagged state coordinates. `GasEvidence` supplies:
 
@@ -37,6 +42,23 @@ select the physical regime. Positive μ is carried by `MassAmountRelation`.
 No positivity of p or V is needed for this substitution theorem. The equations
 compare coordinates in one fixed SI system, not unit-independent `Dimensionful`
 objects; arbitrary unit covariance is outside this demo.
+
+## Why retain the ISQ aliases?
+
+At the pinned revision, the named-quantity audit gives:
+
+| P02 alias | Existing Physlib candidate | Direct reuse assessment |
+| --- | --- | --- |
+| `Mass` | `Physlib/Units/WithDim/Mass.lean` | File contains documentation but no `Mass` declaration. `MassUnit` in `ClassicalMechanics/Mass/MassUnit.lean:38` represents a unit scale, not sample mass. |
+| `Pressure` | `DimPressure`, `Units/WithDim/Pressure.lean:24` | `Dimensionful (WithDim (M𝓭 * L𝓭⁻¹ * T𝓭⁻¹ * T𝓭⁻¹) ℝ)` uses LTMCT and a unit-independent wrapper, unlike P02's fixed-SI ISQ coordinates. |
+| `Volume` | Whole stable-tree declaration search | No named `Volume` / `DimVolume` declaration found; P02 specializes existing `WithDim` to ISQ length cubed. |
+| `AbsoluteTemperature` | `Temperature`, `Thermodynamics/Temperature/Basic.lean:32` | Structure with `val : ℝ≥0`, not an ISQ dimension-tagged quantity. Reusing it would require coordinate conversion and changes to the state API. |
+
+These are aliases of existing generic Physlib quantities, not a new unit system.
+ISQ keeps amount as an independent base dimension; LTMCT does not. Physlib's
+basis embedding does not by itself turn a LTMCT `Dimensionful` value into an ISQ
+coordinate quantity. Such conversions are possible future work but unnecessary
+for this proof, so all four aliases remain unchanged.
 
 ## Candidate and explicit pairing
 
@@ -58,12 +80,48 @@ Candidate.solution data evidence : TrustedPhysicsProblem data
 axioms. `CandidateAnnotated.lean` repeats the derivation with comments. Lean
 checks the proof terms, not the truth of the English comments.
 
-## Historical solution
+## Natural-language reformulation
 
-At fixed p and T, volume is proportional to mass. For a one-mole sample,
-`Vμ/μ = V/m`, hence `Vμ = V*μ/m`. Substituting this into `pVμ = RT`
-yields `pV = (m/μ)RT`. This route assumes positive mass to divide by m.
-The formal proof uses the modern mass/amount route instead and permits zero mass.
+Historical source route:
+
+```text
+fixed p,T
+→ V proportional to m
+→ introduce one-mole volume Vμ
+→ Vμ = V μ / m
+→ pVμ = RT
+→ pV = (m/μ)RT
+```
+
+The one-mole scaling can also be written `Vμ/μ = V/m`. This route assumes
+positive mass to divide by m.
+
+Formalized modern route:
+
+```text
+n = m/μ
+pV = nRT
+→ pV = (m/μ)RT
+```
+
+For the source's positive-mass ideal-gas regime, this is a physically equivalent
+modern reformulation, **not a literal step-by-step formalization of the historical
+derivation**. The formal statement additionally permits zero mass. It relies on
+the independently supplied molar state equation and mass/amount relation; it does
+not derive the equivalence of microscopic and phenomenological models.
+
+## Deferred design questions
+
+`amountOfSubstanceFromMass` and `MassAmountRelation` remain reusable temporary
+APIs. Whether `n = m/μ` should become an upstream Physlib named API is an open
+design question to discuss with Physlib maintainers.
+
+Possible future Physlib/PhyslibTemp APIs, not implemented or needed for P02:
+
+- `universalGasConstant : MolarGasConstant`, with a specified numerical value;
+- Avogadro constant `N_A`;
+- particle count ↔ amount-of-substance conversion, `N = n N_A`;
+- a dimensionally consistent bridge `R = N_A k_B`.
 
 ## Run
 
