@@ -1,7 +1,7 @@
 # Lean Verification Demo
 
-Problem-centric Lean verification prototype for one mathematics problem and one
-physics problem.
+Problem-centric Lean verification prototype for one mathematics problem and two
+physics problems.
 
 ## Purpose
 
@@ -62,6 +62,7 @@ project.
 | --- | --- | --- | --- |
 | Mathematics | `math-sqrt2-irrational` | `M00` | [problem README](LeanVerificationDemo/MathDemo/M00/README.md) |
 | Physics | `physics-stratified-plate` | `P01` | [problem README](LeanVerificationDemo/PhysicsDemo/P01/README.md), [classification](LeanVerificationDemo/PhysicsDemo/P01/CLASSIFICATION.md) |
+| Physics | `321` | `P02` | [problem README](LeanVerificationDemo/PhysicsDemo/P02/README.md), [source JSONL](LeanVerificationDemo/PhysicsDemo/P02/source.jsonl) |
 
 ## Run
 
@@ -76,6 +77,7 @@ Verify one problem by code:
 ```bash
 python3 scripts/verify.py M00
 python3 scripts/verify.py P01
+python3 scripts/verify.py P02
 ```
 
 Or by full problem ID:
@@ -83,6 +85,7 @@ Or by full problem ID:
 ```bash
 python3 scripts/verify.py math-sqrt2-irrational
 python3 scripts/verify.py physics-stratified-plate
+python3 scripts/verify.py 321
 ```
 
 Running without an argument shows the available problems and prompts for a code
@@ -94,18 +97,21 @@ or ID.  Add `--verbose` to show raw Lean diagnostics for each command.
 | --- | --- | --- | --- | --- | --- |
 | `math-sqrt2-irrational` | PASS | PASS | 6 / 6 PASS | PASS | PASS |
 | `physics-stratified-plate` | PASS | PASS | 6 / 6 PASS | PASS | PASS |
+| `321` (P02) | PASS | PASS | 6 / 6 PASS | PASS | PASS |
 
 ## Environment
 
-- Lean: `4.33.0`
-- Mathlib: `v4.33.0`
+- Lean: `4.35.0`
+- Mathlib: `v4.35.0`
+- Physlib: `96a6bc5e3c50a2856c64a6c9951c0a1c23790b58` (P02 unit infrastructure).
 
 The repository pins these versions in `lean-toolchain` and `lakefile.lean`.
 
 ## Repository Notes
 
-The repository is standalone.  It vendors only the small temporary optics module
-needed for the current physics demo under `LeanVerificationDemo/PhyslibTemp`.
+The repository pins its upstream Physlib dependency and keeps missing reusable
+physics under `LeanVerificationDemo/PhyslibTemp`. P02 imports Physlib unit
+infrastructure; its molar API and audit are documented in the problem README.
 
 The vendored file keeps the historical `Math2Physics.PhyslibTemp.Optics`
 namespace for API compatibility, but no sibling Math2Physics checkout is

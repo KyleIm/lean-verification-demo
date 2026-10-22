@@ -1,0 +1,15 @@
+{
+  "id": "321",
+  "title": "Ideal gas equation for arbitrary mass",
+  "code": "P02",
+  "domain": "physics",
+  "problem_file": "LeanVerificationDemo/PhysicsDemo/P02/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/PhysicsDemo/P02/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/PhysicsDemo/P02/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/PhysicsDemo/P02/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P02/PairingWalkthrough.lean",
+  "mutation_manifest": "mutations/PhysicsDemo/P02/manifest.json",
+  "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P02.TrustedPhysicsProblem data",
+  "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P02.Candidate.solution data evidence",
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P02.Candidate.solution data evidence : LeanVerificationDemo.PhysicsDemo.P02.TrustedPhysicsProblem data"
+}

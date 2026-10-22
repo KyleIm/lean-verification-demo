@@ -1,0 +1,89 @@
+[
+  {
+    "id": "GAS-P001",
+    "category": "Mass-amount relation corruption",
+    "expected": "REJECT",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "mutations/PhysicsDemo/P02/VolumeScalingMutation.lean"
+    ],
+    "expected_error_fragments": [
+      "Type mismatch",
+      "hAmount"
+    ]
+  },
+  {
+    "id": "GAS-P002",
+    "category": "Molar law corruption",
+    "expected": "REJECT",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "mutations/PhysicsDemo/P02/MolarLawMutation.lean"
+    ],
+    "expected_error_fragments": [
+      "Type mismatch",
+      "hLaw"
+    ]
+  },
+  {
+    "id": "GAS-P003",
+    "category": "Mass ratio inversion",
+    "expected": "REJECT",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "mutations/PhysicsDemo/P02/MassRatioMutation.lean"
+    ],
+    "expected_error_fragments": [
+      "Type mismatch",
+      "Candidate.solution"
+    ]
+  },
+  {
+    "id": "GAS-P004",
+    "category": "Target specialization",
+    "expected": "REJECT",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "mutations/PhysicsDemo/P02/TargetSpecializationMutation.lean"
+    ],
+    "expected_error_fragments": [
+      "Type mismatch",
+      "Candidate.solution"
+    ]
+  },
+  {
+    "id": "GAS-P005",
+    "category": "Irrelevant addition",
+    "expected": "ACCEPT",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "mutations/PhysicsDemo/P02/IrrelevantAdditionMutation.lean"
+    ],
+    "expected_error_fragments": []
+  },
+  {
+    "id": "GAS-P006",
+    "category": "Required molar-law deletion",
+    "expected": "REJECT",
+    "command": [
+      "lake",
+      "env",
+      "lean",
+      "mutations/PhysicsDemo/P02/RequiredMolarLawDeletionMutation.lean"
+    ],
+    "expected_error_fragments": [
+      "Type mismatch",
+      "hAmount.right"
+    ]
+  }
+]
