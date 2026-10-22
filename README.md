@@ -1,6 +1,6 @@
 # Lean Verification Demo
 
-Problem-centric Lean verification prototype for one mathematics problem and three
+Problem-centric Lean verification prototype for one mathematics problem and four
 physics problems.
 
 ## Purpose
@@ -19,7 +19,7 @@ For each problem:
 3. Run six controlled mutation tests.
 4. Compile an annotated proof for human audit.
 
-P03 currently defers mutation cases; Stage 3 explicitly reports `SKIPPED` for
+P03 and P04 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
 an empty manifest. Existing demos still run their six mutation checks.
 
 The six mutation tests are part of Stage 3.  They are not six separate
@@ -67,6 +67,7 @@ project.
 | Physics | `physics-stratified-plate` | `P01` | [problem README](LeanVerificationDemo/PhysicsDemo/P01/README.md), [classification](LeanVerificationDemo/PhysicsDemo/P01/CLASSIFICATION.md) |
 | Physics | `321` | `P02` | [problem README](LeanVerificationDemo/PhysicsDemo/P02/README.md), [source JSONL](LeanVerificationDemo/PhysicsDemo/P02/source.jsonl) |
 | Physics | `433` | `P03` | [problem README](LeanVerificationDemo/PhysicsDemo/P03/README.md), [audit](LeanVerificationDemo/PhysicsDemo/P03/PHYSLIB_AUDIT.md) |
+| Physics | `cube-capacitor-opposite-vertices` | `P04` | [problem README](LeanVerificationDemo/PhysicsDemo/P04/README.md), [diagram caption and source](LeanVerificationDemo/PhysicsDemo/P04/source.jsonl) |
 
 ## Run
 
@@ -83,6 +84,7 @@ python3 scripts/verify.py M00
 python3 scripts/verify.py P01
 python3 scripts/verify.py P02
 python3 scripts/verify.py P03
+python3 scripts/verify.py P04
 ```
 
 Or by full problem ID:
@@ -104,6 +106,7 @@ or ID.  Add `--verbose` to show raw Lean diagnostics for each command.
 | `physics-stratified-plate` | PASS | PASS | 6 / 6 PASS | PASS | PASS |
 | `321` (P02) | PASS | PASS | 6 / 6 PASS | PASS | PASS |
 | `433` (P03) | PASS | PASS | SKIPPED | PASS | PASS |
+| `cube-capacitor-opposite-vertices` (P04) | PASS | PASS | SKIPPED | PASS | PASS |
 
 ## Environment
 

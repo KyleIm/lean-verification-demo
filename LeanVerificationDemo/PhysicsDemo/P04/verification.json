@@ -1,0 +1,15 @@
+{
+  "id": "cube-capacitor-opposite-vertices",
+  "title": "Cube capacitor network from diagram caption",
+  "code": "P04",
+  "domain": "physics",
+  "problem_file": "LeanVerificationDemo/PhysicsDemo/P04/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/PhysicsDemo/P04/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/PhysicsDemo/P04/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/PhysicsDemo/P04/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P04/PairingWalkthrough.lean",
+  "mutation_manifest": "LeanVerificationDemo/PhysicsDemo/P04/mutations.json",
+  "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P04.TrustedPhysicsProblem data",
+  "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P04.Candidate.solution data",
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P04.Candidate.solution data : LeanVerificationDemo.PhysicsDemo.P04.TrustedPhysicsProblem data"
+}
