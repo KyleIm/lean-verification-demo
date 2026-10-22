@@ -1,0 +1,15 @@
+{
+  "id": "108",
+  "title": "Ladder statics and limiting static friction",
+  "code": "P05",
+  "domain": "physics",
+  "problem_file": "LeanVerificationDemo/PhysicsDemo/P05/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/PhysicsDemo/P05/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/PhysicsDemo/P05/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/PhysicsDemo/P05/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P05/PairingWalkthrough.lean",
+  "mutation_manifest": "LeanVerificationDemo/PhysicsDemo/P05/mutations.json",
+  "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P05.TrustedPhysicsProblem data",
+  "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P05.Candidate.solution data",
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P05.Candidate.solution data : LeanVerificationDemo.PhysicsDemo.P05.TrustedPhysicsProblem data"
+}
