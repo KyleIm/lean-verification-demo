@@ -1,6 +1,6 @@
 # Lean Verification Demo
 
-Problem-centric Lean verification prototype for one mathematics problem and six
+Problem-centric Lean verification prototype for one mathematics problem and seven
 physics problems.
 
 ## Purpose
@@ -19,7 +19,7 @@ For each problem:
 3. Run six controlled mutation tests.
 4. Compile an annotated proof for human audit.
 
-P03, P04, P05 and P06 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
+P03, P04, P05, P06 and P07 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
 an empty manifest. Existing demos still run their six mutation checks.
 
 The six mutation tests are part of Stage 3.  They are not six separate
@@ -70,6 +70,7 @@ project.
 | Physics | `436` (local ID `cube-capacitor-opposite-vertices`) | `P04` | [problem README](LeanVerificationDemo/PhysicsDemo/P04/README.md), [diagram caption and source](LeanVerificationDemo/PhysicsDemo/P04/source.jsonl) |
 | Physics | `108` | `P05` | [problem README](LeanVerificationDemo/PhysicsDemo/P05/README.md), [mechanics audit](LeanVerificationDemo/PhysicsDemo/P05/PHYSLIB_AUDIT.md) |
 | Physics | `656` | `P06` | [problem README](LeanVerificationDemo/PhysicsDemo/P06/README.md), [propagation audit](LeanVerificationDemo/PhysicsDemo/P06/PHYSLIB_AUDIT.md) |
+| Physics | `574` | `P07` | [problem README](LeanVerificationDemo/PhysicsDemo/P07/README.md), [caption-only figure](LeanVerificationDemo/PhysicsDemo/P07/problem_diagram.svg), [induction audit](LeanVerificationDemo/PhysicsDemo/P07/PHYSLIB_AUDIT.md) |
 
 ## Run
 
@@ -89,6 +90,7 @@ python3 scripts/verify.py P03
 python3 scripts/verify.py P04
 python3 scripts/verify.py P05
 python3 scripts/verify.py P06
+python3 scripts/verify.py P07
 ```
 
 Or by full problem ID:
@@ -113,6 +115,7 @@ or ID.  Add `--verbose` to show raw Lean diagnostics for each command.
 | `cube-capacitor-opposite-vertices` (P04) | PASS | PASS | SKIPPED | PASS | PASS |
 | `108` (P05) | PASS | PASS | SKIPPED | PASS | PASS |
 | `656` (P06) | PASS | PASS | SKIPPED | PASS | PASS |
+| `574` (P07) | PASS | PASS | SKIPPED | PASS | PASS |
 
 ## Environment
 

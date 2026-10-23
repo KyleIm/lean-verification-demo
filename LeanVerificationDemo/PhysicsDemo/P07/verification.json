@@ -1,0 +1,15 @@
+{
+  "id": "574",
+  "title": "Induced current in an annular conductor",
+  "code": "P07",
+  "domain": "physics",
+  "problem_file": "LeanVerificationDemo/PhysicsDemo/P07/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/PhysicsDemo/P07/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/PhysicsDemo/P07/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/PhysicsDemo/P07/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P07/PairingWalkthrough.lean",
+  "mutation_manifest": "LeanVerificationDemo/PhysicsDemo/P07/mutations.json",
+  "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P07.TrustedPhysicsProblem data response",
+  "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P07.Candidate.solution data response",
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P07.Candidate.solution data response : LeanVerificationDemo.PhysicsDemo.P07.TrustedPhysicsProblem data response"
+}
