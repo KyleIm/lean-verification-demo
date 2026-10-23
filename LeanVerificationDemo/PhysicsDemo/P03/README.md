@@ -5,6 +5,61 @@ Problem ID `433`; Electromagnetism. Source data and reasoning are preserved in
 pinned declarations/search evidence and [classification](CLASSIFICATION.md) for
 what is reused, assumed or derived.
 
+## Source question vs formalized question
+
+### BEFORE — original source problem
+
+> 433. Four identical plane capacitors with an air dielectric are connected in series. The intensity of the field at which the air is punctured is Ea = 3×10⁴ V/cm. The distance between the plates d = 0.7 cm.
+>
+> (1) What maximum voltage can be fed to this battery of capacitors?
+>
+> (2) What will this maximum voltage be if one of the capacitors is replaced by a similar one in which glass is used as a dielectric?
+>
+> The permittivity of glass ε = 7 and the puncturing field intensity for glass Eg = 9×10⁴ V/cm.
+
+### AFTER — Lean-facing formalized problem
+
+Given `data : BatteryData` and `source : SourceData data`, prove:
+
+```lean
+MaximumVoltage data.airBreakdown.Admissible (airTotal data) 84000 ∧
+MaximumVoltage (mixedAdmissible data) (mixedTotal data) 66000 ∧
+(data.glass.voltage data.airBreakdown.chargeAtLimit).val <
+  data.glassBreakdown.breakdownVoltage.val
+```
+
+`BatteryData` contains air and glass capacitors, separate indexed breakdown
+specifications, positive `εr` and dielectric scaling. The identical air copies
+are represented by multiplicities, not four separately indexed objects:
+`airTotal q = 4 Uair(q)` and `mixedTotal q = 3 Uair(q) + Uglass(q)`.
+`SourceData` gives only `Ea = 3000000 V/m`, `Eg = 9000000 V/m`,
+`d = 7/1000 m` and `εr = 7`, after exact documented SI preprocessing.
+The positive reference capacitance remains arbitrary.
+
+### What changed
+
+Physlib's dimension infrastructure underlies the quantity aliases.
+PhyslibTemp supplies the ideal `PlaneCapacitor` model (`U = Q/C`, `E = U/d`
+and hence `U = E d`), the constitutive relation `Cglass = εr Cair`, and optional
+`BreakdownSpec` with `Ubreak = Ebreak d`. Equal gap is encoded; equal area and
+remaining fixed-geometry assumptions are external to the relation. The shared
+charge argument and additive totals are P03's ideal-series premises, not an
+equal-charge theorem derived from a reusable circuit graph.
+
+The two questions become two **attained maximum** propositions: each requires
+an upper bound for every admissible nonnegative charge and a charge attaining
+that bound. Inclusive breakdown admissibility (`U ≤ Ubreak`) is an explicit
+idealization. The candidate also proves the stronger check that at the
+air-limited charge, glass carries `3000 V < 63000 V`; this is not source evidence.
+“Puncturing” is normalized to “breakdown”, and source ε is interpreted as relative
+permittivity. No final voltage is supplied in `SourceData`.
+
+Thus **series-capacitor prose → explicit voltage/field/breakdown model**
+preserves both numerical answers while strengthening the explanation into upper
+bounds, attainability and a derived glass safety margin, conditional on the
+stated ideal-series and inclusive-threshold model.
+
+
 ## Model and units
 
 Four ideal identical parallel-plane capacitors initially contain air; the second

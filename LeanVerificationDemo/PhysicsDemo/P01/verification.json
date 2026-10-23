@@ -11,5 +11,6 @@
   "mutation_manifest": "mutations/PhysicsDemo/P01/manifest.json",
   "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P01.TrustedPhysicsProblem data ray",
   "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P01.Candidate.solution data ray",
-  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P01.Candidate.solution data ray : LeanVerificationDemo.PhysicsDemo.P01.TrustedPhysicsProblem data ray"
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P01.Candidate.solution data ray : LeanVerificationDemo.PhysicsDemo.P01.TrustedPhysicsProblem data ray",
+  "source_problem_id": "697"
 }

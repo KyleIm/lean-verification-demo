@@ -64,10 +64,10 @@ project.
 | Area | Problem ID | Code | Documentation |
 | --- | --- | --- | --- |
 | Mathematics | `math-sqrt2-irrational` | `M00` | [problem README](LeanVerificationDemo/MathDemo/M00/README.md) |
-| Physics | `physics-stratified-plate` | `P01` | [problem README](LeanVerificationDemo/PhysicsDemo/P01/README.md), [classification](LeanVerificationDemo/PhysicsDemo/P01/CLASSIFICATION.md) |
+| Physics | `697` (local ID `physics-stratified-plate`) | `P01` | [problem README](LeanVerificationDemo/PhysicsDemo/P01/README.md), [classification](LeanVerificationDemo/PhysicsDemo/P01/CLASSIFICATION.md) |
 | Physics | `321` | `P02` | [problem README](LeanVerificationDemo/PhysicsDemo/P02/README.md), [source JSONL](LeanVerificationDemo/PhysicsDemo/P02/source.jsonl) |
 | Physics | `433` | `P03` | [problem README](LeanVerificationDemo/PhysicsDemo/P03/README.md), [audit](LeanVerificationDemo/PhysicsDemo/P03/PHYSLIB_AUDIT.md) |
-| Physics | `cube-capacitor-opposite-vertices` | `P04` | [problem README](LeanVerificationDemo/PhysicsDemo/P04/README.md), [diagram caption and source](LeanVerificationDemo/PhysicsDemo/P04/source.jsonl) |
+| Physics | `436` (local ID `cube-capacitor-opposite-vertices`) | `P04` | [problem README](LeanVerificationDemo/PhysicsDemo/P04/README.md), [diagram caption and source](LeanVerificationDemo/PhysicsDemo/P04/source.jsonl) |
 | Physics | `108` | `P05` | [problem README](LeanVerificationDemo/PhysicsDemo/P05/README.md), [mechanics audit](LeanVerificationDemo/PhysicsDemo/P05/PHYSLIB_AUDIT.md) |
 | Physics | `656` | `P06` | [problem README](LeanVerificationDemo/PhysicsDemo/P06/README.md), [propagation audit](LeanVerificationDemo/PhysicsDemo/P06/PHYSLIB_AUDIT.md) |
 

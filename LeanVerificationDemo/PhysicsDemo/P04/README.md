@@ -1,8 +1,58 @@
 # P04 — Cube capacitor network from diagram caption
 
-Local problem ID: `cube-capacitor-opposite-vertices` (no numeric source ID supplied).
+Source problem: **436** (Fig. 155). Local verification ID: `cube-capacitor-opposite-vertices`.
 Problem, diagram caption and source solution: [source.jsonl](source.jsonl).
 [Physlib audit](PHYSLIB_AUDIT.md) · [Component classification](CLASSIFICATION.md).
+
+## Source question vs formalized question
+
+### BEFORE — original source problem
+
+> 436. Each edge of a cube made of wire contains a capacitor C (Fig. 155). Find the capacitance of this battery if it is connected to the circuit by means of conductors joined to the opposite apices A and B of the cube.
+
+The original diagram supplies much of the circuit connectivity. The existing
+caption and reconstructed problem SVG below preserve that diagram's provenance;
+this comparison introduces no new caption or wiring interpretation.
+
+### AFTER — Lean-facing formalized problem
+
+For any `data : CubeData` (an edge capacitance `C` with `C > 0`), prove:
+
+```lean
+(network data).HasEquivalentCapacitance Vertex.A Vertex.B (answer data)
+```
+
+Here `(answer data).val = (6/5) * data.C.val`. The statement requires
+nonnegative equivalent capacitance, a neutral-interior state for **every** pair
+of terminal potentials, and `QA = (6/5) C (VA − VB)` for **every** neutral-interior
+state. The candidate also proves that the answer is strictly positive.
+
+### What changed
+
+The diagram becomes the explicit eight-element `Vertex` type and twelve pairs
+in `diagramEdges`. `Adj` makes these connections undirected; `network` assigns
+capacitance C to each edge and zero to other pairs. A and B are explicit terminal
+constructors; the edge topology represents their opposite-corner placement.
+The already established provenance remains original scanned diagram → manually
+transcribed factual caption → edge list → Lean network, with no claim that Lean
+reads the scan itself.
+
+Physlib supplies dimensional quantities, while PhyslibTemp supplies shared
+capacitor aliases and the finite `CapacitorNetwork`, `nodeCharge`,
+`NeutralInterior`, `DirichletState` and `HasEquivalentCapacitance` concepts.
+The eight labels, twelve connections and identical positive edge C are P04 data.
+Initially neutral isolated internal conductors and ideal linear couplings make
+explicit the lumped-electrostatic assumptions behind the textbook network.
+
+The candidate derives the six internal potentials and their equipotential
+grouping from nodal charge balance, rather than trusting the source solution's
+symmetry reduction. It constructs a state for arbitrary boundary potentials and
+proves the terminal charge law, including equal terminal potentials without
+dividing by their difference. This is **diagram-defined cube → explicit
+capacitor-network topology**: the physical answer is preserved, its meaning is
+made more explicit by solvability and a universal charge law, and the proof is
+restructured from the printed series/parallel argument to nodal equations.
+
 
 ## Diagram caption is part of the input
 

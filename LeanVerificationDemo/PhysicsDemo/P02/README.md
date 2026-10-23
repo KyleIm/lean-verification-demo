@@ -5,6 +5,49 @@ Original problem/solution/answer: [source.jsonl](source.jsonl).
 Physlib audit: [PHYSLIB_AUDIT.md](PHYSLIB_AUDIT.md).
 Component classification: [CLASSIFICATION.md](CLASSIFICATION.md).
 
+## Source question vs formalized question
+
+### BEFORE — original source problem
+
+> 321. Write the equation of state for an arbitrary mass of an ideal gas whose molecular weight μ is known.
+
+### AFTER — Lean-facing formalized problem
+
+For any `data : GasData` and `evidence : GasEvidence data`, prove
+`TrustedPhysicsProblem data`, exactly:
+
+```lean
+data.p.val * data.V.val =
+  (data.m.val / data.μ.val) * data.R.val * data.T.val
+```
+
+The parameters `p`, `V`, `m`, `μ`, `R` and `T` are dimension-tagged coordinates
+in coherent SI units. “Arbitrary mass” means a universally parameterized sample
+with `m ≥ 0`, including zero, rather than a numerical mass. `GasEvidence`
+supplies a separately named amount `n`, `MassAmountRelation m μ n` (positive
+molar mass and `n = m/μ`) and `MolarIdealGasLaw p V n R T` (`pV = nRT`).
+
+### What changed
+
+The historical “molecular weight” becomes dimensional **molar mass** in kg/mol,
+not dimensionless relative molecular mass. Amount is in mol. Physlib provides
+the ISQ dimension/unit infrastructure; PhyslibTemp specializes its quantities
+and provides the two reusable physical relations. `GasData` and `GasEvidence`
+are the problem-local state and evidence bundles. Positive `μ`, `R` and `T`
+and nonnegative `m` make the adopted physical domain explicit; there are no
+extra signs on `p` or `V`, and the rewrite itself needs no positivity tactics.
+`R` remains symbolic, not a numerically fixed universal constant.
+
+The candidate substitutes the mass/amount relation into the molar equation.
+This is close to the requested equation, made explicit as a **textbook equation
+request → structured ideal-gas derivation**. Its proof route is a modern
+reformulation of the printed one-mole-volume argument documented below, not a
+literal reproduction of those steps. It preserves the physical equation in the
+source regime and additionally permits zero mass. It neither assumes the final
+arbitrary-mass equation nor derives the molar law from microscopic mechanics;
+Physlib's normalized particle-count theorem is not used as that molar law.
+
+
 ## Physical model and units
 
 The answer is `pV = (m/μ)RT`. The historical “molecular weight” μ functions as

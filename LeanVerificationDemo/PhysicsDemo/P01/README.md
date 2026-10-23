@@ -1,8 +1,51 @@
 # P01 — Stratified Transparent Plate
 
-Problem ID: `physics-stratified-plate`
+Source problem: **697**. Local verification ID: `physics-stratified-plate`.
+Source wording and provenance: [source.jsonl](source.jsonl).
 
-## Original Problem
+## Source question vs formalized question
+
+### BEFORE — original source problem
+
+> 697. A thick plate is made of a transparent material whose refraction index changes from n₁ on its upper edge to n₂ on its lower edge. A beam enters the plate at the angle α. At what angle will the beam leave the plate?
+
+### AFTER — Lean-facing formalized problem
+
+Given `data : PlateData` and an already supplied `ray : RayThroughPlate data`,
+prove `TrustedPhysicsProblem data ray`, namely `ray.β = data.α`.
+
+`PlateData` explicitly supplies positive thickness `L`, a one-dimensional
+positive-index profile `n : ℝ → RefractiveIndex`, endpoint values `n₁`, `n₂`,
+continuity on `[0,L]`, a common external index `n₀`, and incident angle `α` in
+`[0,π/2]`. `RayThroughPlate` supplies a finite internal stack with adjacent
+Snell-law evidence, its endpoint indices, the entrance and exit Snell relations,
+and an outgoing angle `β` in the same physical interval. Both external angles
+are measured from the common normal.
+
+### What changed
+
+The physical plate becomes a problem-local stratified-medium parameter bundle
+and a finite sequence of interface relations. PhyslibTemp supplies
+`RefractiveIndex`, normal-angle aliases, `SnellLaw` and `snellExpression`; the
+parallel layers, boundary matching and common external medium are P01 modeling
+choices. The candidate chains `n sin θ` equalities, cancels positive `n₀` and
+uses Mathlib sine injectivity to identify the external angles.
+
+A continuous **one-dimensional** profile is present as data, but continuity is
+not used in the proof. Internal indices are not formally obtained by sampling
+that profile at specified positions: only their endpoints are matched. No
+continuous-medium limit or ray trajectory is derived. Supplying a transmitted
+ray with physical-angle and Snell evidence also makes the result conditional
+on transmission; the theorem does not establish that every incident beam exits
+or rule out total internal reflection from the plate parameters alone.
+
+The answer `β = α` preserves the intended transmitted-ray conclusion under
+these explicit assumptions. The transformation is **natural-language optics
+geometry → explicit finite-layer refraction relations**, a qualified model of
+the continuously stratified plate rather than a complete continuous-optics proof.
+
+
+## Existing modeled problem summary
 
 A thick transparent plate has refractive index changing from `n₁` at the upper
 face to `n₂` at the lower face.  A beam enters at angle `α`.  Under the modeled
