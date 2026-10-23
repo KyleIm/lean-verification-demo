@@ -54,8 +54,9 @@ Trusted caption, supplied by the user:
 > Figure 203 shows a ring-shaped body with rectangular cross section, centered on a common vertical axis. Its inner radius is a, its outer radius is b, and its axial height is h. The shaded radial section indicates the rectangular cross section of the ring.
 
 The original scan was not stored or inspected for this implementation. The SVG
-is a reconstruction from the supplied caption, with a chosen perspective and
-illustrative cutaway to expose the radial rectangle. Its dimensions are symbolic,
+is a reconstruction from the supplied caption, with a chosen perspective of the intact ring and a separate shaded radial-section
+view. The section spans radii a to b and has height h; it is not a notch or a
+removed wedge in the physical body. Its dimensions are symbolic,
 not measurements of the source image. There are no magnetic-field arrows,
 resistivity labels, thin-ring decomposition or solution formulas in the figure.
 
