@@ -49,7 +49,7 @@ real reception. The conclusion is a necessary condition in this restricted model
 
 **Before — source question:**
 
-> Why can TV programmes be seen only within the range of direct visibility?
+> Why can TV programs be seen only within the range of direct visibility?
 
 This highly compressed natural-language question is not translated literally
 into Lean.
