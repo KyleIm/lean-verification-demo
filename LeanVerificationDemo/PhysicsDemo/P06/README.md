@@ -45,6 +45,43 @@ are outside its scope. The proof does not establish that real television signals
 can never be received beyond line of sight. Nor does visibility alone guarantee
 real reception. The conclusion is a necessary condition in this restricted model.
 
+## Before and after: source question and formalized question
+
+**Before — source question:**
+
+> Why can TV programmes be seen only within the range of direct visibility?
+
+This highly compressed natural-language question is not translated literally
+into Lean.
+
+**After — formalized question (in words):**
+
+Given a positive wavelength below 10 m, assume that:
+
+- there is no ionospheric reflected return path in this regime;
+- diffraction around the relevant obstacles is negligible, so diffracted paths
+  are omitted from the retained-path model;
+- negligible diffraction justifies adopting a straight-line propagation approximation;
+- a retained direct geometric path requires line of sight;
+- the restricted model contains only direct, reflected-return or diffracted paths.
+
+Prove that if there is no line of sight, then no retained propagation path exists:
+`¬ lineOfSight → ¬ HasPath`.
+
+The transformation makes three choices explicit. “TV programmes can be seen”
+becomes existence of a retained propagation path; receiver sensitivity, signal
+strength, decoding and engineering effects are outside the model. The open-ended
+“Why?” becomes explicit model assumptions extracted from the printed solution.
+Finally, “only within direct visibility” is weakened in scope to a conditional
+claim inside this restricted model, rather than a universal claim about real TV
+reception.
+
+This restructures the explanation as **source assumptions → restricted model →
+deductive conclusion**, rather than merely translating its syntax. It also
+illustrates the methodological distinction below: much of P06's substantive
+physics enters through assumptions extracted from the supplied explanation,
+while Lean mainly verifies their logical consequence.
+
 ## Methodological significance of this formalization
 
 Compared with P05, where force and moment balance yield a position-dependent
