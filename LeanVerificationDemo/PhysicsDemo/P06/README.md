@@ -34,7 +34,7 @@ blocked line of sight + excluded return/diffraction → no retained path
 `SourceData` supplies the two regime implications and the actual wavelength
 bound. Neither is proved from wavelength algebra. “Transparent” excludes the
 modeled **ionospheric** return, not all reflection. “Almost no diffraction” is a
-predicate selecting an approximation: the generic model explicitly assumes that
+predicate selecting an approximation: the P06-local model explicitly assumes that
 its diffracted channel is omitted in that approximation. “Practically straight”
 is a straight-line approximation predicate whose direct paths require visibility.
 These are exact rules **inside an approximate model**, not exact laws of nature.
@@ -76,9 +76,8 @@ scope of the proof.
 
 The theorem therefore does not claim that real TV signals can never be received
 beyond line of sight: other propagation mechanisms remain outside the restricted
-model. The reusable module stays in `PhyslibTemp/Optics`, which suits its
-wavelength, reflection/diffraction, geometric-propagation and visibility
-abstraction; it does not provide a field-level Maxwell/plasma model.
+model. The propagation model remains local to P06; it does not provide a field-level
+Maxwell/plasma model.
 
 ## Trusted proposition and candidate
 
@@ -102,9 +101,13 @@ blocked models; the visible model retains an actual direct path.
 
 ## Boundaries and verification
 
-Stable Physlib supplies the wavelength quantity. PhyslibTemp supplies only the
-reusable qualitative propagation/approximation interface. The cutoff and
-ionospheric interpretation belong to P06; the final path restriction is derived;
+P06 does not introduce a reusable PhyslibTemp propagation module. The
+direct/reflected/diffracted channel decomposition and the approximation rules
+used here are specific to this source explanation and are not yet justified as
+a generally reusable optics abstraction. Stable Physlib's `Wavelength` is reused
+directly; the remaining propagation model, including `PropagationModel` and
+`HasPath`, is kept in P06's `Problem.lean`. The cutoff and ionospheric
+interpretation also belong to P06; the final path restriction is derived, and
 case elimination is pure logic. See [classification](CLASSIFICATION.md) and
 [pinned-source audit](PHYSLIB_AUDIT.md).
 
@@ -116,7 +119,7 @@ deferred (`mutations.json` is empty). `PairingWalkthrough.lean` prints final
 axioms; the candidate uses no additional physical axioms beyond its explicit
 model/source arguments.
 
-Validation for this addition: `lake build` passed (3383 jobs); P06, P05, P04,
+Validation after keeping the model problem-local: `lake build` passed; P06, P05, P04,
 P03, P02, P01 and M00 verification all passed. P03–P06 explicitly skipped
 mutations; M00/P01/P02 each passed all six existing cases.
 `#print axioms Candidate.solution` reports exactly

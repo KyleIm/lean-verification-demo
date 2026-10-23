@@ -64,19 +64,26 @@ Planck radiance and polarization do not establish the source propagation chain.
 No InformalLemma or documentation-only assertion is treated as a proved
 propagation result.
 
-## Minimal addition decision (before implementation)
+## Minimal extension decision (revised)
 
-* From Physlib: `Wavelength` and its existing dimension infrastructure.
-* New PhyslibTemp: one qualitative `PropagationModel` for a link, with named
-  retained channels, approximation predicates and explicit approximation rules;
-  `HasPath` enumerates exactly the retained channels. No new wave equation,
-  wavelength quantity, ionosphere object or ray solver.
-* P06-specific: positive wavelength in metre coordinates, threshold 10 m,
-  regime-dependent exclusion of ionospheric reflected returns, and negligible
-  diffraction around the relevant obstacles. Which medium the reflected channel
-  denotes is a problem-level interpretation.
+* Stable Physlib: `Wavelength` and its existing dimension infrastructure,
+  imported directly from `Physlib.Optics.Wavelength`.
+* PhyslibTemp: no addition. The earlier propagation module has been removed.
+* P06-specific: the qualitative propagation-link model `PropagationModel`,
+  retained direct/reflected/diffracted path decomposition (`HasPath`),
+  ionospheric interpretation, diffraction/straight-line approximation rules,
+  positive wavelength in metre coordinates and the 10 m source threshold.
+  All declarations are local to P06's `Problem.lean`.
 * Pure mathematics: implication composition, disjunction case analysis and
   contradiction.
 
+The absence of an upstream API does not by itself justify a reusable extension.
+The earlier propagation abstraction is intentionally kept problem-local because
+there is not yet enough evidence of genuine reuse across problems. Its channel
+decomposition and approximation rules encode this particular qualitative source
+explanation, rather than a broadly justified optics API. No replacement generic
+approximation framework is introduced.
+
 This is intentionally a semantic assumption layer, not a rigorous derivation
-of geometric optics from Maxwell's equations.
+of geometric optics from Maxwell's equations. Moving that layer does not change
+the adopted assumptions or the candidate's deductive conclusion.
