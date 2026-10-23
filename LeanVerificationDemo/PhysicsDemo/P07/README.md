@@ -47,26 +47,36 @@ solution of a self-inductive conductor or a proof of current direction.
 
 ## Figure and geometric provenance
 
-![Caption-only reconstruction of Fig. 203: an annular body with inner radius a, outer radius b, axial height h, and a shaded rectangular radial section.](problem_diagram.svg)
+![Provisional caption-based reconstruction: a short annular cylinder with a full-height rectangular radial section exposed on the right, radii a and b, and height h.](problem_diagram.svg)
 
-Trusted caption, supplied by the user:
+Revised trusted geometry caption, supplied by the user:
 
-> Figure 203 shows a ring-shaped body with rectangular cross section, centered on a common vertical axis. Its inner radius is a, its outer radius is b, and its axial height is h. The shaded radial section indicates the rectangular cross section of the ring.
+> Figure 203 shows a short annular cylindrical body with a rectangular radial cross section, viewed in perspective about a vertical symmetry axis. The body has inner cylindrical radius a, outer cylindrical radius b, and axial height h. A radial cut on the right side exposes a vertical rectangular section extending from the inner cylindrical surface to the outer cylindrical surface through the full height h. The labels a and b denote distances from the central axis to the inner and outer cylindrical surfaces, respectively, and h denotes the vertical height of the exposed rectangular section.
 
-The original scan was not stored or inspected for this implementation. The SVG
-is a reconstruction from the supplied caption, with a chosen perspective of the intact ring and a separate shaded radial-section
-view. The section spans radii a to b and has height h; it is not a notch or a
-removed wedge in the physical body. Its dimensions are symbolic,
-not measurements of the source image. There are no magnetic-field arrows,
-resistivity labels, thin-ring decomposition or solution formulas in the figure.
+The caption is trusted source/provenance input, not a cosmetic description.
+It now specifies a short body and a right-side radial cut exposing the rectangle
+from the inner to the outer cylindrical surface through the full height h.
+The previous detached section view has been replaced by an exposed section on
+the body itself. These are geometric details; the existing a,b,h parameters and
+annular current model are unchanged.
 
-The provenance is source Fig. 203 → user-supplied geometric caption → explicit
-geometry metadata → reconstructed SVG and local geometry parameters. The manual
-translation of caption geometry into Lean parameters is trusted preprocessing;
-Lean does not parse the caption or infer parameters from pixels. Material
-resistivity, homogeneous axial field and `H = kt` come separately from the problem
-text. Faraday/Ohm relations and the loop decomposition come from the supplied
-solution and adopted physical model, never the geometric caption.
+Only the user-supplied Fig. 203 image and this agreed caption are authorized
+sources for the reconstruction. The caption controls the geometric facts used
+by the formal problem; the user-supplied image is the intended visual reference.
+That image is not currently accessible in the working context, so the present
+SVG is a **provisional caption-based reconstruction**, not a claimed visual
+match to the supplied image or the original scan. Its projection, proportions
+and label placement are illustrative. Visual fidelity to the user-supplied image
+remains to be checked when that image is accessible.
+
+The current provenance chain is user-supplied revised geometry caption →
+explicit geometry metadata → provisional reconstructed SVG and local geometry
+parameters. Manual translation into Lean parameters is trusted preprocessing;
+Lean does not parse the caption or infer parameters from pixels. No additional
+geometry or physical premises are obtained from another source. Resistivity,
+homogeneous axial field and H = kt come from the problem text; Faraday/Ohm
+relations and loop decomposition come from the supplied solution and adopted
+model, never from the geometric caption or image.
 
 Regenerate with:
 
@@ -74,8 +84,8 @@ Regenerate with:
 python3 LeanVerificationDemo/PhysicsDemo/P07/generate_problem_diagram.py
 ```
 
-The generator reads only `diagram_caption` and `diagram_geometry` from
-`source.jsonl`. It never reads the source solution or Lean files.
+The deterministic generator reads only `diagram_caption` and `diagram_geometry`
+from `source.jsonl`; it does not read images, source solutions or Lean files.
 
 ## How the real-world ring is represented
 

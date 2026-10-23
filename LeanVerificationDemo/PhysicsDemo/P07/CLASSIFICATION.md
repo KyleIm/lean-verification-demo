@@ -6,7 +6,8 @@
 | Upstream differential `faradayLaw` | Existing Physlib formal theorem, inspected but not used | No formal loop/source-unit bridge is claimed |
 | Mathlib derivatives, interval integral and integrability | Pure mathematics | Actual analytic API reused |
 | `Length`, `Resistivity`, `Current` | P07-specific modeling | Local aliases of Physlib quantities in fixed source coordinates |
-| Fig. 203 caption, `a`, `b`, `h`, positive radii/order/height | P07-specific geometric input | Caption contains only visible geometry |
+| Revised Fig. 203 caption, `a`, `b`, `h`, right exposed section | P07-specific trusted geometric input | Geometry only; current SVG is provisional until compared with the authorized user image |
+| Positive radii/order/height | P07-specific modeling | Physical domain assumptions, separate from the caption |
 | `RingData.ρ`, `k`, their positivity | P07-specific source/model parameters | Material/field information from text, not caption |
 | `field` (`H = kt`) | P07-specific source modeling | Homogeneous axial historical scalar, not automatically SI B |
 | `sourceFactor` | P07-specific unit convention | Exact `1/100000000`; conversion dimension carried implicitly by the coordinate law |
