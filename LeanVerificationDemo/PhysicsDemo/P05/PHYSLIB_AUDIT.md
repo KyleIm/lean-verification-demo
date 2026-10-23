@@ -167,3 +167,18 @@ Pinned source links:
 [Force](https://github.com/leanprover-community/physlib/blob/96a6bc5e3c50a2856c64a6c9951c0a1c23790b58/Physlib/ClassicalMechanics/Force.lean#L45),
 [rigid-body informal equations](https://github.com/leanprover-community/physlib/blob/96a6bc5e3c50a2856c64a6c9951c0a1c23790b58/Physlib/ClassicalMechanics/RigidBody/Basic.lean#L217),
 [formal pendulum torque](https://github.com/leanprover-community/physlib/blob/96a6bc5e3c50a2856c64a6c9951c0a1c23790b58/Physlib/ClassicalMechanics/Pendulum/SimplePendulum/Basic.lean#L582).
+
+## P05 reachability refinement
+
+The reusable boundaries from this audit are unchanged. The ladder is represented
+locally by a parameter bundle plus its explicit geometry, applied forces and
+balance model; no generic `Ladder` physical object is imported or added.
+
+The source's implicit suggestion that every ladder reaches a slipping height is
+corrected at problem level: `ReachableThreshold` means criticalPosition ≤ L.
+New candidate lemmas prove on-ladder saturation/admissibility in that case, and
+admissibility (indeed strictly sublimit required friction) at all physical positions
+when the threshold exceeds L. These follow from the existing source assumptions
+and position-wise iff, without new reusable mechanics or a new upstream claim.
+The source record remains untouched. This refinement strengthens the final
+trusted proposition by making the two parameter regimes explicit.

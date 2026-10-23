@@ -1,4 +1,4 @@
-# P05 — Why does a climbing man's ladder reach a slipping threshold?
+# P05 — Static admissibility along a finite ladder
 
 Source problem **108**, Classical Mechanics. Source problem, supplied printed-solution
 explanation and qualitative answer: [source.jsonl](source.jsonl).
@@ -19,6 +19,35 @@ of the source solution; the image is not machine-readable evidence for Lean.
 The source neglects ladder weight for simplicity. We retain that approximation.
 The source friction coefficient k is written μ internally. G is the man's
 **weight in newtons**, not gravitational acceleration.
+
+## How the everyday ladder is represented in Lean
+
+Neither the pinned Physlib mechanics API nor PhyslibTemp supplies a reusable
+physical `Ladder` object. P05 does not formalize the full everyday concept of a
+ladder: rungs, construction, material deformation and climbing motion are absent.
+It uses a **problem-local physical representation** containing only what this
+statics argument needs.
+
+`LadderData` is only a parameter bundle (fixed length L, fixed inclination α,
+man's weight G, and friction coefficient μ). The ladder is represented
+**collectively**, not by that record alone:
+
+| P05 component | Physical role |
+| --- | --- |
+| `LadderData` and `height` | Fixed length/inclination and upper contact height CB |
+| `positions data s` | Lower contact O, upper contact B, and man A at distance s along the same straight segment; explicit Cartesian force application points |
+| `forces data r` | Wall normal, floor normal, floor friction and man's weight |
+| `EquilibriumAt` / reusable static-balance model | Zero total force and zero moment for those forces and positions |
+| `OnLadder` and `AdmissibleAt` | Physical position range and existence of contact forces satisfying the static-friction bound |
+
+The wall is smooth, the floor horizontal, and ladder weight is neglected.
+These modeling choices reproduce the source's relevant physical structure without
+introducing an ontology-level `Ladder` into PhyslibTemp. The existing force and
+moment calculation below remains unchanged.
+
+The source's “Why?” is answered by deriving the friction requirement, its strict
+increase with position, saturation, and loss of admissible equilibrium above the
+threshold. “Why?” is not treated as a separate formal proposition.
 
 ## Physical data and abstraction level
 
@@ -139,15 +168,48 @@ The final candidate proves:
    **iff** s ≤ criticalPosition. Both directions are proved, including explicit
    construction of support forces below the threshold.
 3. Required friction at criticalPosition is exactly μG, hence limiting friction.
-4. If the critical position lies on the ladder, that threshold is admissible.
+4. If `ReachableThreshold data`, the critical position is on the ladder, admits
+   static equilibrium and saturates the friction bound.
 5. At any on-ladder position above it, no admissible static equilibrium exists.
+6. If `¬ ReachableThreshold data`, **every on-ladder position is admissible**.
+   The stronger helper also proves required friction is strictly below μG there.
 
-The explicit formula for criticalPosition is a **derived strengthening**, not part
-of the printed qualitative answer. Its nonnegativity is proved. A finite ladder
-need not reach the threshold: for sufficiently large μ it lies beyond the top.
-The formalization therefore does not claim that every ladder/μ combination slips
-before the man reaches the top. Saturation at the formula is algebraic; physical
-attainability is conditional on `OnLadder data (criticalPosition data)`.
+## Source wording versus the corrected formal problem
+
+The printed wording suggests a slipping height will be reached. That conclusion
+is not universal over all permitted L, α and μ. The source text is preserved
+unchanged in `source.jsonl`; the formal problem explicitly corrects its implicit
+generalization rather than rewriting provenance to match the theorem.
+
+The mathematically corrected problem is:
+
+> Given a weightless ladder of length L at fixed angle α, a man of weight G,
+> and static-friction coefficient μ, characterize exactly the man's positions
+> for which static equilibrium is possible, determine the critical position,
+> and determine whether that critical position is reachable on the ladder.
+
+The explicit formula is a **derived strengthening**, not printed source text.
+The problem-local predicate is:
+
+```lean
+def ReachableThreshold (data : LadderData) : Prop :=
+  criticalPosition data ≤ data.length
+```
+
+`critical_nonneg` supplies the other endpoint condition. Thus:
+
+- **Reachable:** criticalPosition ≤ L, including equality at the top. The critical
+  position lies in [0,L], admits the marginal static state, and saturates friction.
+- **Unreachable:** L < criticalPosition. For every s in [0,L], the proof establishes
+  s < criticalPosition, an admissible equilibrium, and required friction < μG.
+  The model therefore predicts no static-friction threshold anywhere before or
+  at the top. This is a sequence of possible static states, not a climbing trajectory.
+
+`Candidate.reachable_threshold` and `Candidate.unreachable_threshold` prove these
+cases. The final trusted proposition now includes both branches explicitly.
+No reachability assumption was added to `LadderData` and the geometry/statics/
+friction layer was not changed. Saturation at the algebraic formula alone is not
+an assertion that the formula is a physically reachable position.
 
 The strict-monotonicity theorem extends the formula to all real s; physical uses
 are restricted by `OnLadder`. No output conclusion is an input field.
@@ -184,6 +246,8 @@ The audit records exact upstream declaration signatures and search evidence.
 - Both new PhyslibTemp mechanics modules also compiled directly with `lake env lean`.
 - Final P05 theorem axioms: only `propext`, `Classical.choice`, `Quot.sound`.
 - Satisfiable parameter example and admissible bottom-contact state: checked in `Verify.lean`.
+- Both reachable and unreachable parameter regimes have explicit existence checks;
+  the unreachable case also verifies strict sublimit friction at every physical position.
 - `git diff --check`: PASS. Dependency pins, capacitor APIs and previous demo files unchanged.
 
 Validation reused the installed toolchain and local dependency caches; a separate

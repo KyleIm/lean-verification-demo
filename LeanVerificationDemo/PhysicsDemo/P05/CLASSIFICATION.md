@@ -12,10 +12,11 @@
 | `positions` / labels A,B,C,O and projection s cos α | P05-specific modeling | Straight-line coordinate geometry interpreted from the source solution and explanatory Fig. 311, not trusted problem-image data |
 | `Reactions`, `constantForce`, `forces` | P05-specific modeling | N1, N2, Ffr, G; smooth wall, horizontal floor, neglected ladder weight |
 | `EquilibriumAt`, `AdmissibleAt` | P05-specific modeling | Instantiate generic balance/contact relations; do not contain the final threshold inequality as a premise |
-| `requiredFriction`, `criticalPosition`, `TrustedPhysicsProblem` | P05-specific modeling | Candidate formulas and proof obligation; no input evidence that the formulas hold |
+| `requiredFriction`, `criticalPosition`, `ReachableThreshold`, `TrustedPhysicsProblem` | P05-specific modeling | Candidate formulas and proof obligation; no input evidence that the formulas hold |
 | `equilibrium_iff`, `reactions_required` | Derived physics | Derive N2 = G, Ffr = N1 and N1 H = G cos α s from the explicit applied forces/moments |
 | `balancing_equilibrium` | Derived physics | Construct support forces before imposing friction availability |
 | `required_strictMono`, `admissible_iff` | Derived physics | Increasing requirement and iff characterization of static feasibility |
+| `limiting_at_critical`, `reachable_threshold`, `unreachable_threshold` | Derived physics | Correct the source generalization: reachable saturation versus equilibrium at every position for an unreachable threshold |
 | `required_at_critical`, final saturation/nonexistence | Derived physics | Explicit threshold is a strengthening of the source explanation, with reachability kept separate |
 | Positive division, cancellation, inequalities, ring/field normalization | Pure mathematics | No hidden physical assumptions |
 
@@ -29,3 +30,11 @@ geometry and force directions are explicit modeling choices matching that source
 interpretation. The static-balance principle itself is adopted, not derived from
 full rigid-body mechanics. “Slip” denotes loss of a friction-admissible equilibrium
 above an inclusive threshold, not an asserted time-dependent motion.
+
+`LadderData` is only a parameter bundle. Together with `height`, `positions`,
+`forces` and the static-equilibrium model it forms a problem-local physical
+representation of the source ladder, not a general reusable ladder object.
+The source's qualitative explanation is preserved; the strengthened trusted
+problem explicitly distinguishes reachable and unreachable thresholds.
+`ReachableThreshold` is a definition, not extra trusted evidence. No change to
+Physlib/PhyslibTemp APIs or physical assumptions is required for these cases.

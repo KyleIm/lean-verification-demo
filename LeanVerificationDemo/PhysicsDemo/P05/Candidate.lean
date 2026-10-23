@@ -105,17 +105,44 @@ lemma admissible_iff (data : LadderData) {s : ℝ} (hs : 0 ≤ s) :
     rw [abs_of_nonneg (required_nonneg data hs)]
     exact (required_le_iff data s).mpr hPosition
 
-/-- Prove the qualitative source answer as loss of admissible static equilibrium,
-not as a theorem about acceleration or a slipping trajectory. -/
+/-- Saturation is algebraic; whether this position lies on the ladder is separate. -/
+lemma limiting_at_critical (data : LadderData) :
+    LimitingStaticFriction data.μ data.G (requiredFriction data (criticalPosition data)) := by
+  refine ⟨data.μ_nonneg, data.G_pos.le, ?_⟩
+  rw [required_at_critical, abs_of_nonneg (mul_nonneg data.μ_nonneg data.G_pos.le)]
+
+/-- A reachable threshold is an actual on-ladder position with admissible,
+saturated static friction. This does not assert motion at the inclusive boundary. -/
+lemma reachable_threshold (data : LadderData) (h : ReachableThreshold data) :
+    OnLadder data (criticalPosition data) ∧ AdmissibleAt data (criticalPosition data) ∧
+    LimitingStaticFriction data.μ data.G (requiredFriction data (criticalPosition data)) := by
+  exact ⟨⟨critical_nonneg data, h⟩,
+    (admissible_iff data (critical_nonneg data)).mpr le_rfl, limiting_at_critical data⟩
+
+/-- Correct the source's implicit generalization: if the threshold is beyond the
+ladder, every physical position is strictly below it, admits equilibrium, and
+requires strictly less than the available limiting friction. -/
+lemma unreachable_threshold (data : LadderData) (h : ¬ ReachableThreshold data)
+    (s : ℝ) (hs : OnLadder data s) :
+    s < criticalPosition data ∧ AdmissibleAt data s ∧
+      requiredFriction data s < data.μ * data.G := by
+  have hBeyond : data.length < criticalPosition data := lt_of_not_ge h
+  have hBelow := lt_of_le_of_lt hs.2 hBeyond
+  refine ⟨hBelow, (admissible_iff data hs.1).mpr hBelow.le, ?_⟩
+  have hForce := required_strictMono data hBelow
+  rwa [required_at_critical] at hForce
+
+/-- Characterize the source phenomenon without asserting a slipping height for
+all parameter choices: distinguish a reachable critical point from a threshold
+beyond the finite ladder. No acceleration or trajectory theorem is claimed. -/
 theorem solution (data : LadderData) : TrustedPhysicsProblem data := by
-  refine ⟨required_strictMono data, ?_, ?_, ?_, ?_⟩
+  refine ⟨required_strictMono data, ?_, limiting_at_critical data,
+    reachable_threshold data, ?_, ?_⟩
   · intro s hs
     exact admissible_iff data hs.1
-  · refine ⟨data.μ_nonneg, data.G_pos.le, ?_⟩
-    rw [required_at_critical, abs_of_nonneg (mul_nonneg data.μ_nonneg data.G_pos.le)]
-  · intro hs
-    exact (admissible_iff data hs.1).mpr le_rfl
   · intro s hs hAbove hAdmissible
     exact (not_le_of_gt hAbove) ((admissible_iff data hs.1).mp hAdmissible)
+  · intro h s hs
+    exact (unreachable_threshold data h s hs).2.1
 
 end LeanVerificationDemo.PhysicsDemo.P05.Candidate

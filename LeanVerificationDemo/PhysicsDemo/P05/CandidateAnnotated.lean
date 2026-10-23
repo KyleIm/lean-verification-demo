@@ -17,12 +17,12 @@ lemma equilibrium_iff (data : LadderData) (s : ℝ) (r : Reactions) :
     EquilibriumAt data s r ↔
       r.N2 = data.G ∧ r.Ffr = r.N1 ∧
         r.N1 * height data = data.G * Real.cos data.alpha * s := by
-  -- Sum the four actual upstream Force values, using the chosen directions.
+  -- Evaluate the four applied force vectors in the upstream Physlib frame.
   have hx : (∑ i : Fin 4, (forces data r i 0).components 0) = r.N1 - r.Ffr := by
     simp [forces, constantForce, Fin.sum_univ_succ, sub_eq_add_neg]
   have hy : (∑ i : Fin 4, (forces data r i 0).components 1) = r.N2 - data.G := by
     simp [forces, constantForce, Fin.sum_univ_succ, sub_eq_add_neg]
-  -- Cross-product moments about O make both floor-force contributions zero.
+  -- Compute signed cross-product moments at the explicit application points.
   have hm : (∑ i : Fin 4, planarMoment (positions data s i) (forces data r i 0)) =
       data.G * Real.cos data.alpha * s - r.N1 * height data := by
     simp [positions, forces, constantForce, planarMoment_eq, Fin.sum_univ_succ]
@@ -47,7 +47,6 @@ lemma equilibrium_iff (data : LadderData) (s : ℝ) (r : Reactions) :
 lemma reactions_required (data : LadderData) (s : ℝ) (r : Reactions)
     (h : EquilibriumAt data s r) :
     r.N2 = data.G ∧ r.N1 = requiredFriction data s ∧ r.Ffr = requiredFriction data s := by
-  -- These equations have been derived, not supplied as threshold evidence.
   obtain ⟨hN2, hF, hT⟩ := (equilibrium_iff data s r).mp h
   have hN1 : r.N1 = requiredFriction data s :=
     (eq_div_iff (height_pos data).ne').2 hT
@@ -108,18 +107,45 @@ lemma admissible_iff (data : LadderData) {s : ℝ} (hs : 0 ≤ s) :
     rw [abs_of_nonneg (required_nonneg data hs)]
     exact (required_le_iff data s).mpr hPosition
 
-/-- Prove the qualitative source answer as loss of admissible static equilibrium,
-not as a theorem about acceleration or a slipping trajectory. -/
+/-- Saturation is algebraic; whether this position lies on the ladder is separate. -/
+lemma limiting_at_critical (data : LadderData) :
+    LimitingStaticFriction data.μ data.G (requiredFriction data (criticalPosition data)) := by
+  refine ⟨data.μ_nonneg, data.G_pos.le, ?_⟩
+  rw [required_at_critical, abs_of_nonneg (mul_nonneg data.μ_nonneg data.G_pos.le)]
+
+/-- A reachable threshold is an actual on-ladder position with admissible,
+saturated static friction. This does not assert motion at the inclusive boundary. -/
+lemma reachable_threshold (data : LadderData) (h : ReachableThreshold data) :
+    OnLadder data (criticalPosition data) ∧ AdmissibleAt data (criticalPosition data) ∧
+    LimitingStaticFriction data.μ data.G (requiredFriction data (criticalPosition data)) := by
+  exact ⟨⟨critical_nonneg data, h⟩,
+    (admissible_iff data (critical_nonneg data)).mpr le_rfl, limiting_at_critical data⟩
+
+/-- Correct the source's implicit generalization: if the threshold is beyond the
+ladder, every physical position is strictly below it, admits equilibrium, and
+requires strictly less than the available limiting friction. -/
+lemma unreachable_threshold (data : LadderData) (h : ¬ ReachableThreshold data)
+    (s : ℝ) (hs : OnLadder data s) :
+    s < criticalPosition data ∧ AdmissibleAt data s ∧
+      requiredFriction data s < data.μ * data.G := by
+  -- This is the missing case in an unconditional reading of the source wording.
+  have hBeyond : data.length < criticalPosition data := lt_of_not_ge h
+  have hBelow := lt_of_le_of_lt hs.2 hBeyond
+  refine ⟨hBelow, (admissible_iff data hs.1).mpr hBelow.le, ?_⟩
+  have hForce := required_strictMono data hBelow
+  rwa [required_at_critical] at hForce
+
+/-- Characterize the source phenomenon without asserting a slipping height for
+all parameter choices: distinguish a reachable critical point from a threshold
+beyond the finite ladder. No acceleration or trajectory theorem is claimed. -/
 theorem solution (data : LadderData) : TrustedPhysicsProblem data := by
-  -- Separate saturation from admissibility at a physically reachable location.
-  refine ⟨required_strictMono data, ?_, ?_, ?_, ?_⟩
+  refine ⟨required_strictMono data, ?_, limiting_at_critical data,
+    reachable_threshold data, ?_, ?_⟩
   · intro s hs
     exact admissible_iff data hs.1
-  · refine ⟨data.μ_nonneg, data.G_pos.le, ?_⟩
-    rw [required_at_critical, abs_of_nonneg (mul_nonneg data.μ_nonneg data.G_pos.le)]
-  · intro hs
-    exact (admissible_iff data hs.1).mpr le_rfl
   · intro s hs hAbove hAdmissible
     exact (not_le_of_gt hAbove) ((admissible_iff data hs.1).mp hAdmissible)
+  · intro h s hs
+    exact (unreachable_threshold data h s hs).2.1
 
 end LeanVerificationDemo.PhysicsDemo.P05.CandidateAnnotated

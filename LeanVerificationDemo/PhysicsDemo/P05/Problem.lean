@@ -86,14 +86,22 @@ noncomputable def requiredFriction (data : LadderData) (s : ℝ) : ℝ :=
 noncomputable def criticalPosition (data : LadderData) : ℝ :=
   data.μ * height data / Real.cos data.alpha
 
-/-- The qualitative answer: increasing required friction; exact admissibility
-threshold on the ladder; saturation; admissibility at a reachable threshold;
-and no admissible static equilibrium above it. No post-slip trajectory is asserted. -/
+/-- Whether the algebraic critical position is within the finite ladder.
+Its lower bound follows from the physical parameters and is proved by the candidate. -/
+def ReachableThreshold (data : LadderData) : Prop :=
+  criticalPosition data ≤ data.length
+
+/-- Corrected source claim: exact position-wise feasibility, limiting friction,
+reachable-threshold behavior, and full on-ladder admissibility when the threshold
+is beyond the top. No universal slipping height or post-slip motion is asserted. -/
 def TrustedPhysicsProblem (data : LadderData) : Prop :=
   StrictMono (requiredFriction data) ∧
   (∀ s, OnLadder data s → (AdmissibleAt data s ↔ s ≤ criticalPosition data)) ∧
   LimitingStaticFriction data.μ data.G (requiredFriction data (criticalPosition data)) ∧
-  (OnLadder data (criticalPosition data) → AdmissibleAt data (criticalPosition data)) ∧
-  (∀ s, OnLadder data s → criticalPosition data < s → ¬ AdmissibleAt data s)
+  (ReachableThreshold data →
+    OnLadder data (criticalPosition data) ∧ AdmissibleAt data (criticalPosition data) ∧
+    LimitingStaticFriction data.μ data.G (requiredFriction data (criticalPosition data))) ∧
+  (∀ s, OnLadder data s → criticalPosition data < s → ¬ AdmissibleAt data s) ∧
+  (¬ ReachableThreshold data → ∀ s, OnLadder data s → AdmissibleAt data s)
 
 end LeanVerificationDemo.PhysicsDemo.P05
