@@ -1,6 +1,6 @@
 # P06 — Why is television reception limited by direct visibility?
 
-Source problem **656** asks: “Why can TV programmes be seen only within the
+Source problem **656** asks: “Why can TV programes be seen only within the
 range of direct visibility?” The supplied solution says that TV wavelengths
 are below 10 metres, that the ionosphere is “transparent” to them and does not
 reflect them, and that they undergo almost no diffraction around obstacles
