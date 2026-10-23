@@ -17,3 +17,7 @@
 
 No TV ontology, propagation solver, exact zero-diffraction law or general
 impossibility of real beyond-line-of-sight television reception is introduced.
+
+The propagation rules are approximation-level physical relations rather than
+derived electromagnetic laws; their `Optics` placement reflects the model’s
+wavelength, path-channel and geometric-visibility abstraction.

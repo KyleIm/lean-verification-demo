@@ -45,6 +45,41 @@ are outside its scope. The proof does not establish that real television signals
 can never be received beyond line of sight. Nor does visibility alone guarantee
 real reception. The conclusion is a necessary condition in this restricted model.
 
+## Methodological significance of this formalization
+
+Compared with P05, where force and moment balance yield a position-dependent
+friction requirement and its threshold, P06 places much of its substantive
+physics in the adopted model. The absence of ionospheric reflected return in
+the relevant wavelength regime, negligible diffraction around the relevant
+obstacles, and the adoption of geometric propagation when diffraction is
+neglected are explicit source assumptions or propagation-model rules. Lean does
+not derive them from Maxwell equations, plasma physics or diffraction theory.
+
+The candidate mainly checks the deductive step within that model:
+
+```text
+exclude ionospheric reflected path
++ exclude diffracted path
++ direct geometric path requires line of sight
+→ no line of sight implies no retained propagation path
+```
+
+This separation is intentional. Textbook explanations often compress empirical
+knowledge, regime-dependent approximations, idealizations and deductive
+reasoning into a few sentences. Formalization makes their different roles
+explicit: Lean rigorously verifies the consequences of the adopted model,
+while the choice and validity of its approximations remain physical modeling
+assumptions unless a deeper theory is formalized. P06's physical content lies
+heavily in those assumptions; the visibility conclusion follows logically
+inside the model. This distinction clarifies the physical explanation and the
+scope of the proof.
+
+The theorem therefore does not claim that real TV signals can never be received
+beyond line of sight: other propagation mechanisms remain outside the restricted
+model. The reusable module stays in `PhyslibTemp/Optics`, which suits its
+wavelength, reflection/diffraction, geometric-propagation and visibility
+abstraction; it does not provide a field-level Maxwell/plasma model.
+
 ## Trusted proposition and candidate
 
 For `data : ReceptionData`, the trusted proposition is exactly:
