@@ -28,3 +28,8 @@ import LeanVerificationDemo.PhysicsDemo.P05.Candidate
 import LeanVerificationDemo.PhysicsDemo.P05.Verify
 import LeanVerificationDemo.PhysicsDemo.P05.CandidateAnnotated
 import LeanVerificationDemo.PhysicsDemo.P05.PairingWalkthrough
+import LeanVerificationDemo.PhysicsDemo.P06.Problem
+import LeanVerificationDemo.PhysicsDemo.P06.Candidate
+import LeanVerificationDemo.PhysicsDemo.P06.Verify
+import LeanVerificationDemo.PhysicsDemo.P06.CandidateAnnotated
+import LeanVerificationDemo.PhysicsDemo.P06.PairingWalkthrough

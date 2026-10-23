@@ -1,0 +1,15 @@
+{
+  "id": "656",
+  "title": "Short-wave reception under a line-of-sight approximation",
+  "code": "P06",
+  "domain": "physics",
+  "problem_file": "LeanVerificationDemo/PhysicsDemo/P06/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/PhysicsDemo/P06/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/PhysicsDemo/P06/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/PhysicsDemo/P06/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P06/PairingWalkthrough.lean",
+  "mutation_manifest": "LeanVerificationDemo/PhysicsDemo/P06/mutations.json",
+  "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P06.TrustedPhysicsProblem data",
+  "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P06.Candidate.solution data source",
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P06.Candidate.solution data source : LeanVerificationDemo.PhysicsDemo.P06.TrustedPhysicsProblem data"
+}
