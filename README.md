@@ -21,22 +21,30 @@ question. Review each important step by asking:
 2. Is it an unstated consequence that can and should be derived?
 3. Is it an empirical law or existing physical principle to reuse from Physlib or PhyslibTemp?
 4. Is it a required approximation or idealization of the textbook model?
-5. Is it mathematical reasoning supported by Mathlib?
-6. Does the actual Lean proof follow the documented dependency chain, and are deviations from the source route explained?
+5. If it is an approximation, must it remain a primitive modeling premise, or can it be refined into an exact limiting/idealized statement?
+6. Is it mathematical reasoning supported by Mathlib?
+7. Does the actual Lean proof follow the documented dependency chain, and are deviations from the source route explained?
 
 The aim is to reconstruct the explanation's logical and physical dependencies,
 not mechanically translate each sentence. An omitted derivation should not
 become a trusted premise merely because the solution considers it obvious.
 A genuine physical approximation should remain explicit, rather than be presented
-as an unconditional exact theorem. This is a source-review standard; the verifier
+as an unconditional exact theorem. It need not remain an axiom when precise
+limiting semantics can instead support a derivation. Conversely, do not turn a
+finite-duration approximation into an exact finite-time statement. Any force,
+regularity and event-limit assumptions needed for that refinement must remain
+visible. This is a source-review standard; the verifier
 checks proof terms against the chosen formal premises, not the physical validity
 of those premises or the English documentation.
 
 [P08](LeanVerificationDemo/PhysicsDemo/P08/README.md#the-source-solution-is-also-part-of-the-formalization-audit)
 illustrates the distinction: apex rest is now derived under an explicit ideal
-coasting model, whereas momentum conservation across the short explosion remains
-an adopted negligible-external-impulse approximation. The constant downward
-acceleration and initial upward velocity are themselves stated model assumptions.
+coasting model. For finite event duration ε, gravitational impulse is generally
+nonzero; it tends to zero exactly as ε → 0⁺. Summed Newton II/III and convergence
+of finite-duration endpoint momenta then derive across-event momentum equality.
+Constant downward acceleration, initial upward velocity and the existence and
+matching of the regularized event states are explicit model assumptions. Lean
+does not prove that a physical explosion literally has zero duration.
 
 ## Reusable constant-acceleration layer
 
@@ -55,6 +63,24 @@ linear coplanarity. No `UniformGravity` module exists yet: a future layer should
 add physical content such as a gravitational force/Newton-II bridge, rather than
 merely rename a constant vector. The design notes describe a possible future
 upstream contribution; they are not P08 source assumptions or additional axioms.
+
+## Reusable impulse–momentum layer
+
+[ImpulseMomentum.lean](LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentum.lean)
+adds coordinate finite-system Newton II/III, derived internal cancellation,
+the finite impulse–momentum theorem, continuous-force shrinking-interval limits
+and an event-limit consequence. It also includes adapters proving momentum
+derivatives and internal cancellation for upstream Newtonian-system data.
+[Design notes](LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentum.md)
+explain the indexed interface and the limits of the upstream integration;
+[independent examples](LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentumExamples.lean)
+check interacting bodies, finite nonzero impulses, vanishing limits and arbitrary
+vector dimension. No rocket or explosion ontology is introduced.
+
+The possible future branch is PointParticle / Force / NewtonianSystem →
+ImpulseMomentum → interaction/event applications. In P08 it joins the
+constant-acceleration branch: kinematics supplies pre-event rest, while force
+balance and a duration limit supply event momentum transfer.
 
 ## Verification Pipeline
 

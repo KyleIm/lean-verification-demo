@@ -2,23 +2,34 @@
 
 | Component | Classification | Boundary |
 | --- | --- | --- |
-| Physlib ReferenceFrame, Particle.pos / velocity / acceleration | Existing reusable physics infrastructure | Actual upstream derivative-based trajectories are reused |
-| Physlib NewtonianSystem and Force | Existing physics infrastructure, audited | No new gravity-force/Newton-II derivation is claimed |
-| HasConstantAcceleration and its generic velocity / position laws | PhyslibTemp reusable mechanics | Any spatial dimension and inertial frame, no gravity/vertical/source-specific data |
-| ConstantAccelerationExamples | Library-level mathematical verification | Upstream quadratic-particle witnesses, not another particle model |
-| UniformGravity | Deferred possible reusable physical specialization | No separate module: a renamed acceleration vector alone adds no physical layer |
-| P08 labFrame, up, initial upward speed and downward acceleration | Problem-specific use of reusable mechanics | Ideal coasting reference trajectory, no propulsion or post-event trajectory |
-| highest point / apexTime / height | P08 kinematics and derived geometry | Computed u/g and proved maximum; no assumed apex-rest equality |
-| apex_vertical_velocity_zero, apex_velocity_zero | Derived mathematics / kinematics | Proven maximum + actual derivative + Mathlib Fermat theorem + vertical velocity law |
-| SourceData.constant_acceleration / initial_velocity | Source/model kinematics | Physical idealization and initial condition, not final answers |
-| SourceData.momentum_conserved | Source/model physical approximation | Across-explosion negligible-impulse approximation remains a premise |
-| preMomentum | P08 physical modeling | Upstream particle mass times derived apex velocity |
-| pre_momentum_zero / total_momentum_zero | Derived physics | Proved zero velocity, then adopted across-event conservation |
-| fragment momentum, positive masses | P08 snapshot modeling | Same m • v convention and mass nonzeroness as before |
-| LinearCoplanar / TrustedPhysicsProblem | Unchanged P08 mathematical target | Real linear subspace through zero with dimension ≤ 2 |
-| span construction, dimension bound, inverse mass scaling | Mathlib linear algebra | Existing coplanarity proof retained; degeneracies allowed |
-| standard-basis negative check | Pure mathematics | Three independent vectors do not satisfy the linear-coplanarity target |
+| Physlib ReferenceFrame, Particle.pos / velocity / acceleration | Existing reusable physics infrastructure | Upstream derivative-based kinematics |
+| Physlib NewtonianSystem.Particle.momentum, newton_second_law, newton_third_law, InternalForce.reverse | Existing formal mechanics infrastructure | Used in the new upstream adapters; the event family itself uses a coordinate force interface |
+| HasConstantAcceleration and velocity / position laws | PhyslibTemp reusable mechanics | Arbitrary dimension, inertial frame, no gravity or event data |
+| newtonian_particle_momentum_hasDerivAt / newtonian_internal_force_sum_zero | PhyslibTemp reusable adapters | Derivative of actual upstream momentum and cancellation of its internal-force multiset |
+| MomentumBalance.newton_second / newton_third | PhyslibTemp reusable physical relations | Momentum-form Newton II and pairwise Newton III, not a total-conservation axiom |
+| internal_sum_zero / total_hasDerivAt / total_change_eq_integral | Derived reusable mechanics | Finite sums and FTC eliminate internal forces and integrate total momentum |
+| continuous_impulse_tendsto_zero / constant_impulse_tendsto_zero | Reusable mathematical consequence for forces | Mathlib integral continuity, positive-duration limit; no finite-duration zero assertion |
+| event_momentum_eq_of_impulse_limit | Reusable event-limit consequence | Requires derived finite balance, endpoint convergence and vanishing impulse |
+| ConstantAccelerationExamples / ImpulseMomentumExamples | Library verification | Independent explicit witnesses, not P08 source assumptions |
+| UniformGravity | Deferred physical specialization | No new module or gravity/Newton-II force-to-acceleration derivation |
+| labFrame, up, initial upward speed and downward acceleration | P08 model kinematics | Ideal coasting reference trajectory, no powered flight |
+| apexTime / height maximum / zero apex velocity | Derived mathematics and kinematics | Reusable laws, completed square and Mathlib Fermat theorem |
+| eventMomentum / internalForce | P08 event regularization data | Family indexed by positive duration; elapsed-time momentum and force functions |
+| SourceData.mass_balance / event_initial | P08 system/initial-state modeling | Closed system mass accounting; constituents initially co-move with the rocket |
+| SourceData.event_balance | P08 use of reusable Newton relations | Constituent momentum equations and equal-and-opposite internal forces |
+| SourceData.post_event_limit | P08 idealized event semantics | Existence and identification of endpoint limits; not an equality of total pre/post momenta |
+| gravitationalForce / gravitationalImpulse | P08 gravity specialization | Constant mass-weighted downward force; integral over finite elapsed duration |
+| finite_duration_momentum_balance | Derived physics | Total change equals finite, generally nonzero gravitational impulse |
+| gravitational_impulse_tendsto_zero | Derived limit | Textbook approximation language sharpened to an exact instantaneous-event limit |
+| event_momentum_eq / total_momentum_zero | Derived event mechanics | Uniqueness of endpoint/impulse limits, then derived apex rest |
+| fragment momentum and positive masses | P08 snapshot modeling | p = m • v for the immediate post-event limiting snapshot |
+| LinearCoplanar / TrustedPhysicsProblem | Unchanged mathematical target | Linear subspace through zero, dimension ≤ 2; includes degeneracies |
+| span, finrank bound, inverse-mass scaling | Mathlib linear algebra | Existing proof retained; no affine-coplanarity shortcut |
+| regularized consistency witnesses and standard-basis negative test | Verification | Nonzero internal momentum transfer, finite nonzero gravity impulse and its zero limit; coplanarity is not automatic |
 
-There is no PhyslibTemp Rocket, VerticalProjectile, HighestPoint or explosion
-ontology. The reusable module is constant-acceleration mechanics; the vertical
-apex and approximate explosion are its problem-specific consumer.
+The removed `SourceData.momentum_conserved` is not replaced by an opaque event
+conservation equality. Finite-duration particlewise equations, initial matching
+and limiting-state identification are the physical/model inputs. They do not
+prove that a real explosion has literally zero duration or that every physical
+explosion admits this regularization. No generic rocket or explosion ontology
+is added. The two reusable mechanics branches are documented prototypes.

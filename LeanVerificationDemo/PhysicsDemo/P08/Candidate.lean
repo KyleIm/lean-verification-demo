@@ -1,6 +1,9 @@
 import LeanVerificationDemo.PhysicsDemo.P08.Problem
 
 open _root_.ClassicalMechanics
+open LeanVerificationDemo.PhyslibTemp.ClassicalMechanics
+open scoped BigOperators Topology
+open Filter MeasureTheory
 
 namespace LeanVerificationDemo.PhysicsDemo.P08.Candidate
 
@@ -78,11 +81,67 @@ lemma pre_momentum_zero (data : ExplosionData) (source : SourceData data) :
     preMomentum data = 0 := by
   simp [preMomentum, apex_velocity_zero data source]
 
-/-- Source/model physics: the adopted conserved momentum is therefore zero. -/
+/-- Newton III eliminates even large duration-dependent internal forces. -/
+lemma internal_forces_cancel (data : ExplosionData) (source : SourceData data)
+    (ε : ℝ) (hε : 0 < ε) (t : ℝ) :
+    ∑ i, ∑ j, data.internalForce ε i j t = 0 :=
+  (source.event_balance ε hε).internal_sum_zero t
+
+/-- Co-moving constituents at the start have the pre-event rocket momentum. -/
+lemma initial_total_momentum (data : ExplosionData) (source : SourceData data)
+    (ε : ℝ) (hε : 0 < ε) :
+    (∑ i, data.eventMomentum ε i 0) = preMomentum data := by
+  simp_rw [source.event_initial ε hε]
+  rw [← Finset.sum_smul, source.mass_balance]
+  rfl
+
+/-- Constant gravity has a finite-duration impulse ε F_g; it is not discarded. -/
+lemma gravitational_impulse_eq (data : ExplosionData) (ε : ℝ) :
+    gravitationalImpulse data ε = ε • gravitationalForce data := by
+  simp [gravitationalImpulse, intervalIntegral.integral_const]
+
+lemma gravitational_impulse_tendsto_zero (data : ExplosionData) :
+    Tendsto (gravitationalImpulse data) (𝓝[>] (0 : ℝ)) (𝓝 0) := by
+  have h := constant_impulse_tendsto_zero (gravitationalForce data) 0
+  simp_rw [constant_impulse] at h
+  change Tendsto (fun ε => gravitationalImpulse data ε) _ _
+  simp_rw [gravitational_impulse_eq]
+  exact h
+
+/-- Summed Newton II, internal cancellation and FTC give the finite-time balance. -/
+lemma finite_duration_momentum_balance (data : ExplosionData) (source : SourceData data)
+    (ε : ℝ) (hε : 0 < ε) :
+    (∑ i, data.eventMomentum ε i ε) - preMomentum data = gravitationalImpulse data ε := by
+  have h := (source.event_balance ε hε).total_change_eq_integral 0 ε
+    (by simpa only [gravitationalForce, ← Finset.sum_smul] using
+      (intervalIntegrable_const : IntervalIntegrable
+        (fun _ : ℝ => gravitationalForce data) volume 0 ε))
+  rw [initial_total_momentum data source ε hε] at h
+  simpa only [gravitationalImpulse, gravitationalForce, Finset.sum_smul] using h
+
+/-- Event-state semantics: endpoints of positive-duration regularizations
+converge to the immediate post-event fragment momenta. This is a duration limit,
+not a claim about a fixed finite time after an actual explosion. -/
+lemma total_momentum_endpoint_limit (data : ExplosionData) (source : SourceData data) :
+    Tendsto (fun ε => ∑ i, data.eventMomentum ε i ε)
+      (𝓝[>] (0 : ℝ)) (𝓝 (totalMomentum data)) := by
+  have h := tendsto_finsetSum Finset.univ (fun i _ => source.post_event_limit i)
+  simpa [totalMomentum, Fin.sum_univ_succ, add_assoc] using h
+
+/-- Across-event equality is derived by uniqueness of the right-duration limit,
+after finite-time Newton balance and vanishing external impulse are proved. -/
+lemma event_momentum_eq (data : ExplosionData) (source : SourceData data) :
+    totalMomentum data = preMomentum data := by
+  exact event_momentum_eq_of_impulse_limit
+    (finite_duration_momentum_balance data source)
+    (total_momentum_endpoint_limit data source)
+    (gravitational_impulse_tendsto_zero data)
+
+/-- Derived event mechanics plus proved apex rest gives zero post-event momentum. -/
 lemma total_momentum_zero (data : ExplosionData) (source : SourceData data) :
     momentum data 0 + momentum data 1 + momentum data 2 = 0 := by
   change totalMomentum data = 0
-  exact source.momentum_conserved.trans (pre_momentum_zero data source)
+  exact (event_momentum_eq data source).trans (pre_momentum_zero data source)
 
 /-- Pure linear algebra: the first momentum is minus the sum of the other two. -/
 lemma first_momentum_eq_neg_sum (data : ExplosionData) (source : SourceData data) :
@@ -144,7 +203,8 @@ one plane through the origin (dimension ≤ 2). No later fragment dynamics is cl
 theorem solution (data : ExplosionData) (source : SourceData data) :
     TrustedPhysicsProblem data := by
   -- Constant-acceleration mechanics → height maximum → Fermat → zero apex velocity
-  -- → zero pre-momentum → conserved zero post-momentum → momentum coplanarity.
+  -- → zero pre-momentum; Newton II/III → finite gravitational impulse → zero-duration
+  -- event limit → zero post-momentum → momentum coplanarity.
   -- Then transfer membership by positive masses.
   obtain ⟨plane, hDimension, hMomenta⟩ := momenta_coplanar data source
   have hVelocities : ∀ i, data.velocity i ∈ plane := by

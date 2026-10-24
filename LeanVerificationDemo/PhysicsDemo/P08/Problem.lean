@@ -1,4 +1,5 @@
 import LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.ConstantAcceleration
+import LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.ImpulseMomentum
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
@@ -8,6 +9,8 @@ import Mathlib.Tactic
 namespace LeanVerificationDemo.PhysicsDemo.P08
 open _root_.ClassicalMechanics
 open LeanVerificationDemo.PhyslibTemp.ClassicalMechanics
+open scoped BigOperators Topology
+open Filter
 
 /-- Fixed nonrotating Cartesian frame; the third coordinate is vertical. -/
 noncomputable def labFrame : ReferenceFrame 3 where
@@ -44,6 +47,11 @@ structure ExplosionData where
   initialSpeed_pos : 0 < initialSpeed
   g : ℝ
   g_pos : 0 < g
+  /-- Duration-indexed momentum histories; the second time is elapsed time
+  since the event starts, so its absolute time is apexTime + t. -/
+  eventMomentum : ℝ → Fin 3 → ℝ → Vector3
+  /-- Force on i from j, for each positive-duration regularization. -/
+  internalForce : ℝ → Fin 3 → Fin 3 → ℝ → Vector3
 
 /-- Candidate turning time of the vertical coasting reference trajectory. Its
 maximum-height property and zero velocity are proved, not supplied as evidence. -/
@@ -69,13 +77,33 @@ noncomputable def preMomentum (data : ExplosionData) : Vector3 :=
 noncomputable def totalMomentum (data : ExplosionData) : Vector3 :=
   momentum data 0 + momentum data 1 + momentum data 2
 
-/-- Independent source/model premises. Conservation is an adopted event-level
-approximation justified by neglecting the short gravitational impulse; neither
-zero gravity impulse nor literally zero event duration is derived here. -/
+/-- Constant external acceleration in the fragment coordinate space. -/
+noncomputable def gravityAcceleration (data : ExplosionData) : Vector3 :=
+  WithLp.toLp 2 ((-data.g) • up).components
+
+noncomputable def gravitationalForce (data : ExplosionData) : Vector3 :=
+  (∑ i, data.mass i) • gravityAcceleration data
+
+/-- Elapsed-time impulse over the finite event, equivalent to integrating the
+constant force over [apexTime, apexTime + ε]. -/
+noncomputable def gravitationalImpulse (data : ExplosionData) (ε : ℝ) : Vector3 :=
+  ∫ _t in (0 : ℝ)..ε, gravitationalForce data
+
+/-- Source/model inputs, not conservation of the final event states. Each
+positive-duration interaction obeys coordinate Newton II/III and starts with
+co-moving constituents. The post-event snapshot is the limit of its endpoint
+momenta as duration tends to zero from above. Existence of this regularization
+and its limits is an idealization, not a theorem about an actual explosion. -/
 structure SourceData (data : ExplosionData) : Prop where
   constant_acceleration : HasConstantAcceleration data.rocket ((-data.g) • up)
   initial_velocity : data.rocket.velocity 0 = data.initialSpeed • up
-  momentum_conserved : totalMomentum data = preMomentum data
+  mass_balance : ∑ i, data.mass i = data.rocket.mass.val
+  event_balance : ∀ ε > 0, MomentumBalance (data.eventMomentum ε) (data.internalForce ε)
+    (fun i _ => data.mass i • gravityAcceleration data)
+  event_initial : ∀ ε > 0, ∀ i,
+    data.eventMomentum ε i 0 = data.mass i • apexVelocity data
+  post_event_limit : ∀ i, Tendsto (fun ε => data.eventMomentum ε i ε)
+    (𝓝[>] (0 : ℝ)) (𝓝 (momentum data i))
 
 /-- Genuine linear coplanarity: all vectors lie in a real linear subspace through
 zero of dimension at most two. Subspaces of Vector3 are finite-dimensional, so
