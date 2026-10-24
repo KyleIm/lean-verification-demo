@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Provisional reconstruction using only the revised trusted geometry caption.
+"""Deterministic Fig. 203 illustration; not a caption-only evaluation result.
 
-The authorized user-supplied image is not currently accessible. This drawing
-therefore makes no visual-fidelity claim. Projection and label positions are
-illustrative choices; no independent reference image, solution or proof is read.
+An independently located source figure was inspected without authorization during
+development. Later generator edits did not establish independence from that
+visual reference. Its influence remains; the previous caption-only claim was
+incorrect. The agreed caption still controls trusted geometric input.
+
+Runtime reads only caption/geometry metadata, not images or solution/proof files.
+That runtime property does not establish image-independent design provenance.
 """
 from pathlib import Path
 from math import sin, cos, radians
@@ -47,8 +51,9 @@ def main():
 
     svg = [
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 390" width="680" height="390" role="img" aria-labelledby="title desc">',
-        '<title id="title">Provisional caption-based Fig. 203: annular cylinder with right radial section</title>',
+        '<title id="title">Figure 203 illustration: annular cylinder with right radial section (not a caption-only result)</title>',
         f'<desc id="desc">{escape(caption)}</desc>',
+        '<metadata id="provenance">Developed after unauthorized visual-reference exposure; not an independent caption-only reconstruction or evaluation result. The reference is not accepted as trusted source input.</metadata>',
         '<defs>',
         '<pattern id="section-hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(42)"><line x1="0" y1="0" x2="0" y2="12" stroke="#222" stroke-width="1.2"/></pattern>',
         '<marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 10 0 L 0 5 L 10 10" fill="none" stroke="#111" stroke-width="1.4"/></marker>',
@@ -69,7 +74,7 @@ def main():
         line((cx+outer, top), (cx+outer, bottom)),
         arc(outer, bottom, 0, 180),
         line((cx, top-65), (cx, bottom+65), 'axis'),
-        # Radius dimensions lie on the top plane, not at an image-derived position.
+        # Radius dimensions are shown on the top plane.
         dimension((cx, top), (cx-inner, top)),
         label(cx-inner/2, top-13, 'a'),
         dimension((cx, top), (cx-outer*.6, top-outer*.8*flatten)),
@@ -78,7 +83,7 @@ def main():
         line((cx+outer+7, bottom), (cx+outer+61, bottom), 'dimension'),
         dimension((cx+outer+47, top+4), (cx+outer+47, bottom-4)),
         label(cx+outer+76, top+height/2+9, 'h'),
-        '<text class="caption" x="70" y="365">Fig. 203 — provisional caption-based reconstruction</text>',
+        '<text class="caption" x="70" y="365">Fig. 203 — illustration; not a caption-only result</text>',
         '</svg>']
     (ROOT / 'problem_diagram.svg').write_text('\n'.join(svg) + '\n')
 

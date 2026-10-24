@@ -47,7 +47,7 @@ solution of a self-inductive conductor or a proof of current direction.
 
 ## Figure and geometric provenance
 
-![Provisional caption-based reconstruction: a short annular cylinder with a full-height rectangular radial section exposed on the right, radii a and b, and height h.](problem_diagram.svg)
+![Reconstructed illustration, not a caption-only evaluation result: a short annular cylinder with a full-height rectangular radial section exposed on the right, radii a and b, and height h.](problem_diagram.svg)
 
 Revised trusted geometry caption, supplied by the user:
 
@@ -61,22 +61,26 @@ the body itself. These are geometric details; the existing a,b,h parameters and
 annular current model are unchanged.
 
 Only the user-supplied Fig. 203 image and this agreed caption are authorized
-sources for the reconstruction. The caption controls the geometric facts used
-by the formal problem; the user-supplied image is the intended visual reference.
-That image is not currently accessible in the working context, so the present
-SVG is a **provisional caption-based reconstruction**, not a claimed visual
-match to the supplied image or the original scan. Its projection, proportions
-and label placement are illustrative. Visual fidelity to the user-supplied image
-remains to be checked when that image is accessible.
+sources. **The current illustration is not a caption-only reconstruction.**
+During development, an independently located copy of the source figure was
+inspected without authorization. The generator developed after that exposure
+was subsequently modified; deleting the extracted image and changing the layout
+did not establish independence from that visual reference. The drawing retains
+that visual influence. The earlier claim that it was made solely from the
+caption was incorrect.
 
-The current provenance chain is user-supplied revised geometry caption →
-explicit geometry metadata → provisional reconstructed SVG and local geometry
-parameters. Manual translation into Lean parameters is trusted preprocessing;
-Lean does not parse the caption or infer parameters from pixels. No additional
-geometry or physical premises are obtained from another source. Resistivity,
-homogeneous axial field and H = kt come from the problem text; Faraday/Ohm
-relations and loop decomposition come from the supplied solution and adopted
-model, never from the geometric caption or image.
+That reference is not an accepted addition to the trusted source input. The
+current SVG must not be used as evidence that the caption alone suffices to
+reconstruct the source figure, or as an independent caption-to-image evaluation
+result. No visual comparison with the authorized user-supplied image is claimed.
+The SVG is a reconstructed illustration, not the original scan.
+
+The trusted geometric facts remain those in the agreed caption. Manual
+translation into Lean parameters is trusted preprocessing; Lean does not parse
+the caption or infer parameters from pixels. This diagram revision changes no
+Lean declarations or physical assumptions. Resistivity, the homogeneous axial
+field and H = kt remain separate problem-text input, while Faraday/Ohm relations
+and loop decomposition belong to the supplied solution and adopted model.
 
 Regenerate with:
 
@@ -84,8 +88,11 @@ Regenerate with:
 python3 LeanVerificationDemo/PhysicsDemo/P07/generate_problem_diagram.py
 ```
 
-The deterministic generator reads only `diagram_caption` and `diagram_geometry`
-from `source.jsonl`; it does not read images, source solutions or Lean files.
+At execution time, the deterministic generator reads `diagram_caption` and
+`diagram_geometry` from `source.jsonl`, and no image files. That runtime input
+restriction does not establish that the generator's design was independent of
+images: its fixed drawing instructions were developed after the visual exposure
+described above.
 
 ## How the real-world ring is represented
 
@@ -182,5 +189,5 @@ python3 scripts/verify.py P07
 - P07, P06, P05, P04, P03, P02, P01 and M00 verification: PASS.
 - P03–P07 mutation stages explicitly SKIPPED; M00/P01/P02 each passed 6/6 cases.
 - Final theorem axioms: `[propext, Classical.choice, Quot.sound]`; no `sorry` or new axioms.
-- Caption separation, deterministic SVG regeneration, valid SVG XML and visual preview: checked.
+- Geometry-only trusted caption, deterministic SVG regeneration, valid SVG XML and rendered preview: checked. These checks do not establish caption-only provenance.
 - `git diff --check`: PASS. Dependency pins and previous demo implementations unchanged.

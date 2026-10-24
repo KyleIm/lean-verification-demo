@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 390" width="680" height="390" role="img" aria-labelledby="title desc">
-<title id="title">Provisional caption-based Fig. 203: annular cylinder with right radial section</title>
+<title id="title">Figure 203 illustration: annular cylinder with right radial section (not a caption-only result)</title>
 <desc id="desc">Figure 203 shows a short annular cylindrical body with a rectangular radial cross section, viewed in perspective about a vertical symmetry axis. The body has inner cylindrical radius a, outer cylindrical radius b, and axial height h. A radial cut on the right side exposes a vertical rectangular section extending from the inner cylindrical surface to the outer cylindrical surface through the full height h. The labels a and b denote distances from the central axis to the inner and outer cylindrical surfaces, respectively, and h denotes the vertical height of the exposed rectangular section.</desc>
+<metadata id="provenance">Developed after unauthorized visual-reference exposure; not an independent caption-only reconstruction or evaluation result. The reference is not accepted as trusted source input.</metadata>
 <defs>
 <pattern id="section-hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(42)"><line x1="0" y1="0" x2="0" y2="12" stroke="#222" stroke-width="1.2"/></pattern>
 <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 10 0 L 0 5 L 10 10" fill="none" stroke="#111" stroke-width="1.4"/></marker>
@@ -26,5 +27,5 @@
 <line x1="527.000" y1="245.000" x2="581.000" y2="245.000" class="dimension" />
 <line x1="567.000" y1="154.000" x2="567.000" y2="241.000" class="dimension" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
 <text class="label" x="596" y="206.5">h</text>
-<text class="caption" x="70" y="365">Fig. 203 — provisional caption-based reconstruction</text>
+<text class="caption" x="70" y="365">Fig. 203 — illustration; not a caption-only result</text>
 </svg>
