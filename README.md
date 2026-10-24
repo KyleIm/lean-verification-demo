@@ -1,6 +1,6 @@
 # Lean Verification Demo
 
-Problem-centric Lean verification prototype for one mathematics problem and eight
+Problem-centric Lean verification prototype for one mathematics problem and nine
 physics problems.
 
 ## Purpose
@@ -64,6 +64,10 @@ add physical content such as a gravitational force/Newton-II bridge, rather than
 merely rename a constant vector. The design notes describe a possible future
 upstream contribution; they are not P08 source assumptions or additional axioms.
 
+P09 reuses the same layer for two separate sliding segments. Newton/friction
+premises give their accelerations, and elastic speed matching joins the derived
+distance relations. No new PhyslibTemp friction or collision API is added.
+
 ## Reusable impulse–momentum layer
 
 [ImpulseMomentum.lean](LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentum.lean)
@@ -91,7 +95,7 @@ For each problem:
 3. Run six controlled mutation tests.
 4. Compile an annotated proof for human audit.
 
-P03–P08 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
+P03–P09 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
 an empty manifest. Existing demos still run their six mutation checks.
 
 The six mutation tests are part of Stage 3.  They are not six separate
@@ -144,6 +148,7 @@ project.
 | Physics | `656` | `P06` | [problem README](LeanVerificationDemo/PhysicsDemo/P06/README.md), [propagation audit](LeanVerificationDemo/PhysicsDemo/P06/PHYSLIB_AUDIT.md) |
 | Physics | `574` | `P07` | [problem README](LeanVerificationDemo/PhysicsDemo/P07/README.md), [reconstructed illustration](LeanVerificationDemo/PhysicsDemo/P07/problem_diagram.svg), [induction audit](LeanVerificationDemo/PhysicsDemo/P07/PHYSLIB_AUDIT.md) |
 | Physics | `77` | `P08` | [problem README](LeanVerificationDemo/PhysicsDemo/P08/README.md), [mechanics and linear-algebra audit](LeanVerificationDemo/PhysicsDemo/P08/PHYSLIB_AUDIT.md) |
+| Physics | `47` | `P09` | [problem README](LeanVerificationDemo/PhysicsDemo/P09/README.md), [friction/impact audit](LeanVerificationDemo/PhysicsDemo/P09/PHYSLIB_AUDIT.md) |
 
 ## Run
 
@@ -165,6 +170,7 @@ python3 scripts/verify.py P05
 python3 scripts/verify.py P06
 python3 scripts/verify.py P07
 python3 scripts/verify.py P08
+python3 scripts/verify.py P09
 ```
 
 Or by full problem ID:
@@ -191,6 +197,7 @@ or ID.  Add `--verbose` to show raw Lean diagnostics for each command.
 | `656` (P06) | PASS | PASS | SKIPPED | PASS | PASS |
 | `574` (P07) | PASS | PASS | SKIPPED | PASS | PASS |
 | `77` (P08) | PASS | PASS | SKIPPED | PASS | PASS |
+| `47` (P09) | PASS | PASS | SKIPPED | PASS | PASS |
 
 ## Environment
 

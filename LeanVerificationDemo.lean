@@ -43,3 +43,8 @@ import LeanVerificationDemo.PhysicsDemo.P08.Candidate
 import LeanVerificationDemo.PhysicsDemo.P08.Verify
 import LeanVerificationDemo.PhysicsDemo.P08.CandidateAnnotated
 import LeanVerificationDemo.PhysicsDemo.P08.PairingWalkthrough
+import LeanVerificationDemo.PhysicsDemo.P09.Problem
+import LeanVerificationDemo.PhysicsDemo.P09.Candidate
+import LeanVerificationDemo.PhysicsDemo.P09.Verify
+import LeanVerificationDemo.PhysicsDemo.P09.CandidateAnnotated
+import LeanVerificationDemo.PhysicsDemo.P09.PairingWalkthrough
