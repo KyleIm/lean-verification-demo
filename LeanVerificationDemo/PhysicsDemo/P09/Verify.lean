@@ -1,4 +1,5 @@
 import LeanVerificationDemo.PhysicsDemo.P09.Candidate
+import LeanVerificationDemo.PhysicsDemo.P09.Units
 import LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.ConstantAccelerationExamples
 
 namespace LeanVerificationDemo.PhysicsDemo.P09.Verifier
@@ -123,5 +124,25 @@ example : (1020408 : ℝ) / 10000000 < witness.μ ∧ witness.μ < (1020409 : �
 example : witness.μ ≠ (102 : ℝ) / 1000 := by
   rw [Candidate.coefficient_exact witness witness_source]
   norm_num
+
+-- Additive unit layer: the original mechanics/source witnesses are unchanged.
+example (data : PuckData) (source : SourceData data) :
+    (⟨data.μ⟩ : Units.Coefficient) = Units.coefficientRhs
+      (⟨data.initialSpeed⟩ : Units.Velocity) (⟨data.g⟩ : Units.Acceleration)
+      ((⟨data.firstPath⟩ : Units.Length) + (⟨data.secondPath⟩ : Units.Length)) :=
+  Units.typed_coefficient_equation data source.model
+
+example : (⟨witness.μ⟩ : Units.Coefficient) = (⟨5 / 49⟩ : Units.Coefficient) :=
+  Units.typed_source_answer witness witness_source
+
+example : Units.coefficientRhs (Units.initialVelocity LTMCTUnitChoices.SI)
+    (Units.gravity LTMCTUnitChoices.SI)
+    (Units.firstDistance LTMCTUnitChoices.SI + Units.secondDistance LTMCTUnitChoices.SI) =
+      (⟨5 / 49⟩ : Units.Coefficient) := Units.source_coefficient_in_SI
+
+-- This negative dimensional check is an ordinary proved inequality of dimensions,
+-- rather than a deliberately broken equality left in a compiling source file.
+example : Units.velocityDim / (Units.accelerationDim * Dimension.L𝓭) ≠ 1 :=
+  Units.incorrect_formula_not_dimensionless
 
 end LeanVerificationDemo.PhysicsDemo.P09.Verifier

@@ -31,3 +31,26 @@ PlanarStatics' equilibrium model and ImpulseMomentum's interaction equations
 were inspected and are not substituted for the source's sliding law or elastic
 fixed-board condition. No general contact/collision solver, ontology-level Puck,
 or board-reflection geometry is added.
+
+## Additive dimension/unit layer
+
+| Component | Classification | Boundary |
+| --- | --- | --- |
+| Dimension / LTMCTDimensionBase / WithDim | Existing upstream physical-dimension system | Uses length/time/mass subset of the existing basis; no parallel quantity structures |
+| LTMCTUnitChoices.SI / Dimensionful / toDimensionful | Existing upstream unit machinery | Common coherent SI coordinates plus covariance between unit choices |
+| WithDim HMul / HDiv / cast / scalar actions | Existing upstream quantity algebra | Products and quotients carry their computed dimensions; casts require proofs |
+| DimSpeed.oneMeterPerSecond / DimEnergy.joule | Existing named upstream units | Checked against the local real-valued SI representation |
+| Units quantity aliases and source SI values | P09-local presentation of typed source/model data | 5 m/s, 10 m, 5/2 m; explicit g = 49/5 m/s² specialization |
+| friction_dimensions_iff / newton_dimensions | Dimensional verification | Force homogeneity and Mass × Acceleration = Force, not friction/Newton assumptions |
+| stopping_dimensions / coefficient_dimensions | Dimensional verification | Velocity² = Acceleration × Length and v²/(gs) has dimension 1 |
+| typed_friction / typed_friction_acceleration / typed_stopping_relation / typed_coefficient_equation | Bridge to existing physical/model result | Value equalities come from existing premises/Candidate; dimension equalities are proved separately |
+| typed_newton | Algebraic identity in typed quantities | F = m(F/m); connection to trajectory acceleration remains in Candidate |
+| source_coefficient_in_SI | Exact typed numerical specialization | Evaluates the expression to WithDim 1 ℝ with value 5/49; does not establish the mechanics |
+| coefficient_source_value | Unchanged scalar numerical approximation | Existing rounding theorem still derives from exact mechanics answer |
+| energy_dimensions / joule_is_newton_metre | Optional dimensional/SI check | mv² is energy and J = N·m; no new energy proof of P09 |
+| coefficient_unit_invariant | Upstream unit-covariance consequence | Dimensionless quantity coordinates do not rescale |
+| incorrect_formula_not_dimensionless | Negative dimensional verification | v/(gs) has dimension T/L and is not dimensionless; no deliberately broken file |
+
+No new PhyslibTemp declaration is required. The mechanics data/proposition and
+Candidate proofs remain byte-for-byte unchanged; Units is an additive checked
+layer and does not turn dimensional consistency into a physical assumption.

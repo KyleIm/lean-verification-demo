@@ -66,7 +66,9 @@ upstream contribution; they are not P08 source assumptions or additional axioms.
 
 P09 reuses the same layer for two separate sliding segments. Newton/friction
 premises give their accelerations, and elastic speed matching joins the derived
-distance relations. No new PhyslibTemp friction or collision API is added.
+distance relations. Its additive [unit layer](LeanVerificationDemo/PhysicsDemo/P09/Units.lean)
+uses upstream Physlib dimensions and SI quantities to check the same equations
+and exact numerical result. No new PhyslibTemp friction, collision or unit API is added.
 
 ## Reusable impulse–momentum layer
 

@@ -65,8 +65,11 @@ coordinates are **not** one global axis implying a head-on impact. The board
 angle and a spatial reflection map are unnecessary for this scalar conclusion.
 
 Coordinates are fixed coherent SI: metres, seconds, kilograms, newtons, m/s and
-m/s². μ is dimensionless. Physical dimensions are documented rather than encoded
-in these real/frame-coordinate types, matching the mechanics demos' convention.
+m/s². μ is dimensionless. The existing mechanics uses real/frame-coordinate
+magnitudes. The additive [Units.lean](Units.lean) layer now encodes dimensions
+with upstream Physlib `WithDim` and checks the same formulas and their SI
+specialization. It does not replace the trajectory types or make their entire
+calculus dimension-indexed.
 
 P09 makes the textbook reasoning more explicit and preserves its physical
 meaning under the stated horizontal-friction and fixed-board elastic model.
@@ -189,6 +192,110 @@ dependencies. The total-path argument is not merely `10 + 2.5`: elastic matching
 is necessary for the intermediate speed to cancel without an extra energy-loss
 term.
 
+## Dimensional verification
+
+P09 also exercises Physlib's actual physical-dimension system. The unchanged
+mechanics proof, dimensional checks and SI evaluation have distinct roles:
+
+| Layer | What is checked |
+| --- | --- |
+| Physical/model inputs | Horizontal support, sliding friction and fixed-board elasticity remain explicit physical assumptions |
+| Logical derivation | Candidate derives the stopping relation and coefficient from those inputs |
+| Dimensional correctness | Units proves homogeneous dimensions and constructs typed products/quotients |
+| Numerical specialization | Exact rational SI inputs evaluate to the dimensionless 5/49; Candidate separately bounds the source rounding |
+
+Dimensional correctness does **not** establish physical truth. A homogeneous
+formula can be physically false. Conversely, lifting the scalar theorem into
+quantities requires assigning its coordinates a common SI interpretation; the
+unit layer does not infer units from arbitrary numerical values.
+
+### Upstream representation
+
+`Units.lean` uses `Dimension LTMCTDimensionBase`, its length/time/mass generators,
+`WithDim`, heterogeneous multiplication/division, real scalar actions, and
+`WithDim.cast` with proved dimension equalities. Its local aliases are
+specializations of that upstream quantity type, not parallel structures.
+LTMCT suffices for these mechanical dimensions; P02's seven-base ISQ choice was
+needed for independent amount of substance, which P09 does not use.
+
+| Quantity | SI unit | Upstream dimension tag used locally |
+| --- | --- | --- |
+| distance | m | L |
+| duration | s | T |
+| mass | kg | M |
+| speed | m/s | L/T |
+| acceleration, g | m/s² | L/T² |
+| normal/friction force | N = kg·m/s² | ML/T² |
+| energy | J = N·m | ML²/T² |
+| friction coefficient | dimensionless | 1 (all base exponents zero) |
+
+`Dimensionful` and `CarriesDimension.toDimensionful LTMCTUnitChoices.SI` give
+unit-dependent quantities initialized with SI coefficients. `metre`, `second`,
+`kilogram`, `newton`, `initialVelocity`, `firstDistance`, `secondDistance` and
+`gravity` use this upstream representation. The first four are local named
+values, not claims of additional upstream quantity declarations. The actual
+named upstream speed and joule APIs are checked too.
+
+### Executable checks
+
+| Textbook relation | Formal declaration(s) in Units |
+| --- | --- |
+| F = μN requires dimensionless μ | `friction_dimensions_iff`: d·Force = Force iff d = 1; `frictionForce` and `typed_friction` form the typed product |
+| Mass × Acceleration = Force | `newton_dimensions`, `newtonForce`, `typed_newton` |
+| a = μg | `typed_friction_acceleration`, lifted from Candidate's derived relation |
+| Velocity² = Acceleration × Length | `stopping_dimensions`, `speed_squared_dimensions`, `typed_stopping_relation` |
+| v²/(gs) is dimensionless | `coefficient_dimensions`, `coefficientRhs`, `coefficient_has_dimension_one` |
+| μ = v₀²/[2g(s₁+s₂)] | `typed_coefficient_equation`, an equality between dimensionless quantities using Candidate's mechanics theorem |
+| mv²/2 has energy dimension | `energy_dimensions`, `kineticEnergyExpression` |
+| joule = newton·metre | `joule_is_newton_metre`, using upstream `DimEnergy.joule` |
+| μ does not rescale between unit choices | `coefficient_unit_invariant`, using upstream `scaleUnit_dim_eq_zero` |
+| v/(gs) is dimensionally wrong | `incorrect_formula_dimension` gives T/L; `incorrect_formula_not_dimensionless` proves it differs from 1 |
+
+The homogeneity iff for F = μN is about **dimensions**, not an inference from a
+numerical equality involving possibly zero forces. `typed_newton` is the
+algebraic identity F = m(F/m); Candidate's existing Newton-II lemmas establish
+that this defined deceleration is the actual acceleration magnitude on the
+modeled segments. No new physical assumption is supplied by these checks.
+
+The factor 2 (and the kinetic-energy factor 1/2) acts as an upstream dimensionless
+real scalar. A quantity square is written `v * v`, because upstream's
+heterogeneous multiplication changes its dimension; powers of dimension tags
+are also checked. Every retagging uses `WithDim.cast` with an equality proof.
+
+The explanatory dimensional chain is:
+
+```text
+[F] = [μ][N], with F and N forces → [μ] = 1
+m a = μ m g → a = μg                       (existing physical derivation)
+[v²] = [a][s] = L²/T²
+[μ] = [v²]/([g][s]) = 1.
+```
+
+The table above identifies the executable statements behind this notation.
+The physical derivation is retained rather than replaced by dimensional analysis.
+
+### Exact SI values and scalar bridge
+
+`source_values_in_SI` checks 5 m/s, 10 m, 5/2 m and 49/5 m/s².
+`total_distance_in_SI` adds the lengths to 25/2 m. The actual typed calculation
+in `source_coefficient_in_SI` proves
+
+```text
+(5 m/s)² / [2 · (49/5 m/s²) · (25/2 m)] = 5/49  (dimensionless).
+```
+
+There is no floating-point arithmetic. Upstream `WithDim.val` exposes a numerical
+coordinate, while `WithDim.ext` lifts a scalar equality at fixed dimension.
+`typed_coefficient_equation` uses `Candidate.coefficient_symbolic` for the
+physical result; `typed_source_answer` uses its exact source specialization.
+`source_coefficient_in_SI` independently checks typed rational evaluation of
+that expression, not the correctness of the friction model. The existing
+source-decimal theorem remains unchanged.
+
+`Verify.lean` imports Units, so its dimension proofs, SI evaluation and negative
+check participate in normal P09 verification. The new layer adds no PhyslibTemp
+code and no mutation cases or verification-runner redesign.
+
 ## Verification
 
 `Verify.lean` constructs two upstream quadratic particles with unit mass and
@@ -209,6 +316,7 @@ lake build
 python3 scripts/verify.py --list
 python3 scripts/verify.py P09
 lake env lean LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean
+lake env lean LeanVerificationDemo/PhysicsDemo/P09/Units.lean
 git diff --check
 ```
 
@@ -217,7 +325,7 @@ diagram or additional empirical data is used.
 
 ### Validation results
 
-- `lake build`: PASS (3653 jobs); existing module-interoperability warnings remain.
+- `lake build`: PASS (3656 jobs); existing module-interoperability warnings remain.
 - M00 and P01–P09 verification: all PASS.
 - M00/P01/P02 mutations: 6/6 each; P03–P09 explicitly SKIPPED.
 - `--list` recognizes P09 with source ID 47.
@@ -229,3 +337,17 @@ diagram or additional empirical data is used.
   `[propext, Classical.choice, Quot.sound]`; no `sorry` or new axioms.
 - JSON/links, new-file whitespace and `git diff --check`: PASS.
 - No dependency pin or existing PhyslibTemp/demo implementation changed.
+
+### Additive unit-layer validation
+
+- Full `lake build`, M00/P01–P09 verification and direct compilation of Units:
+  all PASS. Existing mutation suites remain 6/6 for M00/P01/P02, and P03–P09
+  remain explicitly SKIPPED.
+- Typed SI source values, exact coefficient, force/kinematics dimensions, joule
+  relation, unit invariance and the negative dimensional theorem compile.
+- Problem, Candidate, CandidateAnnotated, source JSONL, verification metadata,
+  mutation manifest and dependency pins were compared byte-for-byte with the
+  prior commit: unchanged. No PhyslibTemp file changed.
+- Candidate solution, typed coefficient equation, SI coefficient evaluation and
+  joule relation use only `[propext, Classical.choice, Quot.sound]`.
+- Documentation links, new-file whitespace and `git diff --check`: PASS.

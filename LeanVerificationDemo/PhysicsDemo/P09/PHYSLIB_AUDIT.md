@@ -135,3 +135,109 @@ initial speeds 5 and √5, and durations 5−√5 and √5. It checks all force,
 impact and stop premises directly. The coefficient is set from F/N, with no
 final coefficient theorem or stopping relation supplied as source evidence.
 The physical/model inputs are therefore satisfiable, including the numeric data.
+
+## Additive unit/dimension audit
+
+The same pinned sources were re-inspected for the requested unit layer. The
+suggested `Physlib/Foundations/SI.lean` and `SIDeriv.lean` paths do not exist at
+this pin; the actual framework is under `Physlib/Units/`.
+
+```bash
+rg --files Physlib/Units
+rg -n 'structure |class |instance |def |abbrev |lemma ' Physlib/Units/Dimension.lean Physlib/Units/LTMCTDimensionBase.lean Physlib/Units/Basic.lean Physlib/Units/WithDim/Basic.lean
+rg -n 'Mass|Velocity|Acceleration|Force|Energy|Momentum|DimSpeed|joule|oneMeterPerSecond' Physlib/Units
+rg -n 'scaleUnit|toDimensionful|dimScale|cast|HDiv|HMul|pow_two' Physlib/Units
+```
+
+Also read `SIUnitChoices.lean`, `ISQDimensionBase.lean`, `UnitSystem.lean`,
+`UnitDependent.lean`, `WithDim/Mass.lean`, `Velocity.lean`, `Speed.lean`,
+`Energy.lean`, `Momentum.lean`, and P02's existing MolarIdealGas aliases.
+
+### Exact upstream declarations used
+
+Generic dimension-basis/typeclass parameters are given explicitly where needed;
+SI-choice-specific declarations below use the LTMCT basis.
+
+| File / declaration | Lean type / definition | Use |
+| --- | --- | --- |
+| `Units/Dimension.lean:67`, `Dimension` | `(B : Type) [DimensionBasis B] : Type` | Existing dimension carrier; not redefined in P09 |
+| Same file:111, `Dimension.instCommGroup` | `[DimensionBasis B] : CommGroup (Dimension B)` | Dimension multiplication/division/inversion and powers; dimensionless identity is 1 |
+| Same file:88, `Dimension.ext` | `{d1 d2 : Dimension B} (h : ∀ b, d1.exponent b = d2.exponent b) : d1 = d2` | Certifies equal base exponents |
+| Same file:100/136/141, `mul_exponent`, `div_exponent`, `npow_exponent` | `(d1*d2).exponent b = d1.exponent b + d2.exponent b`; `(d1/d2).exponent b = d1.exponent b - d2.exponent b`; `(d^n).exponent b = n • d.exponent b` | Executable force, stopping, coefficient and negative dimension checks |
+| `Units/LTMCTDimensionBase.lean:273/291/309`, `Dimension.L𝓭`, `T𝓭`, `M𝓭` | Each has type `Dimension LTMCTDimensionBase`; unit length/time/mass exponent generators | Mechanical SI dimensions in the existing five-base system |
+| `Units/WithDim/Basic.lean:33`, `WithDim` | `{B : Type} [DimensionBasis B] (d : Dimension B) (M : Type) : Type`; field `val : M` | All local quantities are aliases of this type |
+| Same file:47/51, HasDim instance / `WithDim.dim_apply` | `dim (WithDim d M) = d` for `d : Dimension LTMCTDimensionBase` | Explicit coefficient dimension-one fact |
+| Same file:40, `WithDim.ext` | `(x y : WithDim d M) (h : x.val = y.val) : x = y` | Lift fixed-SI scalar equalities from Candidate |
+| Same file:247, `WithDim.instHMulRealHMulDimension` | `{B} [DimensionBasis B] {d1 d2 : Dimension B} : HMul (WithDim d1 ℝ) (WithDim d2 ℝ) (WithDim (d1*d2) ℝ)` | Actual dimension-changing quantity multiplication |
+| Same file:317, `WithDim.instHDivRealHMulDimensionInv` | `{B} [DimensionBasis B] (d1 d2 : Dimension B) : HDiv (WithDim d1 ℝ) (WithDim d2 ℝ) (WithDim (d1*d2⁻¹) ℝ)` | Actual dimension-changing quotient in v²/(2gs) |
+| Same file:232/243, `WithDim.instModuleReal`, `real_smul_val` | With real module M: `Module ℝ (WithDim d M)` and `(r • x).val = r • x.val` | 2 and 1/2 are dimensionless real factors |
+| Same file:251/322, `withDim_hMul_val`, `val_div_val` | `(x*y).val = x.val*y.val`; `x.val/y.val = (x/y).val` | Exact numerical evaluation of typed arithmetic |
+| Same file:278, `val_pow_two_eq_mul` | `(x : WithDim d ℝ) : x.val^2 = (x*x).val` | Audited convention for quantity squaring; P09 uses x*x with its computed dimension |
+| Same file:356, `WithDim.cast` | `{B} [DimensionBasis B] {d d2 : Dimension B} {M} (x : WithDim d M) (h : d = d2) : WithDim d2 M` | Dimension normalization only after an equality proof |
+| Same file:341, `scaleUnit_dim_eq_zero` | `{d : Dimension LTMCTDimensionBase} (x : WithDim d ℝ) (u1 u2 : LTMCTUnitChoices) (h : d = 1) : UnitDependent.scaleUnit u1 u2 x = x` | Dimensionless coefficient is invariant under unit rescaling |
+| `Units/Basic.lean:254`, `LTMCTUnitChoices.SI` | `LTMCTUnitChoices` | Coherent metre/second/kilogram/coulomb/kelvin choice |
+| Same file:382, `Dimensionful` | `(M : Type) [CarriesDimension M] : Type := Subtype (HasDimension (M := M))` | Unit-dependent quantities, rather than unlabelled numerical values |
+| Same file:435, `CarriesDimension.toDimensionful` | `{M} [CarriesDimension M] (u : LTMCTUnitChoices) : M ≃ Dimensionful M` | Initialize source quantities at SI; the equivalence inverse evaluates at that choice |
+| `Units/UnitDependent.lean:40`, `UnitDependent.scaleUnit` | `{M} [UnitDependent M] : LTMCTUnitChoices → LTMCTUnitChoices → M → M` | Unit rescaling; coefficient invariance uses the upstream theorem |
+| `SpaceAndTime/Space/LengthUnit.lean:86`, `LengthUnit.meters` | `LengthUnit` | SI length choice |
+| `SpaceAndTime/Time/TimeUnit.lean:66`, `TimeUnit.seconds` | `TimeUnit` | SI time choice |
+| `ClassicalMechanics/Mass/MassUnit.lean:68`, `MassUnit.kilograms` | `MassUnit` | SI mass choice |
+| `Units/WithDim/Speed.lean:24`, `DimSpeed` | `Dimensionful (WithDim (L𝓭*T𝓭⁻¹) ℝ≥0)` | Existing named speed API, checked against 5 m/s |
+| Same file:38, `DimSpeed.oneMeterPerSecond` | `DimSpeed` | Named m/s unit consistency check |
+| `Units/WithDim/Energy.lean:24`, `DimEnergy` | `Dimensionful (WithDim (M𝓭*L𝓭*L𝓭*T𝓭⁻¹*T𝓭⁻¹) ℝ)` | Actual energy quantity API, with squared length despite the header's abbreviated wording |
+| Same file:30, `DimEnergy.joule` | `DimEnergy` | Formal J = N·m check in SI |
+
+The generated heterogeneous-instance names were confirmed with `#synth`; the
+other main signatures were checked in the pinned Lean environment. The
+`toDimensionful` equivalence's Mathlib `symm_apply_apply` law proves
+`coordinate_at_SI`, not a new conversion axiom.
+
+### Named APIs, basis choice and limits
+
+`Units/WithDim/Mass.lean` and `Velocity.lean` contain documentation but no named
+quantity declarations at this pin. No separate named acceleration/force wrapper
+module exists there. This is not a missing dimensional framework: existing
+WithDim naturally represents all of them. P09 adds local **type aliases**, not
+new structures or a parallel framework. Its `metre`, `second`, `kilogram`,
+`newton` and source values are local quantities constructed using upstream SI,
+not claims of upstream declarations with those names.
+
+P02 uses ISQ for independent amount of substance. P09 needs only L/T/M, so the
+LTMCT basis and its SI choice avoid unnecessary basis conversion and give direct
+access to the mature HasDim/Dimensionful/scaleUnit interfaces. The separate
+seven-base `SIUnitChoices.SI` was inspected; no claim is made that the five-base
+LTMCT basis is the full seven-base SI/ISQ set.
+
+Quantity multiplication and division support the required operations. A quantity
+square is x*x; the dimension itself also supports powers. Products whose indices
+are mathematically but not definitionally equal are normalized using upstream
+`WithDim.cast` with proved dimension equality. No unchecked retagging substitutes
+for a dimensional check.
+
+### Additive checks and semantics
+
+`P09/Units.lean` proves:
+
+- `friction_dimensions_iff`: d·Force = Force iff d = 1;
+- `newton_dimensions`: Mass·Acceleration = Force;
+- `stopping_dimensions` / `speed_squared_dimensions`: Velocity² = Acceleration·Length;
+- `coefficient_dimensions`: Velocity²/(Acceleration·Length) = 1;
+- typed friction, Newton-magnitude, acceleration, stopping and coefficient equations;
+- typed source values 5 m/s, 10 m, 5/2 m and 49/5 m/s², total 25/2 m, and
+  `source_coefficient_in_SI` with exact dimensionless value 5/49;
+- `energy_dimensions` and `joule_is_newton_metre`, independent dimensional/SI checks;
+- coefficient unit invariance and the negative result v/(gs) has dimension T/L ≠ 1.
+
+The necessity of dimensionless μ is a dimension-homogeneity theorem, not an
+inference from arbitrary numerical force equalities. Physical law F = μN still
+comes from SlidingModel. The scalar mechanics Candidate remains the source of
+physical coefficient/stopping results; WithDim.ext lifts them into already
+correctly indexed quantities. Type consistency cannot establish the friction
+law, elasticity or the stopping mechanics by itself.
+
+The unit layer certifies the formulas and fixed-SI bridge. It does not make the
+whole ReferenceFrame.Particle trajectory calculus dimension-indexed or prove
+full unit covariance of PuckData. `typed_newton` is the algebraic identity for
+F/m; its interpretation as actual deceleration is established in the existing
+Candidate. No physical premise or trusted proposition changed. No new PhyslibTemp
+code, unit framework, collision/friction abstraction or mutation case is added.

@@ -1,4 +1,5 @@
 import LeanVerificationDemo.PhysicsDemo.P09.Candidate
+import LeanVerificationDemo.PhysicsDemo.P09.Units
 
 namespace LeanVerificationDemo.PhysicsDemo.P09
 
@@ -21,6 +22,16 @@ namespace LeanVerificationDemo.PhysicsDemo.P09
 #check Candidate.coefficient_decimal_interval
 #check Candidate.solution
 #print axioms Candidate.solution
+#check Units.friction_dimensions_iff
+#check Units.newton_dimensions
+#check Units.speed_squared_dimensions
+#check Units.coefficient_dimensions
+#check Units.typed_coefficient_equation
+#check Units.source_coefficient_in_SI
+#check Units.incorrect_formula_not_dimensionless
+#check Units.joule_is_newton_metre
+#print axioms Units.typed_coefficient_equation
+#print axioms Units.source_coefficient_in_SI
 
 example (data : PuckData) (source : SourceData data) :
     TrustedPhysicsProblem data := Candidate.solution data source
