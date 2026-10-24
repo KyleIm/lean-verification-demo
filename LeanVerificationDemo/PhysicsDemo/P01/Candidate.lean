@@ -9,6 +9,10 @@ parallel stratified layers, and at the exit, then cancel the common external
 index and use sine injectivity on the physical angular interval. -/
 theorem solution (data : PlateData) (ray : RayThroughPlate data) :
     TrustedPhysicsProblem data ray := by
+  -- Source answer: β = α. The same external n₀ and the finite-layer Snell
+  -- invariant eliminate the internal index variation; this is conditional on
+  -- the supplied transmitted ray, not a continuous-medium limit theorem.
+  change ray.β = data.α
   have hEntrance :
       snellExpression data.n₀ data.α = snellExpression data.n₁ (ray.stack.angle 0) :=
     ray.entrance_snell

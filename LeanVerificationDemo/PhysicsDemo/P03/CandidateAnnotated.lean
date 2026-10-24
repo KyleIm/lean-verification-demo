@@ -70,24 +70,34 @@ lemma glass_voltage_at_air_limit (data : BatteryData) (source : SourceData data)
 /-- Derive both attained maxima and show that glass is strictly below breakdown. -/
 theorem solution (data : BatteryData) (source : SourceData data) :
     TrustedPhysicsProblem data := by
-  -- Thresholds now come from optional specifications, not capacitor fields.
+  -- Source fields and gap give air/glass thresholds of 21,000/63,000 V.
   obtain ⟨hAir, hGlass⟩ := threshold_values data source
-  -- Use the named P03-only 3000 V lemma to establish the strict glass margin.
-  have hSafe : data.airBreakdown.breakdownVoltage.val / data.εr <
+  -- Glass safety check for part (b): Uglass = 3000 V < 63000 V at the air limit.
+  have hAirLimitedGlassSafe : data.airBreakdown.breakdownVoltage.val / data.εr <
       data.glassBreakdown.breakdownVoltage.val := by
-    have hVoltage := glass_voltage_at_air_limit data source
+    have hVoltage : (data.glass.voltage data.airBreakdown.chargeAtLimit).val = 3000 :=
+      glass_voltage_at_air_limit data source
     rw [glass_voltage, data.airBreakdown.voltage_at_limit] at hVoltage
     rw [hVoltage, hGlass]
     norm_num
-  -- Preserve both the upper bounds and admissible attaining states.
-  refine ⟨?_, ?_, ?_⟩
-  · have h := air_maximum data
+  -- Part (a): four air capacitors have an attained maximum of 84,000 V.
+  -- air_maximum proves both the universal upper bound and an attaining charge.
+  have hPartA : MaximumVoltage data.airBreakdown.Admissible (airTotal data) 84000 := by
+    have h := air_maximum data
     norm_num [hAir] at h
     exact h
-  · have h := mixed_maximum data hSafe.le
+  -- Part (b): the glass safety check permits the air-limited maximum, 66,000 V.
+  -- mixed_maximum uses inverse voltage scaling and the proved glass margin.
+  have hPartB : MaximumVoltage (mixedAdmissible data) (mixedTotal data) 66000 := by
+    have h := mixed_maximum data hAirLimitedGlassSafe.le
     norm_num [hAir, source.permittivity] at h
     exact h
-  · rw [glass_voltage, data.airBreakdown.voltage_at_limit]
-    exact hSafe
+  -- Retain the strict glass safety statement at the actual operating charge.
+  have hGlassSafe :
+      (data.glass.voltage data.airBreakdown.chargeAtLimit).val <
+        data.glassBreakdown.breakdownVoltage.val := by
+    rw [glass_voltage, data.airBreakdown.voltage_at_limit]
+    exact hAirLimitedGlassSafe
+  exact ⟨hPartA, hPartB, hGlassSafe⟩
 
 end LeanVerificationDemo.PhysicsDemo.P03.CandidateAnnotated

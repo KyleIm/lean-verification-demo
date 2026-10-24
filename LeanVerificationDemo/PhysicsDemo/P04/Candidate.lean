@@ -82,6 +82,11 @@ lemma answer_pos (data : CubeData) : 0 < (answer data).val := by
 
 /-- The original caption network, with neutral internal conductors, realizes 6C/5. -/
 theorem solution (data : CubeData) : TrustedPhysicsProblem data := by
+  -- Source answer: C_eq = 6C/5. The explicit target exposes the capacitance
+  -- whose nonnegativity, state existence and universal terminal law are proved.
+  change (network data).HasEquivalentCapacitance A B ⟨(6 / 5 : ℝ) * data.C.val⟩
+  -- terminal_charge uses the internal potentials derived from neutral-node
+  -- equations; equipotential grouping is not an extra symmetry premise.
   refine ⟨(answer_pos data).le, ?_, terminal_charge data⟩
   intro a b
   exact ⟨equilibrium a b, equilibrium_is_state data a b⟩

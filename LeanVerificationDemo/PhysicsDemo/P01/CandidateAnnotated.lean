@@ -7,6 +7,10 @@ open Math2Physics.PhyslibTemp.Optics
 /-- Annotated physics proof for the stratified-plate demonstration. -/
 theorem solution (data : PlateData) (ray : RayThroughPlate data) :
     TrustedPhysicsProblem data ray := by
+  -- Source answer: β = α. The same external n₀ and the finite-layer Snell
+  -- invariant eliminate the internal index variation; this is conditional on
+  -- the supplied transmitted ray, not a continuous-medium limit theorem.
+  change ray.β = data.α
   -- [Problem modeling]
   -- The plate is represented by the one-dimensional profile `data.n`,
   -- with boundary values `data.n₁` and `data.n₂`.  This encodes a

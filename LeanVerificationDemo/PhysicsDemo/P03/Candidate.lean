@@ -71,20 +71,29 @@ lemma glass_voltage_at_air_limit (data : BatteryData) (source : SourceData data)
 theorem solution (data : BatteryData) (source : SourceData data) :
     TrustedPhysicsProblem data := by
   obtain ⟨hAir, hGlass⟩ := threshold_values data source
-  have hSafe : data.airBreakdown.breakdownVoltage.val / data.εr <
+  -- Glass safety check for part (b): Uglass = 3000 V < 63000 V at the air limit.
+  have hAirLimitedGlassSafe : data.airBreakdown.breakdownVoltage.val / data.εr <
       data.glassBreakdown.breakdownVoltage.val := by
-    have hVoltage := glass_voltage_at_air_limit data source
+    have hVoltage : (data.glass.voltage data.airBreakdown.chargeAtLimit).val = 3000 :=
+      glass_voltage_at_air_limit data source
     rw [glass_voltage, data.airBreakdown.voltage_at_limit] at hVoltage
     rw [hVoltage, hGlass]
     norm_num
-  refine ⟨?_, ?_, ?_⟩
-  · have h := air_maximum data
+  -- Part (a): four air capacitors have an attained maximum of 84,000 V.
+  have hPartA : MaximumVoltage data.airBreakdown.Admissible (airTotal data) 84000 := by
+    have h := air_maximum data
     norm_num [hAir] at h
     exact h
-  · have h := mixed_maximum data hSafe.le
+  -- Part (b): the glass safety check permits the air-limited maximum, 66,000 V.
+  have hPartB : MaximumVoltage (mixedAdmissible data) (mixedTotal data) 66000 := by
+    have h := mixed_maximum data hAirLimitedGlassSafe.le
     norm_num [hAir, source.permittivity] at h
     exact h
-  · rw [glass_voltage, data.airBreakdown.voltage_at_limit]
-    exact hSafe
+  have hGlassSafe :
+      (data.glass.voltage data.airBreakdown.chargeAtLimit).val <
+        data.glassBreakdown.breakdownVoltage.val := by
+    rw [glass_voltage, data.airBreakdown.voltage_at_limit]
+    exact hAirLimitedGlassSafe
+  exact ⟨hPartA, hPartB, hGlassSafe⟩
 
 end LeanVerificationDemo.PhysicsDemo.P03.Candidate

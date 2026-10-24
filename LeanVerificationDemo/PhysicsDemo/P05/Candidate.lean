@@ -136,13 +136,31 @@ lemma unreachable_threshold (data : LadderData) (h : ¬ ReachableThreshold data)
 all parameter choices: distinguish a reachable critical point from a threshold
 beyond the finite ladder. No acceleration or trajectory theorem is claimed. -/
 theorem solution (data : LadderData) : TrustedPhysicsProblem data := by
-  refine ⟨required_strictMono data, ?_, limiting_at_critical data,
-    reachable_threshold data, ?_, ?_⟩
-  · intro s hs
+  -- Source mechanism: required Ffr(s) = G cos(α) s / h grows as the man climbs.
+  -- Here h = height data = L sin(α), so s_crit = μ h / cos(α) = μ L tan(α).
+  -- This is a static-equilibrium threshold, not a post-threshold motion claim.
+  have hFrictionStrictlyIncreasing : StrictMono (requiredFriction data) :=
+    required_strictMono data
+  have hAdmissiblePositions : ∀ s, OnLadder data s →
+      (AdmissibleAt data s ↔ s ≤ criticalPosition data) := by
+    intro s hs
     exact admissible_iff data hs.1
-  · intro s hs hAbove hAdmissible
+  have hLimitingAtCritical :
+      LimitingStaticFriction data.μ data.G (requiredFriction data (criticalPosition data)) :=
+    limiting_at_critical data
+  have hReachableLimitingState : ReachableThreshold data →
+      OnLadder data (criticalPosition data) ∧ AdmissibleAt data (criticalPosition data) ∧
+      LimitingStaticFriction data.μ data.G (requiredFriction data (criticalPosition data)) :=
+    reachable_threshold data
+  have hNoEquilibriumAboveCritical : ∀ s, OnLadder data s →
+      criticalPosition data < s → ¬ AdmissibleAt data s := by
+    intro s hs hAbove hAdmissible
     exact (not_le_of_gt hAbove) ((admissible_iff data hs.1).mp hAdmissible)
-  · intro h s hs
+  have hAllPositionsAdmissibleIfUnreachable : ¬ ReachableThreshold data →
+      ∀ s, OnLadder data s → AdmissibleAt data s := by
+    intro h s hs
     exact (unreachable_threshold data h s hs).2.1
+  exact ⟨hFrictionStrictlyIncreasing, hAdmissiblePositions, hLimitingAtCritical,
+    hReachableLimitingState, hNoEquilibriumAboveCritical, hAllPositionsAdmissibleIfUnreachable⟩
 
 end LeanVerificationDemo.PhysicsDemo.P05.Candidate
