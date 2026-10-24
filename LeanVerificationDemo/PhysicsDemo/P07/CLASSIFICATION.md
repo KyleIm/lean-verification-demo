@@ -16,8 +16,8 @@
 | `totalCurrent` | P07-specific continuum modeling | Radial integral of independent concentric current contributions |
 | `Candidate.flux_derivative` | Derived equation / pure mathematics | Differentiate the prescribed linear field law |
 | `Candidate.current_per_width` | Derived physics | Combine Faraday, Ohm, geometry and source convention |
-| `Candidate.current_integrable` | Pure mathematics | Derived linear density really is integrable |
-| `Candidate.solution` | Derived physics | Integrate the local density to obtain the source formula |
+| `Candidate.current_integrable` | Pure mathematics | Derived linear current-per-width profile is integrable |
+| `Candidate.solution` | Derived physics | Integrate the local current-per-width profile to obtain the source formula |
 | Cancellation, rational/ring algebra, interval integration | Pure mathematics | No physical relation is proved by algebra alone |
 | `Verifier.exampleResponse`, inhabited parameter example | Pure mathematics | Consistency witnesses, not final-formula premises |
 

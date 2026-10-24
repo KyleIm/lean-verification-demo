@@ -42,8 +42,9 @@ is this coefficient / δ, from ρ (2πx)/(δ h). This is a continuum premise. -/
 noncomputable def resistanceCoefficient (data : RingData) (x : ℝ) : ℝ :=
   data.ρ.val * (2 * Real.pi * x) / data.h.val
 
-/-- Independent local physical relations. The current density here is dI/dx
-(radial current contribution per radial width), not vector current density J.
+/-- Independent local physical relations. The scalar current-per-width profile is
+dI/dx: the contribution to total azimuthal current per unit radial width. It is
+neither Physlib's vector current density J nor a current flowing radially.
 Positive orientation denotes the magnitude opposing the increasing source flux.
 Self-inductance, transients and the induced field's feedback are neglected. -/
 structure Response (data : RingData) where

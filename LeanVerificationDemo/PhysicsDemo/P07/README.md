@@ -37,9 +37,9 @@ a final answer supplied as evidence. See the derivation below.
 
 The ring and figure become local geometric parameters and an independent-loop
 continuum model. The printed discrete sum and limit are replaced by an integral;
-the proof differentiates the prescribed flux proxy, derives the current density,
-proves its integrability and evaluates its integral. This preserves the source
-formula within its idealization, but restructures the proof analytically.
+the proof differentiates the prescribed flux proxy, derives the current-per-width
+profile, proves its integrability and evaluates its integral. This preserves the
+source formula within its idealization, but restructures the proof analytically.
 It does not formalize a discrete partition and its δ → 0 convergence, nor derive
 all material/loop assumptions from Maxwell equations. The result is a current
 magnitude in a prescribed-field resistive approximation, not the transient

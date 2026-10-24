@@ -11,7 +11,7 @@ lemma flux_derivative (data : RingData) (x t : ℝ) :
   rw [heq]
   simp
 
-/-- Derived local current contribution, obtained from Faraday and Ohm relations. -/
+/-- Derived current-per-width profile, obtained from Faraday and Ohm relations. -/
 lemma current_per_width (data : RingData) (response : Response data)
     (x : ℝ) (hx : x ∈ Set.Icc data.a.val data.b.val) (t : ℝ) :
     response.currentPerWidth x t =
@@ -27,8 +27,8 @@ lemma current_per_width (data : RingData) (response : Response data)
   field_simp at hp ⊢
   nlinarith [hp]
 
-/-- The derived radial current is genuinely interval-integrable; the total is
-not using the integral's default value for a nonintegrable function. -/
+/-- The derived current-per-width profile is genuinely interval-integrable; the total
+is not using the integral's default value for a nonintegrable function. -/
 lemma current_integrable (data : RingData) (response : Response data) (t : ℝ) :
     IntervalIntegrable (fun x => response.currentPerWidth x t)
       MeasureTheory.volume data.a.val data.b.val := by

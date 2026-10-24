@@ -63,8 +63,8 @@ Faraday's law altogether.
   exporting a new library abstraction.
 * P07-local: annular parameters, source H coordinate and historical coefficient,
   flux proxy, thin-ring resistance coefficient, scalar Faraday/Ohm evidence and
-  radial current integration. These encode this source's geometry and adopted
-  continuum argument; no generic ring ontology is created.
+  integration of the current-per-width profile over radius. These encode this
+  source's geometry and adopted continuum argument; no generic ring ontology is created.
 
 The integral is the continuum counterpart of the printed thin-ring sum. Its
 integrability and value are proved; convergence of a specific discrete δ-family
