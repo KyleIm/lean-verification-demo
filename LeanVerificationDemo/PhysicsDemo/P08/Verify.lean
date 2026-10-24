@@ -1,4 +1,7 @@
 import LeanVerificationDemo.PhysicsDemo.P08.Candidate
+import LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.ConstantAccelerationExamples
+
+open LeanVerificationDemo.PhyslibTemp.ClassicalMechanics
 
 namespace LeanVerificationDemo.PhysicsDemo.P08.Verifier
 
@@ -11,12 +14,36 @@ noncomputable def balancingData (u w : Vector3) : ExplosionData where
   mass _ := 1
   mass_pos _ := by norm_num
   velocity := ![-(u + w), u, w]
-  apexVelocity := 0
+  rocket := Examples.quadraticParticle ⟨3, by norm_num⟩ (0 : labFrame.Vector)
+    (1 • up) ((-1 : ℝ) • up)
+  initialSpeed := 1
+  initialSpeed_pos := by norm_num
+  g := 1
+  g_pos := by norm_num
 
 lemma balancingSource (u w : Vector3) : SourceData (balancingData u w) := by
   constructor
-  · rfl
-  · simp [totalMomentum, preMomentum, momentum, balancingData]
+  · exact Examples.quadratic_constant _ _ _ _
+  · simp [balancingData, Examples.quadratic_velocity]
+  · have hv : (balancingData u w).rocket.velocity (apexTime (balancingData u w)) = 0 := by
+      change (Examples.quadraticParticle ⟨3, by norm_num⟩ (0 : labFrame.Vector)
+        (1 • up) ((-1 : ℝ) • up)).velocity (1 / 1) = 0
+      rw [Examples.quadratic_velocity]
+      norm_num
+    have ha : apexVelocity (balancingData u w) = 0 := by
+      unfold apexVelocity
+      rw [hv]
+      rfl
+    rw [preMomentum, ha, smul_zero]
+    simp [totalMomentum, momentum, balancingData]
+
+-- The parabola is only a consistency witness, not the source trajectory model.
+example (u w : Vector3) (t : ℝ) :
+    height (balancingData u w) t ≤ height (balancingData u w) (apexTime (balancingData u w)) :=
+  Candidate.apex_height_maximal _ (balancingSource u w) t
+
+example (u w : Vector3) : apexVelocity (balancingData u w) = 0 :=
+  Candidate.apex_velocity_zero _ (balancingSource u w)
 
 -- The source assumptions are satisfiable, including degenerate zero velocities.
 example : Nonempty ExplosionData := ⟨balancingData 0 0⟩

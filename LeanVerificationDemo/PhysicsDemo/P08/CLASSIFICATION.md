@@ -2,20 +2,23 @@
 
 | Component | Classification | Boundary |
 | --- | --- | --- |
-| Physlib particle/system momentum and free-particle conservation | Existing Physlib formal primitives/results, audited but not imported | Trajectory/system APIs, not a breakup-event rule |
-| EuclideanSpace, Submodule.span, span membership/closure, finrank bounds | Pure mathematics / existing Mathlib | Actual executable library reuse |
-| `Vector3`, `ExplosionData` | Problem-specific modeling | Three snapshot velocities and positive masses in a common inertial basis; no rocket ontology |
-| `momentum`, `preMomentum`, `totalMomentum` | Problem-specific physical modeling | Classical p = mv and additive momentum, explicitly written as scalar/vector operations |
-| `SourceData.apex_at_rest` | Source/model physics | Apex velocity zero supplied from the vertical-flight explanation; no trajectory theorem |
-| `SourceData.momentum_conserved` | Source/model physical approximation | Neglected external impulse across the short explosion; no exact gravity/zero-duration theorem |
-| `LinearCoplanar`, `TrustedPhysicsProblem` | Problem-specific mathematical target | A linear subspace through zero of dimension ≤ 2, not affine coplanarity of endpoints |
-| `pre_momentum_zero`, `total_momentum_zero` | Derived physics | Consequences of apex rest, momentum expressions and conservation |
-| `first_momentum_eq_neg_sum`, `first_momentum_in_span` | Pure linear algebra | Zero sum puts the first vector in the other two's span |
-| `momentumPlane`, `momenta_in_plane`, `momentum_plane_finrank` | Pure linear algebra | Explicit span witness and cardinality bound; degeneracies allowed |
-| `momenta_coplanar` | Derived mathematical consequence of physics | No plane was supplied as evidence |
-| `velocity_mem_of_momentum_mem` | Pure linear algebra applied to physical mass relation | Invert nonzero mass to preserve membership in the same subspace |
-| `Candidate.solution` | Derived physics / mathematics | Conclude linear coplanarity of immediate fragment velocities |
-| Verify balancing/zero examples and standard-basis negative check | Pure mathematics | Input consistency, degenerate cases and nontriviality of the target predicate |
+| Physlib ReferenceFrame, Particle.pos / velocity / acceleration | Existing reusable physics infrastructure | Actual upstream derivative-based trajectories are reused |
+| Physlib NewtonianSystem and Force | Existing physics infrastructure, audited | No new gravity-force/Newton-II derivation is claimed |
+| HasConstantAcceleration and its generic velocity / position laws | PhyslibTemp reusable mechanics | Any spatial dimension and inertial frame, no gravity/vertical/source-specific data |
+| ConstantAccelerationExamples | Library-level mathematical verification | Upstream quadratic-particle witnesses, not another particle model |
+| UniformGravity | Deferred possible reusable physical specialization | No separate module: a renamed acceleration vector alone adds no physical layer |
+| P08 labFrame, up, initial upward speed and downward acceleration | Problem-specific use of reusable mechanics | Ideal coasting reference trajectory, no propulsion or post-event trajectory |
+| highest point / apexTime / height | P08 kinematics and derived geometry | Computed u/g and proved maximum; no assumed apex-rest equality |
+| apex_vertical_velocity_zero, apex_velocity_zero | Derived mathematics / kinematics | Proven maximum + actual derivative + Mathlib Fermat theorem + vertical velocity law |
+| SourceData.constant_acceleration / initial_velocity | Source/model kinematics | Physical idealization and initial condition, not final answers |
+| SourceData.momentum_conserved | Source/model physical approximation | Across-explosion negligible-impulse approximation remains a premise |
+| preMomentum | P08 physical modeling | Upstream particle mass times derived apex velocity |
+| pre_momentum_zero / total_momentum_zero | Derived physics | Proved zero velocity, then adopted across-event conservation |
+| fragment momentum, positive masses | P08 snapshot modeling | Same m • v convention and mass nonzeroness as before |
+| LinearCoplanar / TrustedPhysicsProblem | Unchanged P08 mathematical target | Real linear subspace through zero with dimension ≤ 2 |
+| span construction, dimension bound, inverse mass scaling | Mathlib linear algebra | Existing coplanarity proof retained; degeneracies allowed |
+| standard-basis negative check | Pure mathematics | Three independent vectors do not satisfy the linear-coplanarity target |
 
-P08 introduces **no PhyslibTemp concept**. No source solution image is treated as
-geometric input, and no diagram caption or reconstruction is introduced.
+There is no PhyslibTemp Rocket, VerticalProjectile, HighestPoint or explosion
+ontology. The reusable module is constant-acceleration mechanics; the vertical
+apex and approximate explosion are its problem-specific consumer.

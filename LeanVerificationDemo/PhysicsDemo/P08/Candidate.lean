@@ -1,11 +1,82 @@
 import LeanVerificationDemo.PhysicsDemo.P08.Problem
 
+open _root_.ClassicalMechanics
+
 namespace LeanVerificationDemo.PhysicsDemo.P08.Candidate
 
-/-- Apex rest implies zero pre-explosion momentum, independently of conservation. -/
+/-- Reusable mechanics specialized to P08's initial vertical velocity and
+constant downward acceleration: v(t) = (u - gt) e_z. -/
+lemma vertical_velocity_evolution (data : ExplosionData) (source : SourceData data) (t : ℝ) :
+    data.rocket.velocity t = (data.initialSpeed - data.g * t) • up := by
+  have hVelocity := source.constant_acceleration.velocity_eq 0 t
+  rw [source.initial_velocity] at hVelocity
+  simp only [sub_zero] at hVelocity
+  calc
+    data.rocket.velocity t = data.initialSpeed • up + t • ((-data.g) • up) := hVelocity
+    _ = (data.initialSpeed - data.g * t) • up := by module
+
+/-- The reusable quadratic position law gives the scalar height law. -/
+lemma height_evolution (data : ExplosionData) (source : SourceData data) (t : ℝ) :
+    height data t = height data 0 + t * data.initialSpeed - data.g * t ^ 2 / 2 := by
+  have hPosition := source.constant_acceleration.position_eq 0 t
+  rw [source.initial_velocity] at hPosition
+  have hz := congrArg (fun v : labFrame.Vector => v.components 2) hPosition
+  change height data t = height data 0 + (t - 0) * (data.initialSpeed * 1) +
+    ((t - 0) ^ 2 / 2) * ((-data.g) * 1) at hz
+  convert hz using 1
+  ring
+
+lemma apex_time_pos (data : ExplosionData) : 0 < apexTime data :=
+  div_pos data.initialSpeed_pos data.g_pos
+
+/-- The computed time really is a highest point of the ideal reference trajectory. -/
+lemma apex_height_maximal (data : ExplosionData) (source : SourceData data) (t : ℝ) :
+    height data t ≤ height data (apexTime data) := by
+  have hDifference : height data (apexTime data) - height data t =
+      (data.g / 2) * (t - apexTime data) ^ 2 := by
+    rw [height_evolution data source (apexTime data), height_evolution data source t]
+    dsimp [apexTime]
+    field_simp [data.g_pos.ne']
+    ring
+  apply sub_nonneg.mp
+  rw [hDifference]
+  exact mul_nonneg (div_pos data.g_pos (by norm_num)).le (sq_nonneg _)
+
+lemma apex_isLocalMax (data : ExplosionData) (source : SourceData data) :
+    IsLocalMax (height data) (apexTime data) :=
+  Filter.Eventually.of_forall (apex_height_maximal data source)
+
+lemma height_hasDerivAt (data : ExplosionData) (source : SourceData data) (t : ℝ) :
+    HasDerivAt (height data) (data.initialSpeed - data.g * t) t := by
+  have heq : height data = fun s => height data 0 + s * data.initialSpeed - data.g * s ^ 2 / 2 :=
+    funext (height_evolution data source)
+  rw [heq]
+  convert! ((hasDerivAt_const t (height data 0)).add
+    ((hasDerivAt_id t).mul_const data.initialSpeed)).sub
+      (((hasDerivAt_pow 2 t).const_mul data.g).div_const 2) using 1
+  ring
+
+/-- Fermat's theorem is applied to the proved highest point, not assumed rest. -/
+lemma apex_vertical_velocity_zero (data : ExplosionData) (source : SourceData data) :
+    data.initialSpeed - data.g * apexTime data = 0 :=
+  (apex_isLocalMax data source).hasDerivAt_eq_zero
+    (height_hasDerivAt data source (apexTime data))
+
+lemma apex_frame_velocity_zero (data : ExplosionData) (source : SourceData data) :
+    data.rocket.velocity (apexTime data) = 0 := by
+  rw [vertical_velocity_evolution data source, apex_vertical_velocity_zero data source,
+    zero_smul]
+
+lemma apex_velocity_zero (data : ExplosionData) (source : SourceData data) :
+    apexVelocity data = 0 := by
+  unfold apexVelocity
+  rw [apex_frame_velocity_zero data source]
+  rfl
+
+/-- The pre-explosion momentum now depends on proved apex rest. -/
 lemma pre_momentum_zero (data : ExplosionData) (source : SourceData data) :
     preMomentum data = 0 := by
-  simp [preMomentum, source.apex_at_rest]
+  simp [preMomentum, apex_velocity_zero data source]
 
 /-- Source/model physics: the adopted conserved momentum is therefore zero. -/
 lemma total_momentum_zero (data : ExplosionData) (source : SourceData data) :
@@ -72,7 +143,9 @@ lemma velocity_mem_of_momentum_mem (data : ExplosionData) (i : Fin 3)
 one plane through the origin (dimension ≤ 2). No later fragment dynamics is claimed. -/
 theorem solution (data : ExplosionData) (source : SourceData data) :
     TrustedPhysicsProblem data := by
-  -- First prove momentum coplanarity, then transfer membership by positive masses.
+  -- Constant-acceleration mechanics → height maximum → Fermat → zero apex velocity
+  -- → zero pre-momentum → conserved zero post-momentum → momentum coplanarity.
+  -- Then transfer membership by positive masses.
   obtain ⟨plane, hDimension, hMomenta⟩ := momenta_coplanar data source
   have hVelocities : ∀ i, data.velocity i ∈ plane := by
     intro i

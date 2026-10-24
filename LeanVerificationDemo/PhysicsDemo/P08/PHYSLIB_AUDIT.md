@@ -38,12 +38,12 @@ conservation is missing from Physlib: formal examples do exist, as follows.
 | Same file:183, `ClassicalMechanics.FreeParticle.linearMomentum_conserved` | `(s : FreeParticle) (q : Trajectory) (h : ∀ t, s.NewtonsSecondLaw q t) (hcont : ContDiff ℝ 2 q) : ∃ p, ∀ t, s.linearMomentum q t = p` | Actual formal conservation theorem for a smooth free particle; does not cover breakup or neglect of a finite gravitational impulse |
 | `ClassicalMechanics/RigidBody/Motion.lean:71`, `RigidBodyMotion.linearMomentum` | `{d : ℕ} (M : RigidBodyMotion d) : Time → EuclideanSpace ℝ (Fin d)`, `M.mass • M.centerOfMassVelocity t` | Formal rigid-body momentum; no across-explosion bridge |
 
-The full Newtonian system requires inertial-frame particles, differentiable
-positions/velocities and Newton's second/third laws. P08 does not construct those
-trajectories merely to obtain the elementary snapshot expression `m • v`.
-Its local momentum definition records that expression transparently. No stable
-Physlib mechanics declaration is directly imported or claimed as a proof of this
-explosion approximation; the executable library reuse in P08 is Mathlib.
+The refined P08 imports upstream Particle via the new constant-acceleration
+layer and uses actual `Particle.pos`, `velocity`, `acceleration` and
+`pos_twice_differentiable`. It does not construct a full NewtonianSystem or claim
+that a smooth free-particle theorem proves across-explosion conservation.
+Fragment momenta remain snapshot expressions; the rocket's pre-event momentum
+now uses its upstream Particle mass and its derived apex velocity.
 
 ## Informal and secondary references
 
@@ -81,18 +81,66 @@ problem-local `LinearCoplanar` is an explicit existential over a real linear
 submodule through zero with finrank ≤ 2, with membership for every vector.
 It is not a Boolean placeholder, nor a new general-purpose library API.
 
-## Minimum extension decision
+## Refined constant-acceleration / apex audit
 
-- Stable Physlib mechanics: definitions audited and consistent with the adopted
-  scalar-action model, but no directly applicable event conservation bridge.
-- Mathlib: real Euclidean vectors, submodule span/closure and finite dimension.
-- PhyslibTemp: **no additions**. General linear algebra belongs in Mathlib;
-  the small local proof does not justify another physics module.
-- P08: three masses/velocities, apex-rest data, pre/post event conservation,
-  explicit momentum expressions and the linear-coplanarity target.
+Before adding a library layer, re-searched all stable and secondary Alpha trees:
 
-The chosen proof constructs span{p₂,p₃}, derives membership of p₁ from the
-zero sum, bounds its dimension by two, and recovers each vᵢ by mᵢ⁻¹ • pᵢ.
-No nonzero-velocity or independence assumption is used. Verify also rejects
-linear coplanarity of the three standard basis vectors, distinguishing this
-predicate from the unsuitable affine three-point property.
+```bash
+rg -n -i 'constant.acceler|uniform.*acceler|free.fall|uniform.gravit|projectile' Physlib PhyslibAlpha
+rg -n -i 'turning.point|apex|gravitational' Physlib/ClassicalMechanics PhyslibAlpha/ClassicalMechanics
+```
+
+No dimension-generic constant-acceleration velocity/quadratic-position API was
+found at this pin. The formal FreeParticle zero-acceleration/constant-velocity
+results above are one-dimensional. Pendulum gravitational parameters and Alpha
+Norton-dome apex/gravity theorems are specialized models; they are not uniform
+free fall or the desired general particle kinematics. The upstream Force and
+NewtonianSystem definitions were re-inspected: no direct uniform-gravity force
+specialization was found that could be reused here without building another
+system model. No Alpha declaration is imported.
+
+Additional Mathlib APIs used:
+
+* `Analysis/Calculus/MeanValue.lean:751`, `is_const_of_deriv_eq_zero`:
+  for a differentiable real-parameter normed-space-valued function f whose
+  derivative vanishes everywhere, `f x = f y`. This proves the generic velocity
+  and position laws after subtracting their proposed polynomial terms.
+* Derivative arithmetic (`HasDerivAt.sub`, `smul_const`, `pow`, `div_const`)
+  works on upstream frame vectors under `Fact frame.IsInertial`.
+* `Analysis/Calculus/LocalExtr/Basic.lean:247`,
+  `IsLocalMax.hasDerivAt_eq_zero`: `IsLocalMax f t → HasDerivAt f v t → v = 0`
+  for scalar height f. P08 uses it with a genuine proved height derivative;
+  it does not rely on `deriv`'s fallback value for nondifferentiable functions.
+
+## Minimum extension decision (revised)
+
+- Stable Physlib directly reused: `ReferenceFrame`, its inertial metric/vector
+  infrastructure, `ReferenceFrame.Particle`, `pos_twice_differentiable`,
+  `Particle.pos`, `Particle.velocity` and `Particle.acceleration`.
+- New PhyslibTemp `ConstantAcceleration.lean`: `HasConstantAcceleration`,
+  `hasDerivAt_velocity`, `velocity_eq`, `position_eq`, `velocity_sub` and
+  `velocity_eq_of_zero`, all dimension-generic and gravity-independent.
+- `ConstantAccelerationExamples.lean`: verification witnesses built as upstream
+  particles, plus zero-acceleration, zero-initial-velocity, arbitrary-reference-time
+  and position-law checks, with explicit dimensions 4 and 0.
+- No `UniformGravity` module yet: merely renaming a constant acceleration vector
+  adds no physical theorem. A future layer should supply a force/Newton-II bridge.
+- P08 supplies its fixed vertical direction, downward acceleration, initial speed,
+  height and apex specialization. Highest height and zero apex velocity are
+  derived; across-explosion momentum conservation remains a source approximation.
+
+The previous `apex_at_rest` source field is removed. The new exact premises are
+constant downward acceleration of an upstream particle, initial upward velocity,
+and conserved momentum across the explosion. Upward speed and g are positive
+model parameters; regularity is inherited from the upstream particle structure.
+
+The constant-acceleration proof uses all real frame-time coordinates and exactly
+the differentiability upstream Particle supplies. No continuous second derivative
+or full rocket-force model is assumed. The coasting trajectory's extension beyond
+the event is a smooth reference continuation, not actual intact-rocket motion.
+
+The linear coplanarity representation and its span/dimension/inverse-mass proof
+are unchanged. The generic mechanics code is an upstream-oriented prototype;
+namespace/time/interval API adaptation would require maintainer review. See the
+P08 README and the adjacent ConstantAcceleration documentation for layering and
+future uses.

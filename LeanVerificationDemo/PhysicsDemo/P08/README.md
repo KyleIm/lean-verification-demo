@@ -1,7 +1,8 @@
 # P08 — Three fragment velocities lie in one linear plane
 
 Source problem **77**. [Source record](source.jsonl) ·
-[Pinned-library audit](PHYSLIB_AUDIT.md) · [Classification](CLASSIFICATION.md).
+[Pinned-library audit](PHYSLIB_AUDIT.md) · [Classification](CLASSIFICATION.md) ·
+[Reusable mechanics API](../../PhyslibTemp/ClassicalMechanics/ConstantAcceleration.md).
 
 ## Source question vs formalized question
 
@@ -9,169 +10,215 @@ Source problem **77**. [Source record](source.jsonl) ·
 
 > 77. A rocket launched vertically upward explodes at the highest point it reaches. The explosion produces three fragments. Prove that the vectors of the initial velocities of all three fragments are in one plane.
 
-The supplied printed solution uses rest at the apex and negligible gravitational
-impulse during the short explosion to obtain zero total post-explosion momentum.
-It then asserts the coplanarity of three zero-sum momentum vectors and transfers
-that conclusion to velocities.
+The supplied solution states that apex velocity is zero and adopts momentum
+conservation during a very short explosion by neglecting gravitational impulse.
+It then asserts that three zero-sum momenta, and hence the velocities, are coplanar.
 
 ### AFTER — Lean-facing formalized problem
 
-Given three positive masses and their immediate post-explosion velocity vectors
-in a common three-dimensional real coordinate space, assume the rocket's apex
-velocity is zero and total momentum is conserved across the explosion in the
-adopted approximation. Prove that **there exists a real linear subspace through
-the origin of dimension at most two containing all three velocities**.
+Use an upstream Physlib particle as an ideal vertical coasting reference
+trajectory. Assume constant downward acceleration `(-g) • up` with g > 0 and
+initial velocity `u • up` with u > 0. Derive its velocity and height laws, prove
+that `t_apex = u/g` is a highest point, and derive its velocity there is zero.
+Given three positive-mass fragment velocities and conserved total momentum
+across the explosion at this derived apex time, prove that all three velocities
+lie in one real linear subspace through zero of dimension at most two.
 
-```lean
-Candidate.solution data source : TrustedPhysicsProblem data
-```
-
-The exact expanded target is:
+The final source-facing target is unchanged:
 
 ```lean
 ∃ plane : Submodule ℝ Vector3,
   Module.finrank ℝ plane ≤ 2 ∧ ∀ i, data.velocity i ∈ plane
 ```
 
-`Vector3 = EuclideanSpace ℝ (Fin 3)`. All its subspaces are finite-dimensional,
-so the natural-number finrank has its ordinary dimension meaning.
+`Vector3 = EuclideanSpace ℝ (Fin 3)`. Its subspaces are finite-dimensional, so
+finrank has the ordinary dimension meaning. The checked judgment remains
+`Candidate.solution data source : TrustedPhysicsProblem data`.
 
 ### What changed
 
-“Initial” means immediately **after** the explosion; the apex condition refers
-to the instant immediately **before** it. A problem-local snapshot replaces the
-full rocket, its trajectory and fragment motion. The printed negligible-impulse
-argument becomes an explicit event-conservation premise; no finite-duration
-force integration or error estimate is formalized.
+The previous implementation supplied `apex_at_rest` directly. That premise and
+the independent `apexVelocity` data field have been removed. A reusable
+constant-acceleration layer now derives the kinematics, and the P08 specialization
+proves highest height and zero apex velocity. P08's source inputs do **not**
+include either the zero-velocity conclusion or the quadratic height formula.
 
-The mathematical conclusion is made precise as **linear** coplanarity. Affine
-coplanarity of the three velocity endpoints would be automatic for any three
-points and would not express the source argument. Zero velocities, collinear
-vectors and a zero-dimensional span are allowed; no independence hypothesis is
-added. The “plane” witness may therefore be a line or {0}, contained in a plane.
+This refinement adds an explicit ideal uniform-downward-acceleration coasting
+model that the short source argument leaves implicit. It does not model powered
+ascent, propulsion, fuel or rotation. The smooth reference trajectory is
+mathematically extended through the apex; after the explosion it is a reference
+continuation, **not** the actual path of any surviving intact rocket or fragment.
+The library laws currently use all real frame-time coordinates. Their physical
+interpretation here is the pre-explosion coasting stage and its smooth extension.
 
-The physical meaning of the source explanation is preserved under its adopted
-approximation, while its last linear-algebra assertion is genuinely proved,
-rather than assumed. The transformation is **qualitative event-momentum
-reasoning → explicit source premises → a constructed linear-subspace witness**.
+“Initial fragment velocities” means immediately after the explosion; the rocket
+velocity is evaluated immediately before it. Across-event momentum conservation
+remains a separate short-event approximation. The implementation does not prove
+literal zero gravitational impulse, zero duration or subsequent fragment dynamics.
 
-## Local physical representation and exact premises
+Linear coplanarity, rather than affine coplanarity of three endpoints, is kept.
+Zero/collinear velocities are valid: the containing subspace may have dimension
+zero or one. No independence or nonzero-fragment-velocity assumption is added.
 
-`ExplosionData` stores `mass : Fin 3 → ℝ`, `mass_pos`,
-`velocity : Fin 3 → Vector3`, and `apexVelocity : Vector3`.
-Indices 0,1,2 are the source's fragments 1,2,3. There is no reusable `Rocket` or
-`Explosion` object. All values are coordinates in one fixed inertial frame and
-coherent units (for example kg, m/s and kg·m/s); dimensions are not encoded in
-the vector type. Sharing the coordinate space permits the direction/span
-argument, but is not a unit-covariance theorem.
+## Exact inputs and abstraction boundary
 
-The local definitions explicitly express the classical snapshot relations:
+`ExplosionData` contains positive fragment masses, three fragment velocity
+vectors, an upstream `labFrame.Particle`, positive `initialSpeed = u`, and positive
+g. Its upstream particle includes a positive mass, a position function and the
+inertial-frame differentiability of position and velocity. The lab frame is a
+fixed Cartesian frame; `up` is its third coordinate direction.
 
-```text
-pᵢ = mᵢ • vᵢ
-Pbefore = (m₁+m₂+m₃) • vapex
-Pafter = p₁+p₂+p₃.
-```
-
-The pre-event expression models the rocket constituents as co-moving with its
-translational velocity. Rotation is not part of this source model. Positive
-masses are physical data; in the transfer argument only their nonzeroness is
-used. Neither a plane nor a zero post-event momentum is an input field.
-
-The two exact evidence fields in `source : SourceData data` are:
+The exact `SourceData` fields are:
 
 ```lean
-apex_at_rest : data.apexVelocity = 0
+constant_acceleration : HasConstantAcceleration data.rocket ((-data.g) • up)
+initial_velocity : data.rocket.velocity 0 = data.initialSpeed • up
 momentum_conserved : totalMomentum data = preMomentum data
 ```
 
-The first is the apex-rest source fact, not derived from a modeled vertical
-trajectory. The second is the exact rule **within** the adopted short-event
-approximation. The printed explanation justifies neglecting external gravity
-impulse because the event is very short; Lean does not prove gravity literally
-has zero impulse or that duration is mathematically zero. Momentum need not
-remain zero during subsequent fragment motion in gravity, and no such dynamics
-is claimed.
+The first is the uniform-gravity/coasting kinematic model assumption, not a
+proved force-to-acceleration theorem. No F = mg or Newtonian system is constructed
+in this specialization. The initial condition makes the motion vertical. Without
+it, maximum height alone would leave possible horizontal velocity components.
 
-## Candidate derivation
-
-The reviewer-facing Candidate exposes these named stages:
+Local definitions are:
 
 ```text
-pre_momentum_zero
-  vapex = 0 → Pbefore = 0
+pᵢ = mᵢ • vᵢ
+height(t) = third component of rocket.pos(t)
+t_apex = u/g
+apexVelocity = Cartesian components of rocket.velocity(t_apex)
+Pbefore = rocket.mass • apexVelocity
+Pafter = p₁+p₂+p₃.
+```
+
+The upstream particle's actual mass is now used for pre-event momentum. No
+additional mass-balance premise is needed for this zero-momentum argument.
+The consistency example chooses rocket mass equal to the sum of fragment masses.
+All quantities are coordinates in one fixed inertial frame and coherent unit
+convention. Physical dimensions are not encoded by the vector carrier. The
+upstream frame-vector components are explicitly converted to the Euclidean
+coordinate space used by fragment velocities; zero is preserved by this map.
+
+## Reviewer-facing derivation
+
+```text
+HasConstantAcceleration.velocity_eq / position_eq
+  upstream derivative-based acceleration → generic velocity / position laws
+
+vertical_velocity_evolution / height_evolution
+  v(t) = (u - gt) up
+  height(t) = height(0) + ut - gt²/2
+
+apex_height_maximal / apex_isLocalMax
+  height(u/g) - height(t) = (g/2)(t - u/g)² ≥ 0
+
+height_hasDerivAt / apex_vertical_velocity_zero
+  Mathlib Fermat theorem at the proved maximum → u - g t_apex = 0
+
+apex_frame_velocity_zero / apex_velocity_zero / pre_momentum_zero
+  vertical vector law → full velocity zero → pre-event momentum zero
 
 total_momentum_zero
-  event conservation → p₁+p₂+p₃ = 0
+  adopted across-event conservation → p₁+p₂+p₃ = 0
 
 first_momentum_eq_neg_sum / first_momentum_in_span
   p₁ = -(p₂+p₃) → p₁ ∈ span{p₂,p₃}
 
 momenta_in_plane / momentum_plane_finrank / momenta_coplanar
-  all three momenta belong to that span; its dimension is at most 2
+  all momenta in that span; dimension ≤ 2
 
-velocity_mem_of_momentum_mem
-  vᵢ = mᵢ⁻¹ • pᵢ; positive mᵢ makes this legitimate
-
-solution
-  the same real linear subspace contains all three velocities.
+velocity_mem_of_momentum_mem / solution
+  vᵢ = mᵢ⁻¹ • pᵢ stays in the same linear subspace.
 ```
 
-Membership of the generators, addition and negation prove the momentum part;
-Mathlib's finite-span dimension bound proves the plane's size. Inverse scaling
-preserves membership because it is a linear subspace through zero. No division
-by a velocity, no cross-product nondegeneracy and no linear independence is
-required. The final theorem explicitly displays its existential target before
-assembling the already-proved dimension bound and velocity membership.
+The maximum-height argument actually participates in the final proof: Fermat's
+`IsLocalMax.hasDerivAt_eq_zero` uses the proved local maximum and genuine height
+derivative; `pre_momentum_zero` calls the derived apex-velocity lemma. This is
+not a renamed rest premise or an unused ancillary calculation.
 
-`CandidateAnnotated.lean` labels source/model physics, derived physics and pure
-linear algebra. It follows the actual dependency chain; comments are explanatory,
-not additional evidence checked by Lean.
+Gravity is not needed for the **mathematical fact** that a differentiable height
+function has zero derivative at an interior local maximum. Here constant downward
+acceleration supplies the concrete height law and identifies that maximum. This
+is distinct from the source's negligible-external-impulse approximation, which
+still supplies the across-explosion conservation relation. Exact mechanics here
+means deductions under the stated ideal kinematics, not a full proof of gravity
+or rocket flight from Newton's laws.
 
-## Libraries and reusability
+`CandidateAnnotated.lean` distinguishes upstream/reusable mechanics, P08-specific
+vertical/apex specialization, approximate explosion physics and pure linear
+algebra. No plane or zero post-event momentum is trusted input.
 
-Mathlib supplies vectors, spans, submodule closure and dimension machinery.
-Physlib has genuine formal definitions of particle/system momentum and genuine
-conservation theorems in other models. Its Newtonian particle API requires
-trajectories and a full inertial Newtonian system; its free-particle conservation
-theorem does not cover a one-to-three breakup under a short-impulse approximation.
-These were inspected, not imported and misrepresented as an explosion proof.
-The local snapshot multiplication is the same classical `p = mv` relation.
+## Potential upstream Physlib layering
 
-**No PhyslibTemp declaration is added.** The missing across-event semantic
-premise stays local, and the short span proof belongs to ordinary linear algebra,
-not a new reusable physics API. See the audit for exact sources and search scope.
+```text
+Physlib.ClassicalMechanics.PointParticle.Basic
+  Particle.pos / velocity / acceleration, inertial ReferenceFrame
+                         ↓
+PhyslibTemp.ClassicalMechanics.ConstantAcceleration
+  generic velocity and quadratic position laws, arbitrary dimension
+                         ↓
+UniformGravity (optional future layer; not added now)
+                         ↓
+P08 vertical/coasting/apex specialization and event approximation
+```
 
-There is no diagram-dependent geometry. Any supplied solution image serves only
-as the textual explanation's provenance, not a trusted diagram; no caption,
-figure interpretation or reconstructed image is introduced.
+The constant-acceleration abstraction knows no vertical direction, gravity,
+rockets, explosions or highest points. It operates on upstream Particle directly.
+A separate UniformGravity module is deferred because merely renaming the constant
+vector would add no physics. A useful future layer could derive acceleration g
+from gravitational force `m • g` plus Newton II; that bridge is not claimed here.
 
-## Verification
+The temporary API is an **upstream-oriented prototype requiring maintainer/API
+review**, not an accepted contribution. A possible upstream location is
+`Physlib.ClassicalMechanics.ConstantAcceleration`, followed by an optional
+`UniformGravity` layer and problem-specific applications. Namespaces, frame
+instances, real coordinate time versus affine Time, and interval-local versions
+need review before upstreaming. P08 consumes the generic layer rather than
+serving as its semantic definition.
+
+Future users include free fall, vertical launch, projectile motion, constant-force
+motion, uniform-electric-field motion, turning points, time to apex and maximum
+height. These examples are not all implemented; their force laws would need
+separate premises or derivations.
+
+## Verification and source provenance
+
+`ConstantAccelerationExamples.lean` supplies upstream quadratic-particle
+consistency witnesses and library checks for velocity difference, position
+law, zero acceleration, zero initial velocity and stationary motion in arbitrary
+dimension, with explicit dimensions 4 and 0. The P08 model itself accepts any
+upstream particle satisfying the acceleration condition, not a prescribed parabola.
+
+`Verify.lean` uses a parabola only as a consistency witness, checks apex-height
+and velocity results, preserves zero/nonzero balanced fragments and the standard
+basis negative test for `LinearCoplanar`. Source inputs remain satisfiable.
+
+The source question and supplied printed-solution substance in `source.jsonl`
+remain unchanged. Any solution image is explanatory text, not trusted geometry;
+no diagram caption or reconstructed figure is introduced.
 
 ```bash
 lake build
 python3 scripts/verify.py P08
-# Source problem ID also works:
-python3 scripts/verify.py 77
+lake env lean LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ConstantAcceleration.lean
+lake env lean LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ConstantAccelerationExamples.lean
 ```
 
-`Verify.lean` checks the candidate/target pairing, constructs balanced positive-mass
-inputs for arbitrary two vectors (including zero), and checks a nonzero example.
-It also proves that three standard basis vectors are **not** linearly coplanar,
-so the target predicate is not the trivial three-point affine property.
-The parameter and source-evidence domains are satisfiable; the result is not
-obtained from contradictory assumptions.
+Mutations remain explicitly deferred, as in P03–P07. Dependency pins and the
+previous demos' physical APIs are unchanged.
 
-Mutation cases are explicitly deferred (`mutations.json` is empty), consistent
-with P03–P07. `PairingWalkthrough.lean` checks the main lemma types and prints the
-final theorem axioms. Dependency pins and prior demo implementations are unchanged.
+### Validation results for this refinement
 
-### Validation results
-
-- `lake build`: PASS (3642 jobs); existing module-interoperability warnings remain.
-- M00 and P01–P08 verification: PASS.
-- M00/P01/P02 mutation cases: 6/6 each; P03–P08 explicitly SKIPPED.
-- Positive-mass source consistency, zero/nonzero balancing examples and the
-  standard-basis noncoplanarity check: PASS.
-- Final theorem axioms: `[propext, Classical.choice, Quot.sound]`; no `sorry` or new axioms.
-- `git diff --check`: PASS. No dependency pins, PhyslibTemp modules or prior demo implementations changed.
+- `lake build`: PASS (3645 jobs); module-interoperability warnings remain.
+- M00 and P01–P08: all PASS; M00/P01/P02 mutations 6/6 each, P03–P08 explicitly SKIPPED.
+- Both new mechanics modules directly compiled with `lake env lean`: PASS.
+- Library checks include arbitrary dimension/reference time, zero acceleration,
+  zero initial velocity, stationary motion, and dimensions 4 and 0.
+- Apex consistency witnesses and existing fragment/standard-basis checks: PASS.
+- Printed proof terms confirm pre-momentum depends on derived apex velocity and
+  Fermat's theorem consumes the proved maximum and actual height derivative.
+- Coplanarity definition, target and linear-algebra lemma bodies are unchanged.
+- Final theorem and generic velocity/position law axioms remain
+  `[propext, Classical.choice, Quot.sound]`; no `sorry` or new axioms.
+- `git diff --check`: PASS; dependency pins and prior demo implementations unchanged.
