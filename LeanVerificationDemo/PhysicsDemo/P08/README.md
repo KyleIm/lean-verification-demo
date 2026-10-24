@@ -60,6 +60,36 @@ Linear coplanarity, rather than affine coplanarity of three endpoints, is kept.
 Zero/collinear velocities are valid: the containing subspace may have dimension
 zero or one. No independence or nonzero-fragment-velocity assumption is added.
 
+## The source solution is also part of the formalization audit
+
+Formalizing this problem–solution pair required auditing the supplied explanation,
+not only the question. The printed solution contains two steps with different
+formal status:
+
+| Source-solution step | Formal treatment |
+| --- | --- |
+| The rocket is at rest at its highest point | Omitted reasoning, now derived under the explicit vertical coasting model |
+| Gravitational impulse is negligible during the short explosion | Physical approximation, exposed as the across-event momentum-conservation premise |
+
+For the first step, the reusable mechanics and P08 specialization prove the
+velocity/height laws, the maximum-height time and zero velocity there. This is
+conditional on the chosen constant downward acceleration and initial upward
+velocity, which are model assumptions rather than facts proved from the source
+wording. The zero apex velocity is no longer a trusted equality field.
+
+The second step introduces an event idealization that is not stated in the
+original question. Algebra or calculus alone does not establish that the external
+impulse is negligible for a real explosion. `momentum_conserved` therefore remains
+an explicit premise: Lean proves the subsequent conclusion under that approximation,
+not literal zero duration or exactly zero gravitational impulse.
+
+This distinction motivates the repository's [problem–solution review standard](../../../README.md#auditing-source-problemsolution-pairs).
+Audit both sides: separate problem data, omitted derivations, reusable physical
+principles, model approximations, intermediate results and the source answer.
+Then check the actual Candidate dependencies. The purpose is to reconstruct and
+verify the reasoning with clear boundaries, not trust every printed assertion or
+force the Lean proof to reproduce each sentence mechanically.
+
 ## Exact inputs and abstraction boundary
 
 `ExplosionData` contains positive fragment masses, three fragment velocity
@@ -148,6 +178,29 @@ or rocket flight from Newton's laws.
 `CandidateAnnotated.lean` distinguishes upstream/reusable mechanics, P08-specific
 vertical/apex specialization, approximate explosion physics and pure linear
 algebra. No plane or zero post-event momentum is trusted input.
+
+## Reusable constant-acceleration layer
+
+The reusable mechanics is implemented in
+[ConstantAcceleration.lean](../../PhyslibTemp/ClassicalMechanics/ConstantAcceleration.lean),
+with design and upstream-integration notes in
+[ConstantAcceleration.md](../../PhyslibTemp/ClassicalMechanics/ConstantAcceleration.md)
+and independent consistency checks in
+[ConstantAccelerationExamples.lean](../../PhyslibTemp/ClassicalMechanics/ConstantAccelerationExamples.lean).
+
+The module uses upstream `ReferenceFrame.Particle` and defines
+`HasConstantAcceleration particle a`. It proves generic velocity and quadratic
+position evolution in arbitrary spatial dimension; it contains no rocket,
+explosion, highest-point, vertical-direction or gravity-specific abstraction.
+P08 consumes those laws to derive its vertical trajectory's highest point and
+zero apex velocity, then applies the separate explosion approximation.
+
+The accompanying `.md` file explains why this layer is reusable and how it might
+fit upstream. It is **design documentation, not part of the P08 source
+assumptions**. The executable kinematic premise is the explicit
+`SourceData.constant_acceleration` field; the library evolution laws are proved
+from it. Likewise, the quadratic particles in the examples are verification
+witnesses, not prescribed source trajectories.
 
 ## Potential upstream Physlib layering
 

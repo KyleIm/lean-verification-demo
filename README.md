@@ -10,6 +10,52 @@ problem, Lean checks that a candidate proof term has the trusted proposition as
 its type, and a small mutation suite checks that controlled perturbations behave
 as expected.
 
+## Auditing source problem–solution pairs
+
+Both the textbook problem and its supplied solution are inputs to audit, rather
+than authorities whose implicit reasoning is automatically trusted. A printed
+solution may omit derivable steps or introduce approximations absent from the
+question. Review each important step by asking:
+
+1. Is it explicitly given in the original problem?
+2. Is it an unstated consequence that can and should be derived?
+3. Is it an empirical law or existing physical principle to reuse from Physlib or PhyslibTemp?
+4. Is it a required approximation or idealization of the textbook model?
+5. Is it mathematical reasoning supported by Mathlib?
+6. Does the actual Lean proof follow the documented dependency chain, and are deviations from the source route explained?
+
+The aim is to reconstruct the explanation's logical and physical dependencies,
+not mechanically translate each sentence. An omitted derivation should not
+become a trusted premise merely because the solution considers it obvious.
+A genuine physical approximation should remain explicit, rather than be presented
+as an unconditional exact theorem. This is a source-review standard; the verifier
+checks proof terms against the chosen formal premises, not the physical validity
+of those premises or the English documentation.
+
+[P08](LeanVerificationDemo/PhysicsDemo/P08/README.md#the-source-solution-is-also-part-of-the-formalization-audit)
+illustrates the distinction: apex rest is now derived under an explicit ideal
+coasting model, whereas momentum conservation across the short explosion remains
+an adopted negligible-external-impulse approximation. The constant downward
+acceleration and initial upward velocity are themselves stated model assumptions.
+
+## Reusable constant-acceleration layer
+
+P08's refinement produced a reusable mechanics layer built on upstream Physlib's
+`ReferenceFrame.Particle`, not a rocket-specific particle model:
+
+| File | Role |
+| --- | --- |
+| [ConstantAcceleration.lean](LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ConstantAcceleration.lean) | `HasConstantAcceleration` and derived velocity/position laws for any spatial dimension |
+| [ConstantAcceleration.md](LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ConstantAcceleration.md) | Reusability rationale, API limits and possible upstream integration |
+| [ConstantAccelerationExamples.lean](LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ConstantAccelerationExamples.lean) | Independent library consistency checks, including zero acceleration and dimensions 4 and 0 |
+
+The dependency is upstream Particle → PhyslibTemp ConstantAcceleration → P08's
+vertical coasting specialization → derived apex rest → explosion momentum and
+linear coplanarity. No `UniformGravity` module exists yet: a future layer should
+add physical content such as a gravitational force/Newton-II bridge, rather than
+merely rename a constant vector. The design notes describe a possible future
+upstream contribution; they are not P08 source assumptions or additional axioms.
+
 ## Verification Pipeline
 
 For each problem:
@@ -70,7 +116,7 @@ project.
 | Physics | `436` (local ID `cube-capacitor-opposite-vertices`) | `P04` | [problem README](LeanVerificationDemo/PhysicsDemo/P04/README.md), [diagram caption and source](LeanVerificationDemo/PhysicsDemo/P04/source.jsonl) |
 | Physics | `108` | `P05` | [problem README](LeanVerificationDemo/PhysicsDemo/P05/README.md), [mechanics audit](LeanVerificationDemo/PhysicsDemo/P05/PHYSLIB_AUDIT.md) |
 | Physics | `656` | `P06` | [problem README](LeanVerificationDemo/PhysicsDemo/P06/README.md), [propagation audit](LeanVerificationDemo/PhysicsDemo/P06/PHYSLIB_AUDIT.md) |
-| Physics | `574` | `P07` | [problem README](LeanVerificationDemo/PhysicsDemo/P07/README.md), [caption-only figure](LeanVerificationDemo/PhysicsDemo/P07/problem_diagram.svg), [induction audit](LeanVerificationDemo/PhysicsDemo/P07/PHYSLIB_AUDIT.md) |
+| Physics | `574` | `P07` | [problem README](LeanVerificationDemo/PhysicsDemo/P07/README.md), [reconstructed illustration](LeanVerificationDemo/PhysicsDemo/P07/problem_diagram.svg), [induction audit](LeanVerificationDemo/PhysicsDemo/P07/PHYSLIB_AUDIT.md) |
 | Physics | `77` | `P08` | [problem README](LeanVerificationDemo/PhysicsDemo/P08/README.md), [mechanics and linear-algebra audit](LeanVerificationDemo/PhysicsDemo/P08/PHYSLIB_AUDIT.md) |
 
 ## Run

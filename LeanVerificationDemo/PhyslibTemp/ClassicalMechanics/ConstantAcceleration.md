@@ -28,6 +28,11 @@ future work. Positions here are frame-relative vector coordinates, not sums of
 affine world-space points. No units, dimension three, vertical direction, force
 law or gravity value is hard-coded.
 
+These design and integration notes are not part of any problem's trusted source
+assumptions. P08 supplies `HasConstantAcceleration` explicitly as a model premise;
+the generic kinematics laws are proved from that premise. The library examples
+are consistency witnesses, not source data for the rocket problem.
+
 ## Potential upstream Physlib layering
 
 ```text
