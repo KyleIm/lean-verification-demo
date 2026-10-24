@@ -47,12 +47,34 @@ partition-to-integral convergence theorem is claimed by this proof. -/
 theorem solution (data : RingData) (response : Response data) :
     TrustedPhysicsProblem data response := by
   intro t
-  change (∫ x in data.a.val..data.b.val, response.currentPerWidth x t) = _
-  have heq := intervalIntegral.integral_congr (μ := MeasureTheory.volume) (a := data.a.val) (b := data.b.val)
-    (fun x hx => current_per_width data response x
-      (by simpa [Set.uIcc_of_le data.a_lt_b.le] using hx) t)
-  -- Integrate the derived linear profile, not an assumed final current.
-  rw [heq, intervalIntegral.integral_const_mul, integral_id]
+  -- Obtain integrability of the physical response from the earlier lemma.
+  have h_integrable := current_integrable data response t
+  let c := sourceFactor * data.k * data.h.val / (2 * data.ρ.val)
+  -- Faraday and Ohm yield this linear profile; it is not supplied as evidence.
+  have h_profile : Set.EqOn (fun x => response.currentPerWidth x t)
+      (fun x => c * x) (Set.uIcc data.a.val data.b.val) := by
+    intro x hx
+    exact current_per_width data response x
+      (by simpa [Set.uIcc_of_le data.a_lt_b.le] using hx) t
+  -- Transfer that certificate through the derived profile equality.
+  have h_linear_integrable : IntervalIntegrable (fun x => c * x)
+      MeasureTheory.volume data.a.val data.b.val :=
+    h_integrable.congr (fun x hx => h_profile (Set.uIoc_subset_uIcc hx))
+  have h_primitive (x : ℝ) : HasDerivAt (fun u => c * u ^ 2 / 2) (c * x) x := by
+    convert ((hasDerivAt_pow 2 x).const_mul c).div_const 2 using 1
+    ring
+  -- State the source answer explicitly: I = 10^-8 (k h / (4 ρ)) (b² - a²).
+  -- sourceFactor is exactly 1 / 100000000; the formula is the goal, not a premise.
+  change
+    (∫ x in data.a.val..data.b.val, response.currentPerWidth x t) =
+      sourceFactor * (data.k * data.h.val / (4 * data.ρ.val)) *
+        (data.b.val ^ 2 - data.a.val ^ 2)
+  -- Replace the integrand and evaluate with the fundamental theorem of calculus.
+  -- Its integrability argument depends on current_integrable above.
+  rw [intervalIntegral.integral_congr h_profile,
+    intervalIntegral.integral_eq_sub_of_hasDerivAt
+      (fun x _ => h_primitive x) h_linear_integrable]
+  dsimp [c]
   ring
 
 end LeanVerificationDemo.PhysicsDemo.P07.CandidateAnnotated

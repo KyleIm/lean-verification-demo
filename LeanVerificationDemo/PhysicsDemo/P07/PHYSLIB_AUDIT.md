@@ -57,7 +57,8 @@ Faraday's law altogether.
 
 * Stable Physlib reused: `WithDim` and its LTMCT dimension algebra, directly.
 * Mathlib reused: `HasDerivAt`, `deriv`, interval integration, continuity-based
-  interval integrability, `integral_const_mul` and `integral_id`.
+  interval integrability, integrability transfer by `IntervalIntegrable.congr`,
+  and `intervalIntegral.integral_eq_sub_of_hasDerivAt` (fundamental theorem of calculus).
 * PhyslibTemp: **no additions**. Lack of an upstream API alone does not justify
   exporting a new library abstraction.
 * P07-local: annular parameters, source H coordinate and historical coefficient,
