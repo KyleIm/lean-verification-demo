@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Deterministic SVG from figure_caption.json only.
 
-No source image was available. The generator/design uses only the user-supplied
-caption geometry, not solution values, Lean code or an external source book.
+The original Fig. 6 was supplied in the surrounding workflow. Implementation
+used the user-approved geometry caption rather than directly inspecting/parsing
+the source image; no independent caption/image verification is claimed. The
+reconstruction uses no solution values, Lean code or external source book.
 """
 from html import escape
 import json

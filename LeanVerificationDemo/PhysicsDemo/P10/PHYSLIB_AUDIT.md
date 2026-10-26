@@ -96,9 +96,12 @@ mass/force/energy or full dimensionful integration framework is introduced.
 
 Trusted geometric data is limited to the axes/units, the nine vertices,
 straight connections and two marked times. `figure_caption.txt` contains no
-solution areas or average values. The source image was not available; the user
-explicitly authorized caption-only reconstruction, and no original-image
-verification or independent source lookup is claimed.
+solution areas or average values. The original Fig. 6 was supplied by the user
+in the surrounding workflow. Implementation used the user-approved trusted
+caption rather than directly inspecting or parsing that image. The implementation
+agent does not claim independent verification of the caption against the image.
+The SVG is caption-derived, not a source scan; no independent source lookup or
+solution-derived graph reconstruction is claimed.
 
 The actual function interpolates the caption points on every closed segment.
 Candidate derives integrability, segment areas, interval sums, nonnegativity,

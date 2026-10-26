@@ -29,9 +29,11 @@ Continuous straight-segment polyline through
 Marked times: t₁ = 5 s and t₂ = 10 s.
 ```
 
-The user authorized reconstruction from this caption alone. The original Fig. 6
-image was **not available** for this P10 implementation, so no independent visual
-comparison is claimed. `generate_problem_diagram.py` reads only
+The original Fig. 6 was supplied by the user in the surrounding workflow.
+The P10 implementation itself was constructed from the user-approved trusted
+caption rather than directly inspecting or parsing the source image. No claim
+is made that the implementation agent independently verified the caption against
+the image. `generate_problem_diagram.py` reads only
 `figure_caption.json`; it does not read source solution text, Lean proofs,
 images or an independently located source book. Axes layout, colors and grid
 spacing are rendering choices. The SVG is a reconstruction, not a source scan.
@@ -142,9 +144,27 @@ the reported cm/s and cm/s² quantities. This is not a new unit framework and
 does not import another problem's local aliases. No conversion to m/s is needed
 for this source-native calculation.
 
-The graph integrals are exact real coefficients; the unit layer certifies their
-interpretation. Dimensional correctness is separate from the integral/endpoint
-derivation. **No new PhyslibTemp module or declaration is added.**
+P10 illustrates how physical dimensions transform through the source calculation:
+
+```text
+velocity × time → length          (cm/s) × s → cm
+length / time → velocity          cm / s → cm/s
+velocity / time → acceleration    (cm/s) / s → cm/s²
+```
+
+The graph supplies velocity as a function of time. Integrating it over time
+produces displacement, a length quantity; dividing that displacement by elapsed
+time gives mean velocity. Dividing the endpoint velocity change by elapsed time
+gives mean acceleration. `P10/Units.lean` checks these dimension transformations
+using upstream Physlib `WithDim` and certifies the source-native cm/s and cm/s²
+interpretation of the reported values.
+
+The main graph/integration proof remains scalar-valued, using exact real
+coefficients. The interval integration is not performed directly inside
+dimension-indexed `WithDim` quantities. The existing unit layer separately
+certifies dimensions and the interpretation of those scalar results; dimensional
+correctness does not replace the integral/endpoint derivation.
+**No new PhyslibTemp module or declaration is added.**
 
 ## Verification
 
@@ -174,8 +194,8 @@ Dependency pins and earlier demos remain unchanged.
   inputs exclude the source's solution values.
 - SVG regeneration is deterministic, including an isolated run with only the
   generator and geometry JSON; nine vertex dots and one nine-point polyline checked.
-- SVG rendered and visually inspected; no comparison with an unavailable original
-  image is claimed.
+- Reconstructed SVG rendered and visually inspected; the implementation agent
+  does not claim independent verification of the caption against the source image.
 - Candidate, CandidateAnnotated, path/displacement and typed-answer theorem axioms:
   `[propext, Classical.choice, Quot.sound]`; no `sorry` or new axioms.
 - Metadata, documentation links, whitespace and `git diff --check`: PASS.
