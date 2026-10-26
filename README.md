@@ -1,6 +1,6 @@
 # Lean Verification Demo
 
-Problem-centric Lean verification prototype for one mathematics problem and nine
+Problem-centric Lean verification prototype for one mathematics problem and ten
 physics problems.
 
 ## Purpose
@@ -97,7 +97,7 @@ For each problem:
 3. Run six controlled mutation tests.
 4. Compile an annotated proof for human audit.
 
-P03–P09 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
+P03–P10 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
 an empty manifest. Existing demos still run their six mutation checks.
 
 The six mutation tests are part of Stage 3.  They are not six separate
@@ -151,6 +151,7 @@ project.
 | Physics | `574` | `P07` | [problem README](LeanVerificationDemo/PhysicsDemo/P07/README.md), [reconstructed illustration](LeanVerificationDemo/PhysicsDemo/P07/problem_diagram.svg), [induction audit](LeanVerificationDemo/PhysicsDemo/P07/PHYSLIB_AUDIT.md) |
 | Physics | `77` | `P08` | [problem README](LeanVerificationDemo/PhysicsDemo/P08/README.md), [mechanics and linear-algebra audit](LeanVerificationDemo/PhysicsDemo/P08/PHYSLIB_AUDIT.md) |
 | Physics | `47` | `P09` | [problem README](LeanVerificationDemo/PhysicsDemo/P09/README.md), [friction/impact audit](LeanVerificationDemo/PhysicsDemo/P09/PHYSLIB_AUDIT.md) |
+| Physics | `23` | `P10` | [problem README](LeanVerificationDemo/PhysicsDemo/P10/README.md), [caption-only graph](LeanVerificationDemo/PhysicsDemo/P10/problem_diagram.svg), [audit](LeanVerificationDemo/PhysicsDemo/P10/PHYSLIB_AUDIT.md) |
 
 ## Run
 
@@ -173,6 +174,7 @@ python3 scripts/verify.py P06
 python3 scripts/verify.py P07
 python3 scripts/verify.py P08
 python3 scripts/verify.py P09
+python3 scripts/verify.py P10
 ```
 
 Or by full problem ID:
@@ -200,6 +202,7 @@ or ID.  Add `--verbose` to show raw Lean diagnostics for each command.
 | `574` (P07) | PASS | PASS | SKIPPED | PASS | PASS |
 | `77` (P08) | PASS | PASS | SKIPPED | PASS | PASS |
 | `47` (P09) | PASS | PASS | SKIPPED | PASS | PASS |
+| `23` (P10) | PASS | PASS | SKIPPED | PASS | PASS |
 
 ## Environment
 

@@ -1,0 +1,15 @@
+{
+  "id": "23",
+  "title": "Mean velocity and acceleration from a caption-defined velocity graph",
+  "code": "P10",
+  "domain": "physics",
+  "problem_file": "LeanVerificationDemo/PhysicsDemo/P10/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/PhysicsDemo/P10/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/PhysicsDemo/P10/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/PhysicsDemo/P10/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean",
+  "mutation_manifest": "LeanVerificationDemo/PhysicsDemo/P10/mutations.json",
+  "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P10.TrustedPhysicsProblem",
+  "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P10.Candidate.solution",
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P10.Candidate.solution : LeanVerificationDemo.PhysicsDemo.P10.TrustedPhysicsProblem"
+}

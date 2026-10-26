@@ -1,0 +1,62 @@
+{
+  "figure": "Fig. 6",
+  "horizontal_axis": {
+    "quantity": "time",
+    "symbol": "t",
+    "unit": "s"
+  },
+  "vertical_axis": {
+    "quantity": "velocity",
+    "symbol": "v",
+    "unit": "cm/s"
+  },
+  "vertices": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      3,
+      3
+    ],
+    [
+      5,
+      4
+    ],
+    [
+      6,
+      4
+    ],
+    [
+      7,
+      3
+    ],
+    [
+      9,
+      2
+    ],
+    [
+      10,
+      2
+    ]
+  ],
+  "connections": "straight segments between consecutive vertices",
+  "marked_times": [
+    {
+      "label": "t₁",
+      "value": 5
+    },
+    {
+      "label": "t₂",
+      "value": 10
+    }
+  ]
+}

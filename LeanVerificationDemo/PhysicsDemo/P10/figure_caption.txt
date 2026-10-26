@@ -1,0 +1,10 @@
+Fig. 6 is a velocity–time graph.
+
+Horizontal axis: time t, measured in seconds.
+Vertical axis: velocity v, measured in cm/s.
+
+The graph is a continuous piecewise-linear polyline through the points
+(0, 0), (1, 1), (2, 1), (3, 3), (5, 4), (6, 4), (7, 3), (9, 2), (10, 2),
+where each consecutive pair is joined by a straight-line segment.
+
+The graph explicitly marks t₁ = 5 s and t₂ = 10 s.
