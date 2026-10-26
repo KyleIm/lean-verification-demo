@@ -39,7 +39,7 @@ This is evidence for the absence of an **applicable formal geometric-optics
 API in this pinned revision**, not a claim that every use of the word
 reflection in Physlib is absent.
 
-## Existing mathematical reflection is sufficient
+## Mathematical primitive versus reusable physical semantics
 
 `Mathlib/Analysis/InnerProductSpace/Projection/Reflection.lean` provides actual
 formal declarations in namespace `Submodule`. With `K : Submodule ℝ E`, a real
@@ -61,11 +61,54 @@ Locations: `reflection` line 49, `reflection_apply` line 64,
 `reflection_singleton_apply` line 106. The original APIs are more general over
 the scalar field; the real specialization above is what P11 uses.
 
-P11 chooses `Plane := EuclideanSpace ℝ (Fin 2)` and the horizontal submodule
-`ℝ ∙ point 1 0`. It **models** ideal specular optical reflection with this
-operator and proves the actual component change `(1,-q) ↦ (1,q)`. Identifying
-the mathematical reflection with the ideal optical law is an explicit local
-physical idealization, not an upstream Physlib theorem or a Maxwell derivation.
+Mathlib supplies the mathematical operation, not an ideal plane-mirror law.
+The re-audit also searched `specular|plane.mirror|law.of.reflection|angle.of.incidence`
+through the whole pinned stable/Alpha trees and found no applicable formal
+physics API. The source paths/revision and distinctions above remain valid.
+
+The earlier P11 implementation assigned the optical interpretation locally.
+That decision is revised: **a reusable physical interpretation deserves its own
+physics layer even when its mathematical primitive already exists**. The new
+`PhyslibTemp/Optics/Reflection.lean` models an ideal stationary specular mirror
+with a unit normal and applies Mathlib reflection in the normal's orthogonal
+complement. The unit normal ensures a genuine tangent hyperplane, rather than
+silently calling an arbitrary reflecting subspace a physical plane mirror.
+
+The new API is under `LeanVerificationDemo.PhyslibTemp.Optics`:
+
+```lean
+-- E is any real inner-product space; no CompleteSpace/dimension restriction.
+PlaneMirror E                         -- unit normal, with normal_unit proof
+PlaneMirror.tangent (mirror)          -- (ℝ ∙ mirror.normal)ᗮ
+PlaneMirror.reflect (mirror) (v : E) : E
+
+PlaneMirror.reflect_eq (mirror) (v) :
+  mirror.reflect v = v - (2 * inner ℝ mirror.normal v) • mirror.normal
+PlaneMirror.tangent_component (mirror) (v) :
+  mirror.tangent.starProjection (mirror.reflect v) = mirror.tangent.starProjection v
+PlaneMirror.normal_component (mirror) (v) :
+  inner ℝ mirror.normal (mirror.reflect v) = -inner ℝ mirror.normal v
+PlaneMirror.norm_reflect (mirror) (v) : ‖mirror.reflect v‖ = ‖v‖
+PlaneMirror.reflect_reflect (mirror) (v) : mirror.reflect (mirror.reflect v) = v
+PlaneMirror.incidence_reflection_cosine (mirror) (v) :
+  |inner ℝ mirror.normal (mirror.reflect v)| / ‖mirror.reflect v‖ =
+    |inner ℝ mirror.normal v| / ‖v‖
+PlaneMirror2D.horizontal_reflect (vx vy : ℝ) :
+  horizontal.reflect (direction vx vy) = direction vx (-vy)
+```
+
+The physical interpretation is adopted; component/norm/involution and the
+unsigned normal-angle cosine identity are proved from Mathlib. No claim is
+made to derive specular optics from Maxwell equations. The cosine has an angle
+meaning for nonzero directions; zero remains an algebraic degenerate case.
+`normal_ne_zero`, `reflect_tangent` and `reflect_normal` cover additional useful
+cases. Independent horizontal, vertical, grazing, zero and arbitrary-space
+checks are in `ReflectionExamples.lean`; `Reflection.md` explains potential
+upstream integration and further uses.
+
+P11 now imports this module, chooses the horizontal mirror with vertical unit
+normal, and derives `(1,-q) ↦ (1,q)` by specializing `horizontal_reflect`. Its
+object/screen placement and every obstruction or shadow calculation stay local.
 
 Other formal Mathlib dependencies are:
 
@@ -110,7 +153,8 @@ The only trusted figure input is the qualitative Fig. 237 caption in
 shadow lengths. Fig. 494 is reference-only solution material, never a trusted
 construction. No independently located source book/image is used.
 
-Positive h, positive l and acute α measured **from the normal** quantify the
+Positive h, positive l and acute α measured **from the vertical normal to the
+horizontal mirror** quantify the
 qualitative source geometry. They are formalization parameters, not labels
 claimed to occur in the source problem. No `SourceData` field assumes a regime.
 
@@ -119,13 +163,22 @@ and H−u for obstruction at object height u. The top inverted boundary has mirr
 coordinate h/q=h tan α, and reaches the screen forward precisely when
 `l ≥ h tan α`. This is the derived solution-introduced regime boundary.
 
-One instruction required correction: “direct shadow” in the orientation sense
-cannot be identified with absence of **unreflected sunlight**. At a strictly far
-screen that sunlight is unblocked. The length-2h shadow consists of two losses
-of **reflected** light, caused by obstruction before versus after reflection.
-The model therefore distinguishes upright/inverted orientation from the direct
-and reflected illumination channels. This distinction was explained during
-review before proceeding with implementation.
+The **supplied solution** calls the two far-screen portions a “direct”
+(upright) and an inverted shadow. Solving the actual ray geometry reveals that
+both lose reflected light, through obstruction before or after reflection.
+For a strictly far screen, direct/unreflected sunlight is unblocked. Thus
+`uprightShadow` must not be identified with `directBlocked`, which denotes the
+actual unreflected-channel loss. This is an audit result, not a new meaning
+silently assigned to the source's wording. **Source terminology ≠ formal
+physical-channel terminology**; predicate names must respect the physical
+concepts rather than mechanically copy natural-language designations.
+
+The approved Fig. 237 prose caption is unchanged. Its machine-readable
+`figure_caption.json` geometry drives the deterministic SVG generator. Pixel
+coordinates, visual inclinations and ray count are explicitly rendering choices,
+not source measurements or case assumptions. The generator reads no source
+solution, Candidate, Fig. 494 or derived boundary information. The SVG is a
+caption-derived reconstruction, not a source scan or solution reconstruction.
 
 The resulting ray-derived sets are:
 
@@ -153,10 +206,10 @@ From Mathlib:
   interval sets and Lebesgue measure
 
 New in PhyslibTemp:
-  nothing
+  ideal specular plane-mirror semantics and reusable direction laws
 
 P11-specific modeling:
-  h/l/α and coordinates; incoming/reflected ray families;
+  h/l/α and coordinates; horizontal mirror specialization and ray families;
   opaque-object intersections and illumination-channel predicates;
   solution regime predicates and source-facing shadow interpretation
 
@@ -165,6 +218,9 @@ Derived geometry and pure mathematics:
   threshold equivalence, shadow intervals, ordering and lengths
 ```
 
-A generic one-line reflection wrapper would merely duplicate Mathlib. P11's
-shadow geometry and channel meanings have no established second use case and
-remain local. No PhyslibTemp optics, unit or general visibility API is added.
+This addition satisfies the reusable-physics criterion: the optical API is
+absent upstream, source-independent, useful in other geometric-optics problems,
+and built on existing mathematical reflection instead of duplicating it.
+It adds a physical model and a theorem surface, not a one-line alias.
+P11's shadow geometry and channel meanings remain local. No new unit framework,
+visibility engine or solution-specific threshold is exported to PhyslibTemp.

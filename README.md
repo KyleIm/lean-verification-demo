@@ -88,6 +88,24 @@ ImpulseMomentum → interaction/event applications. In P08 it joins the
 constant-acceleration branch: kinematics supplies pre-event rest, while force
 balance and a duration limit supply event momentum transfer.
 
+## Reusable ideal specular-reflection layer
+
+[Reflection.lean](LeanVerificationDemo/PhyslibTemp/Optics/Reflection.lean) models
+an ideal stationary plane mirror using a unit normal and Mathlib orthogonal
+reflection in its tangent hyperplane. It proves tangential-component preservation,
+normal reversal, norm preservation, involution and equal unsigned normal-angle
+cosine ratios, with a convenient horizontal 2D theorem. Mathlib supplies the
+mathematical primitive; PhyslibTemp supplies the reusable optical semantics.
+
+[Design notes](LeanVerificationDemo/PhyslibTemp/Optics/Reflection.md) explain the
+scope and possible upstream Physlib integration;
+[independent examples](LeanVerificationDemo/PhyslibTemp/Optics/ReflectionExamples.lean)
+check different mirror orientations, downward/upward directions and degenerate
+cases. P11 consumes this API for its horizontal mirror. Object/screen geometry,
+illumination-channel losses, shadow intervals and regime thresholds stay P11-local.
+Its [problem reconstruction](LeanVerificationDemo/PhysicsDemo/P11/problem_diagram.svg)
+is generated only from approved caption geometry, without solution constructions.
+
 ## Verification Pipeline
 
 For each problem:
@@ -152,7 +170,7 @@ project.
 | Physics | `77` | `P08` | [problem README](LeanVerificationDemo/PhysicsDemo/P08/README.md), [mechanics and linear-algebra audit](LeanVerificationDemo/PhysicsDemo/P08/PHYSLIB_AUDIT.md) |
 | Physics | `47` | `P09` | [problem README](LeanVerificationDemo/PhysicsDemo/P09/README.md), [friction/impact audit](LeanVerificationDemo/PhysicsDemo/P09/PHYSLIB_AUDIT.md) |
 | Physics | `23` | `P10` | [problem README](LeanVerificationDemo/PhysicsDemo/P10/README.md), [caption-only graph](LeanVerificationDemo/PhysicsDemo/P10/problem_diagram.svg), [audit](LeanVerificationDemo/PhysicsDemo/P10/PHYSLIB_AUDIT.md) |
-| Physics | `677` | `P11` | [problem README](LeanVerificationDemo/PhysicsDemo/P11/README.md), [trusted Fig. 237 caption](LeanVerificationDemo/PhysicsDemo/P11/figure_caption.txt), [mirror/shadow audit](LeanVerificationDemo/PhysicsDemo/P11/PHYSLIB_AUDIT.md) |
+| Physics | `677` | `P11` | [problem README](LeanVerificationDemo/PhysicsDemo/P11/README.md), [trusted Fig. 237 caption](LeanVerificationDemo/PhysicsDemo/P11/figure_caption.txt), [caption reconstruction](LeanVerificationDemo/PhysicsDemo/P11/problem_diagram.svg), [mirror/shadow audit](LeanVerificationDemo/PhysicsDemo/P11/PHYSLIB_AUDIT.md) |
 
 ## Run
 

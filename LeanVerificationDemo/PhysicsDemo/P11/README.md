@@ -13,7 +13,8 @@ Source problem **677**. [Source pair](source.jsonl) ·
 The original statement does **not** name h, l or α and does **not** state
 `l ≥ h tan α`. The supplied solution introduces a quantitative description and
 distinguishes regimes with and without that inequality. Its far-screen claim is
-two adjoining upright/direct and inverted shadows with total length 2h; in the
+two adjoining portions called a “direct” (upright) and an inverted shadow,
+with total length 2h; in the
 near regime the shadow is shorter and has a portion illuminated by neither channel.
 
 ### Trusted source geometry and reference-only material
@@ -34,19 +35,45 @@ independent image/caption comparison is claimed. Fig. 494 is **solution-referenc
 material only**: no construction from it is parsed, encoded as caption data or
 used as a premise. No independently located source book/image is consulted.
 
+
+![Caption-derived reconstruction of Fig. 237](problem_diagram.svg)
+
+`problem_diagram.svg` is a caption-derived reconstruction of Fig. 237, not a
+source scan and not a reconstruction from Fig. 494. The generator reads only
+machine-readable caption geometry in [figure_caption.json](figure_caption.json).
+It does not consume source solution text, Lean Candidate proofs, Fig. 494 or
+solution-derived boundary information. The approved prose caption is unchanged.
+
+Pixel positions, ray count, object drawing width and visual inclinations are
+arbitrary rendering choices, not source measurements or formal h/l/α values.
+The schematic illustrates the caption's qualitative placement. It labels no
+shadow regime, contains no computed limiting rays and uses no solution diagram.
+The image and these rendering choices are not additional trusted Lean premises.
+Regenerate/check deterministically with:
+
+```bash
+python3 LeanVerificationDemo/PhysicsDemo/P11/generate_problem_diagram.py
+python3 LeanVerificationDemo/PhysicsDemo/P11/generate_problem_diagram.py --check
+```
+
 ### Terminology correction: orientation versus illumination channel
 
-“Direct shadow” is interpreted as **upright shadow**, not as the set of screen
-points lacking unreflected sunlight. These notions cannot be identified: for a
-strictly far screen, direct sunlight is unblocked, yet reflected light has a
-shadow of length 2h. The two portions arise from blocking a ray **before** or
-**after** its reflection. Both remove reflected illumination.
+The **supplied solution** calls the two far-screen portions a “direct”
+(upright) and an inverted shadow. In the formal model, **upright/inverted**
+describes two orientations of reflected-light loss; **`directBlocked` is
+reserved for actual blockage of the direct/unreflected sunlight channel**.
+In particular, `uprightShadow` is not `directBlocked`.
 
-This distinction corrects the literal channel interpretation of the initial
-implementation instructions. The source's contrast with doubly illuminated
-regions is modeled as loss of at least one channel, while full darkness means
-loss of both. The source question/solution provenance is kept separate from
-this explicit modeling interpretation.
+This distinction is an audit result from solving the actual ray geometry.
+For a strictly far screen, direct sunlight is unblocked, yet reflected light
+has a shadow of length 2h. Obstruction before versus after reflection produces
+the two reflected-light deficit portions. The source's contrast with doubly
+illuminated regions is modeled as loss of at least one channel; full darkness
+means loss of both.
+
+**Source terminology ≠ formal physical-channel terminology.** Source wording
+should not automatically determine Lean predicate names when the ray geometry
+distinguishes different physical concepts.
 
 ### AFTER — Lean-facing formalized problem
 
@@ -74,7 +101,7 @@ The following are formalization choices, not additional labels read from Fig. 23
 mirror:       y = 0
 opaque object: x = 0, 0 ≤ y ≤ h
 screen:       x = l, y ≥ 0
-α:            incidence angle from the vertical mirror normal, 0 < α < π/2
+α:            incidence angle from the vertical normal to the horizontal mirror, 0 < α < π/2
 q = cot α = 1/tan α > 0
 H = l q = l/tan α.
 ```
@@ -98,11 +125,21 @@ segment between reflection and screen. All positions use a common length unit.
 
 ## Deriving the geometry
 
-`reflectedDirection` is Mathlib's actual `Submodule.reflection` in the horizontal
-line. Its identification with ideal specular optical reflection is the local
-physical model. `reflection_geometry` computes the component flip from that
-operator; it does not assume the answer or claim to derive optics from Maxwell
-equations.
+`Problem.lean` imports the reusable
+[PhyslibTemp reflection module](../../PhyslibTemp/Optics/Reflection.lean).
+`mirror` specializes its `PlaneMirror` to a horizontal mirror with unit vertical
+normal, and `reflectedDirection` calls `mirror.reflect`. The Candidate's
+`reflection_geometry` applies `PlaneMirror2D.horizontal_reflect`, giving the
+component flip `(1,-q) ↦ (1,q)` before any screen intersection is solved.
+
+The reusable physical law models ideal specular reflection with Mathlib's
+orthogonal reflection in the tangent hyperplane. It proves tangent preservation,
+normal reversal, norm preservation, involution and equal normal-angle cosine
+ratios. This is physical semantics over a mathematical primitive, not an optics
+law supplied by Mathlib or a derivation from Maxwell equations.
+[Design notes](../../PhyslibTemp/Optics/Reflection.md) and
+[independent examples](../../PhyslibTemp/Optics/ReflectionExamples.lean) explain
+and validate the layer without any P11 shadow assumptions.
 
 For a mirror position r the Candidate derives:
 
@@ -173,15 +210,19 @@ conventions and do not change any length result.
   idealization. None of these symbols is claimed to be an original figure label.
 - **Solution-introduced cases:** FarScreen/NearScreen, derived as boundary-ray
   ordering conditions and passed only to conditional result theorems.
+- **Reusable physical law:** ideal specular plane-mirror semantics in PhyslibTemp.
 - **Derived geometry:** reflection components, screen/object intersections,
   orientation maps, intervals, threshold and channel overlap.
 - **Pure mathematics:** trigonometric positivity, affine algebra, interval sets
   and Lebesgue lengths.
 - **Reference-only:** Fig. 494, with no role as a trusted input.
 
-Pinned stable Physlib's Optics directory provides no applicable formal mirror
-law. Existing Mathlib orthogonal reflection is sufficient; a new one-line optical
-wrapper would add little reusable content. **No PhyslibTemp declaration is added.**
+Pinned stable Physlib's Optics directory provides no applicable formal
+plane-mirror law. Mathlib supplies orthogonal reflection; PhyslibTemp now supplies
+its reusable ideal-specular physical interpretation and theorem surface. This
+revises the earlier no-extension decision: a mathematical primitive alone does
+not replace a reusable physics API. P11's ray obstruction, illumination channels,
+thresholds and shadows remain problem-local. No new unit framework is added.
 `Units.lean` uses upstream WithDim to check that h tan α and l both have length
 dimension; the typed inequality is equivalent to the scalar case predicate,
 not a new assumption that the inequality holds.
@@ -189,7 +230,8 @@ not a new assumption that the inequality holds.
 ## Reviewer-facing dependency and verification
 
 ```text
-Mathlib reflection → component/ray equations → object/screen intersections
+Mathlib reflection → PhyslibTemp ideal specular mirror → P11 horizontal specialization
+→ component/ray equations → object/screen intersections
 → upright/inverted intervals → physical top-boundary condition / threshold
 → channel sets and clipped union → interval lengths → both regime conclusions
 ```
@@ -206,9 +248,11 @@ lake env lean LeanVerificationDemo/PhysicsDemo/P11/Units.lean
 git diff --check
 ```
 
-Validation: `lake build` passed (3668 jobs); M00 and P01–P11 all passed.
+Validation: `lake build` passed (3670 jobs); M00 and P01–P11 all passed.
 M00/P01/P02 passed all six mutation checks each; P03–P11 explicitly skipped
-deferred empty mutation manifests. Direct compilation of `Units.lean` and
-`git diff --check` passed. Both Candidate and CandidateAnnotated final theorems
+deferred empty mutation manifests. Direct compilation of `ReflectionExamples.lean`
+and `Units.lean`, deterministic SVG regeneration (`--check`), generator input-file
+audit and `git diff --check` passed. Both Candidate and CandidateAnnotated final theorems
 use only `[propext, Classical.choice, Quot.sound]`; no `sorry` or new axiom
-was introduced. Dependency pins, PhyslibTemp and previous demos are unchanged.
+was introduced. Dependency pins and previous demos are unchanged. PhyslibTemp
+now contains the independent reflection law and examples described above.

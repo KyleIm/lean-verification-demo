@@ -15,14 +15,15 @@ lemma tan_pos (g : Geometry) : 0 < Real.tan g.α :=
 lemma slope_pos (g : Geometry) : 0 < slope g := one_div_pos.mpr (tan_pos g)
 lemma base_pos (g : Geometry) : 0 < baseHeight g := mul_pos g.l_pos (slope_pos g)
 
-/-- Actual Mathlib reflection, not an assumed screen-intersection formula:
-the horizontal component is preserved and the normal component reverses. -/
+/-- Specialize the reusable ideal-specular law: the horizontal component
+is preserved and the normal component reverses. All screen geometry stays local. -/
 lemma reflection_geometry (g : Geometry) : reflectedDirection g = point 1 (slope g) := by
-  unfold reflectedDirection mirrorDirection
-  rw [Submodule.reflection_singleton_apply]
-  ext i
-  fin_cases i <;> norm_num [point, incomingDirection, EuclideanSpace.inner_eq_star_dotProduct,
-    dotProduct, Fin.sum_univ_two, EuclideanSpace.norm_sq_eq]
+  -- [Reusable physics → P11] Apply the generic horizontal-mirror theorem.
+  change PhyslibTemp.Optics.PlaneMirror2D.horizontal.reflect
+    (PhyslibTemp.Optics.PlaneMirror2D.direction 1 (-slope g)) =
+      PhyslibTemp.Optics.PlaneMirror2D.direction 1 (slope g)
+  simpa only [neg_neg] using
+    PhyslibTemp.Optics.PlaneMirror2D.horizontal_reflect 1 (-slope g)
 
 lemma incident_ray_coordinates (g : Geometry) (r t : ℝ) :
     incidentRay g r t = point (r + t) (-slope g * t) := by
@@ -174,7 +175,7 @@ lemma inverted_shadow_interval (g : Geometry) :
       linarith
 
 /-- The chosen direction has horizontal/normal component ratio tan α; α is
-consistently the incidence angle to the vertical normal, not to the surface. -/
+consistently the incidence angle from the vertical normal to the horizontal mirror. -/
 lemma incidence_ratio (g : Geometry) :
     (incomingDirection g 0) / (-(incomingDirection g 1)) = Real.tan g.α := by
   change 1 / (-(-slope g)) = Real.tan g.α

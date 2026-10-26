@@ -3,13 +3,18 @@
 | Component | Classification | Boundary |
 | --- | --- | --- |
 | Fig. 237 qualitative caption | Trusted source/figure facts | Source-visible relative geometry only; no symbols, inequalities or shadow results |
+| figure_caption.json / generator / SVG | Caption-derived problem visualization | Geometry only; pixel coordinates and ray count are rendering choices, not source measurements or Lean premises |
 | Fig. 494 | Reference-only solution material | No construction or additional premise is extracted |
 | h, l, α and positive/acute parameter domains | Formalization/model parameters | Quantify upright object, screen placement and oblique incidence; not original labels/numbers |
 | Object origin, mirror y=0, screen x=l | Problem-local coordinate choice | Not source-stated coordinates |
 | Extended mirror/screen, opaque segment, binary rays | Explicit problem-local physical idealization | No finite edges, solar disk, penumbra or radiometry |
-| Mathlib Submodule.reflection | Existing mathematical geometry | Used as ideal specular optical transformation; not a formal Physlib optics theorem |
-| incomingDirection / reflectedDirection / ray families | P11-local optical model | All incoming rays parallel; reflected rays use the actual reflection operator |
-| reflection_geometry / incidence_ratio | Derived geometry and angle-convention check | Horizontal component preserved, normal reversed; α measured from normal |
+| Mathlib Submodule.reflection | Existing mathematical geometry | Orthogonal reflection; Mathlib does not assign optical semantics |
+| PhyslibTemp PlaneMirror / reflect | Reusable physical model/law | Ideal stationary specular mirror with unit normal and tangent hyperplane |
+| tangent_component / normal_component / norm_reflect / reflect_reflect | Reusable derived physics | Consequences of the ideal reflection law |
+| incidence_reflection_cosine / horizontal_reflect | Reusable optical theorem surface | Equal unsigned normal-angle ratios and planar component formula |
+| mirror / reflection_geometry | P11 specialization of reusable physics | Horizontal placement/direction specialization; no threshold in PhyslibTemp |
+| incomingDirection / reflectedDirection / ray families | P11-local optical model | All incoming rays parallel; reflected rays use the reusable ideal-specular law |
+| reflection_geometry / incidence_ratio | Derived geometry and angle-convention check | Horizontal component preserved, normal reversed; α measured from the vertical normal to the horizontal mirror |
 | ScreenHit / IncidentBlocked / OutgoingBlocked | Local intersection predicates | Existential ray/segment equations with correct before/after parameter domains |
 | screen_hit_unique_iff / boundary_ray_intersections | Derived ray geometry | Intersections and uniqueness are proved, not supplied endpoints |
 | uprightShadow / invertedShadow | P11 orientation-specific reflected-channel losses | Neither is silently equated with directBlocked |
@@ -23,6 +28,12 @@
 | Units thresholdLength / typed_far_regime | Upstream-unit dimensional verification | WithDim length × dimensionless tan remains length; does not assert the regime |
 | Far/near/critical examples | Verification data | Independent test parameters, never trusted source geometry |
 
-No new PhyslibTemp module, general visibility engine or rocket/particle-style
-mechanics ontology is introduced. The principal audit correction is that
-upright/direct orientation is distinct from absence of direct sunlight.
+The supplied solution calls the two portions a “direct” (upright) and an
+inverted shadow. Solving the ray geometry establishes that both are reflected-
+light deficits. `directBlocked` retains the distinct unreflected-light meaning;
+`uprightShadow` is never identified with it. **Source terminology ≠ formal
+physical-channel terminology**: source wording alone must not determine predicate
+names when the physics separates different concepts.
+
+The reusable reflection law belongs in PhyslibTemp; all shadow geometry remains
+P11-local. No general visibility engine or unit framework is introduced.

@@ -1,4 +1,4 @@
-import Mathlib.Analysis.InnerProductSpace.Projection.Reflection
+import LeanVerificationDemo.PhyslibTemp.Optics.Reflection
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
@@ -11,7 +11,7 @@ abbrev Plane := EuclideanSpace ℝ (Fin 2)
 def point (x y : ℝ) : Plane := WithLp.toLp 2 ![x, y]
 
 /-- Quantitative model parameters, NOT symbols supplied by problem 677's text
-or Fig. 237. α is measured from the vertical mirror normal. -/
+or Fig. 237. α is measured from the vertical normal to the horizontal mirror. -/
 structure Geometry where
   h : ℝ
   h_pos : 0 < h
@@ -25,12 +25,15 @@ structure Geometry where
 noncomputable def slope (g : Geometry) : ℝ := 1 / Real.tan g.α
 noncomputable def baseHeight (g : Geometry) : ℝ := g.l * slope g
 
-noncomputable def mirrorDirection : Submodule ℝ Plane := ℝ ∙ point 1 0
+/-- P11's horizontal mirror specializes the reusable ideal-specular law. -/
+noncomputable def mirror : PhyslibTemp.Optics.PlaneMirror Plane :=
+  PhyslibTemp.Optics.PlaneMirror2D.horizontal
+noncomputable def mirrorDirection : Submodule ℝ Plane := mirror.tangent
 noncomputable def incomingDirection (g : Geometry) : Plane := point 1 (-slope g)
-/-- Ideal specular reflection is modeled by Mathlib's existing orthogonal
-reflection in the mirror tangent. This is the optical model, not Maxwell theory. -/
+/-- The reusable plane-mirror law supplies the reflected direction.
+P11 supplies the placement y=0; the generic law has no screen/shadow geometry. -/
 noncomputable def reflectedDirection (g : Geometry) : Plane :=
-  mirrorDirection.reflection (incomingDirection g)
+  mirror.reflect (incomingDirection g)
 
 noncomputable def incidentRay (g : Geometry) (r t : ℝ) : Plane :=
   point r 0 + t • incomingDirection g

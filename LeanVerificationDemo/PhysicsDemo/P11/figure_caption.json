@@ -1,0 +1,27 @@
+{
+  "figure": "Fig. 237",
+  "trusted_caption": "Fig. 237 shows a two-dimensional vertical cross-section.\n\nA horizontal mirror lies along the bottom.\nA vertical screen stands on the mirror to the right.\nAn upright oblong object stands on the mirror between the incoming rays and the screen.\nThe object is represented in the cross-section as a vertical segment with its lower endpoint on the mirror.\nSunrays are represented by mutually parallel straight rays incident obliquely downward toward the horizontal mirror.\nThe rays are reflected from the horizontal mirror and the reflected rays propagate toward the vertical screen.\nThe object lies horizontally between at least some incident/reflected ray paths and the screen.",
+  "geometry": {
+    "view": "two-dimensional vertical cross-section",
+    "mirror": {
+      "orientation": "horizontal",
+      "placement": "bottom"
+    },
+    "screen": {
+      "orientation": "vertical",
+      "side": "right",
+      "base": "on mirror"
+    },
+    "object": {
+      "shape": "upright oblong",
+      "cross_section": "vertical segment",
+      "base": "on mirror",
+      "placement": "between incoming rays and screen"
+    },
+    "rays": {
+      "incident": "mutually parallel straight rays obliquely downward toward mirror",
+      "reflected": "from mirror toward screen"
+    },
+    "relative_placement": "object horizontally between at least some incident/reflected ray paths and screen"
+  }
+}
