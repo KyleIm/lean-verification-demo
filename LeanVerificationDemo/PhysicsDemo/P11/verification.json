@@ -1,0 +1,15 @@
+{
+  "id": "677",
+  "title": "Planar mirror ray geometry and shadow regimes",
+  "code": "P11",
+  "domain": "physics",
+  "problem_file": "LeanVerificationDemo/PhysicsDemo/P11/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/PhysicsDemo/P11/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/PhysicsDemo/P11/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean",
+  "mutation_manifest": "LeanVerificationDemo/PhysicsDemo/P11/mutations.json",
+  "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P11.TrustedPhysicsProblem g",
+  "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P11.Candidate.solution g",
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P11.Candidate.solution g : LeanVerificationDemo.PhysicsDemo.P11.TrustedPhysicsProblem g"
+}

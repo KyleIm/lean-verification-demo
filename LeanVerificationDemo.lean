@@ -55,3 +55,9 @@ import LeanVerificationDemo.PhysicsDemo.P10.Units
 import LeanVerificationDemo.PhysicsDemo.P10.Verify
 import LeanVerificationDemo.PhysicsDemo.P10.CandidateAnnotated
 import LeanVerificationDemo.PhysicsDemo.P10.PairingWalkthrough
+import LeanVerificationDemo.PhysicsDemo.P11.Problem
+import LeanVerificationDemo.PhysicsDemo.P11.Candidate
+import LeanVerificationDemo.PhysicsDemo.P11.Units
+import LeanVerificationDemo.PhysicsDemo.P11.Verify
+import LeanVerificationDemo.PhysicsDemo.P11.CandidateAnnotated
+import LeanVerificationDemo.PhysicsDemo.P11.PairingWalkthrough
