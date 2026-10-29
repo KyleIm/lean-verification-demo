@@ -68,3 +68,10 @@ import LeanVerificationDemo.PhysicsDemo.P12.Units
 import LeanVerificationDemo.PhysicsDemo.P12.Verify
 import LeanVerificationDemo.PhysicsDemo.P12.CandidateAnnotated
 import LeanVerificationDemo.PhysicsDemo.P12.PairingWalkthrough
+import LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.VibratingStringExamples
+import LeanVerificationDemo.PhysicsDemo.P13.Problem
+import LeanVerificationDemo.PhysicsDemo.P13.Candidate
+import LeanVerificationDemo.PhysicsDemo.P13.Units
+import LeanVerificationDemo.PhysicsDemo.P13.Verify
+import LeanVerificationDemo.PhysicsDemo.P13.CandidateAnnotated
+import LeanVerificationDemo.PhysicsDemo.P13.PairingWalkthrough
