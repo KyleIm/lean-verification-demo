@@ -1,6 +1,6 @@
 # Lean Verification Demo
 
-Problem-centric Lean verification prototype for one mathematics problem and eleven
+Problem-centric Lean verification prototype for one mathematics problem and twelve
 physics problems.
 
 ## Purpose
@@ -70,6 +70,12 @@ distance relations. Its additive [unit layer](LeanVerificationDemo/PhysicsDemo/P
 uses upstream Physlib dimensions and SI quantities to check the same equations
 and exact numerical result. No new PhyslibTemp friction, collision or unit API is added.
 
+P12 also consumes ConstantAcceleration without adding new PhyslibTemp code.
+Its [table-driven specification](LeanVerificationDemo/PhysicsDemo/P12/README.md)
+asks for a unique nearest-tenth assignment, with answers computed in Candidate.
+All 70 source entries are checked after upstream km/h→m/s conversion; the final
+certificate also links the rounded results to the derived braking mechanics.
+
 ## Reusable impulse–momentum layer
 
 [ImpulseMomentum.lean](LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentum.lean)
@@ -115,7 +121,7 @@ For each problem:
 3. Run six controlled mutation tests.
 4. Compile an annotated proof for human audit.
 
-P03–P11 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
+P03–P12 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
 an empty manifest. Existing demos still run their six mutation checks.
 
 The six mutation tests are part of Stage 3.  They are not six separate
@@ -171,6 +177,7 @@ project.
 | Physics | `47` | `P09` | [problem README](LeanVerificationDemo/PhysicsDemo/P09/README.md), [friction/impact audit](LeanVerificationDemo/PhysicsDemo/P09/PHYSLIB_AUDIT.md) |
 | Physics | `23` | `P10` | [problem README](LeanVerificationDemo/PhysicsDemo/P10/README.md), [caption-only graph](LeanVerificationDemo/PhysicsDemo/P10/problem_diagram.svg), [audit](LeanVerificationDemo/PhysicsDemo/P10/PHYSLIB_AUDIT.md) |
 | Physics | `677` | `P11` | [problem README](LeanVerificationDemo/PhysicsDemo/P11/README.md), [trusted Fig. 237 caption](LeanVerificationDemo/PhysicsDemo/P11/figure_caption.txt), [caption reconstruction](LeanVerificationDemo/PhysicsDemo/P11/problem_diagram.svg), [mirror/shadow audit](LeanVerificationDemo/PhysicsDemo/P11/PHYSLIB_AUDIT.md) |
+| Physics | `48` | `P12` | [problem README and Table 1](LeanVerificationDemo/PhysicsDemo/P12/README.md), [braking/unit audit](LeanVerificationDemo/PhysicsDemo/P12/PHYSLIB_AUDIT.md) |
 
 ## Run
 
@@ -195,6 +202,7 @@ python3 scripts/verify.py P08
 python3 scripts/verify.py P09
 python3 scripts/verify.py P10
 python3 scripts/verify.py P11
+python3 scripts/verify.py P12
 ```
 
 Or by full problem ID:
@@ -224,6 +232,7 @@ or ID.  Add `--verbose` to show raw Lean diagnostics for each command.
 | `47` (P09) | PASS | PASS | SKIPPED | PASS | PASS |
 | `23` (P10) | PASS | PASS | SKIPPED | PASS | PASS |
 | `677` (P11) | PASS | PASS | SKIPPED | PASS | PASS |
+| `48` (P12) | PASS | PASS | SKIPPED | PASS | PASS |
 
 ## Environment
 
