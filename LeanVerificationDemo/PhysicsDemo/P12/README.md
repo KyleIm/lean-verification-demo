@@ -183,6 +183,15 @@ exact μ is asserted to generate all ten distance values. Each row admits its
 own physical run, while its estimate is classified at the requested resolution.
 No measurement-error/uncertainty interval is added to the supplied table.
 
+## Reference case for experimental and tabulated data
+
+This example is an important reference case for future problems involving
+experiments and the interpretation of experimental results or tabulated data.
+Unlike problems whose inputs are treated as exact theoretical quantities, P12
+demonstrates how a physical model can be combined with measured or tabulated
+data and a requested numerical resolution, while avoiding the stronger claim
+that the raw estimates are exactly identical.
+
 ## Dimensional verification
 
 `Units.lean` reuses upstream WithDim and the **existing** quantity theorem
