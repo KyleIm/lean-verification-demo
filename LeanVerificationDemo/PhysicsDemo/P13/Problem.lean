@@ -1,5 +1,4 @@
 import LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.VibratingString
-import Mathlib.Analysis.Real.Pi.Bounds
 
 namespace LeanVerificationDemo.PhysicsDemo.P13
 open LeanVerificationDemo.PhyslibTemp.ClassicalMechanics
@@ -51,21 +50,15 @@ structure SourceData (data : StringData) : Prop where
   tension_value : data.tensionDyn = 2450
   density_value : data.densityGcm3 = 39 / 5
 
-/-- A precise interpretation of the source's integer-Hz numerical answer:
-nearest integer, with half-integer ties toward +∞. -/
-def RoundsToWholeHz (x : ℝ) (k : ℤ) : Prop := (k : ℝ) - 1 / 2 ≤ x ∧ x < k + 1 / 2
+/-- A returned positive-mode family must agree with the reusable ideal string
+built from the source parameters and local cross-sectional geometry. This
+criterion supplies neither a cylindrical closed form nor a numerical answer. -/
+def IsNaturalFrequencySolution (data : StringData) (freq : ℕ+ → ℝ) : Prop :=
+  ∀ n, freq n = (fixedString data).frequency n
 
-def ExactSpectrum (data : StringData) : Prop :=
-  ∀ n : ℕ+, naturalFrequency data n = (n : ℝ) / (data.lengthCm * diameterCm data) *
-    Real.sqrt (data.tensionDyn / (Real.pi * data.densityGcm3))
-
-def HarmonicSpectrum (data : StringData) : Prop :=
-  ∀ n : ℕ+, naturalFrequency data n = (n : ℝ) * fundamental data
-
-/-- The combined formula and harmonics must be derived. The printed 2 Hz is
-checked as rounding, and a strict inequality records that it is not exact. -/
+/-- Find the natural-frequency family of the specified ideal string. Uniqueness
+is pointwise uniqueness for this fixed physical model, not PDE completeness. -/
 def TrustedPhysicsProblem (data : StringData) : Prop :=
-  ExactSpectrum data ∧ HarmonicSpectrum data ∧
-    RoundsToWholeHz (fundamental data) 2 ∧ fundamental data < 2
+  ∃! freq : ℕ+ → ℝ, IsNaturalFrequencySolution data freq
 
 end LeanVerificationDemo.PhysicsDemo.P13

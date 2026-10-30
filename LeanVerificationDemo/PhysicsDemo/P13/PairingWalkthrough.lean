@@ -2,6 +2,8 @@ import LeanVerificationDemo.PhysicsDemo.P13.Units
 
 namespace LeanVerificationDemo.PhysicsDemo.P13
 #check SourceData
+#check IsNaturalFrequencySolution
+#print TrustedPhysicsProblem
 #check Candidate.circular_area
 #check Candidate.linear_density_formula
 #check Candidate.cylindrical_frequency
@@ -11,6 +13,9 @@ namespace LeanVerificationDemo.PhysicsDemo.P13
 #check Candidate.printed_fundamental_not_exact
 #check Candidate.source_mode_exact
 #check Candidate.mode_approximation_error
+#check Candidate.solutionFrequency
+#check Candidate.solutionFrequency_valid
+#check Candidate.solutionFrequency_unique
 #check Units.dyne_definition
 #check Units.source_in_SI
 #check Units.typed_source_SI

@@ -16,17 +16,38 @@ noncomputable def sourceString : StringData where
 
 lemma source_inputs : SourceData sourceString := ⟨rfl, rfl, rfl, rfl⟩
 example : TrustedPhysicsProblem sourceString := Candidate.solution sourceString source_inputs
+-- The returned exact family is validated against the reusable physical model.
+example : IsNaturalFrequencySolution sourceString Candidate.solutionFrequency :=
+  Candidate.solutionFrequency_valid sourceString source_inputs
+example (freq : ℕ+ → ℝ) (valid : IsNaturalFrequencySolution sourceString freq) :
+    freq = Candidate.solutionFrequency :=
+  Candidate.solutionFrequency_unique sourceString source_inputs freq valid
+example (n : ℕ+) : Candidate.solutionFrequency n =
+    (n : ℝ) * Real.sqrt (490 / (39 * Real.pi)) := rfl
+-- Central derived formulas explicitly use the reusable frequency/speed API.
+example (data : StringData) (n : ℕ+) : (fixedString data).frequency n =
+    (n : ℝ) / (data.lengthCm * diameterCm data) *
+      Real.sqrt (data.tensionDyn / (Real.pi * data.densityGcm3)) :=
+  Candidate.cylindrical_frequency data n
 example : fundamental sourceString = Real.sqrt (490 / (39 * Real.pi)) :=
   Candidate.fundamental_exact_source sourceString source_inputs
 example : (19998 : ℝ) / 10000 < fundamental sourceString ∧
     fundamental sourceString < (19999 : ℝ) / 10000 :=
   Candidate.fundamental_bounds sourceString source_inputs
-example : RoundsToWholeHz (fundamental sourceString) 2 :=
+example : Candidate.RoundsToWholeHz (fundamental sourceString) 2 :=
   Candidate.printed_fundamental_rounds sourceString source_inputs
 
 -- Explicit negative check against replacing rounded textbook arithmetic by =2.
 example : fundamental sourceString ≠ 2 :=
   Candidate.printed_fundamental_not_exact sourceString source_inputs
+-- The rounded textbook family is not an exact solution to the semantic request.
+example : ¬ IsNaturalFrequencySolution sourceString (fun n => 2 * (n : ℝ)) := by
+  intro valid
+  have firstMode : (2 : ℝ) = fundamental sourceString := by
+    simpa only [PNat.val_ofNat, Nat.cast_one, mul_one, FixedString.first_frequency,
+      fundamental]
+      using valid 1
+  exact Candidate.printed_fundamental_not_exact sourceString source_inputs firstMode.symm
 example (n : ℕ+) : |naturalFrequency sourceString n - 2 * (n : ℝ)| < (n : ℝ) / 5000 :=
   Candidate.mode_approximation_error sourceString source_inputs n
 example (n : ℕ+) : naturalFrequency sourceString n = (n : ℝ) * fundamental sourceString :=

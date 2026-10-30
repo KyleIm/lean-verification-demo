@@ -17,22 +17,50 @@ The printed numerical equality is audited below rather than trusted.
 
 ### AFTER — Lean-facing formalized problem
 
-Given positive source-native parameters and the original four numerical values,
-specialize an ideal uniform string with both ends fixed. Derive the cylindrical
-string formula, exact harmonics and a justified whole-Hz interpretation of the
-printed fundamental. Explicitly prove that the fundamental is **not exactly 2**.
+Given a steel string of length 50 cm, diameter 1 mm, tension 2450 dyn and
+volume density 7.8 g/cm³, **find its natural-frequency family according to the
+ideal fixed-string model**. The source values remain in `SourceData`; positive
+parameters, circular geometry and the physical model are represented locally.
 
-The trusted target is:
+The trusted request in `Problem.lean` is:
 
 ```lean
-ExactSpectrum data ∧ HarmonicSpectrum data ∧
-  RoundsToWholeHz (fundamental data) 2 ∧ fundamental data < 2
+def IsNaturalFrequencySolution (data : StringData) (freq : ℕ+ → ℝ) : Prop :=
+  ∀ n, freq n = (fixedString data).frequency n
+
+def TrustedPhysicsProblem (data : StringData) : Prop :=
+  ∃! freq : ℕ+ → ℝ, IsNaturalFrequencySolution data freq
 ```
 
-`ExactSpectrum` asks for the combined formula to be proved, and
-`HarmonicSpectrum` asks for fₙ=n f₁. `SourceData` contains only the four original
-number equalities. No final frequency, circular linear-density formula or
-combined source formula is a trusted input field.
+This success criterion refers to the reusable physical model, built from
+length, tension and linear density `ρA`. It contains no combined cylindrical
+frequency formula, harmonic conclusion, expected numerical answer or rounding
+condition. Uniqueness means that this specified model determines one function;
+it does not assert spectral completeness for a separately solved PDE.
+
+The files now have distinct roles:
+
+- **Problem:** source conditions, local geometry, physical-model construction
+  and a request to return a valid natural-frequency family.
+- **Candidate:** geometry → linear density → reusable fixed-string law →
+  cylindrical formula → source specialization → computed exact family.
+  Separate theorems audit the textbook approximation.
+- **Units:** native-unit conversion and dimensional verification, with typed
+  bridges to the actual Candidate formulas.
+
+The constructed witness first appears in Candidate:
+
+```lean
+noncomputable def solutionFrequency : ℕ+ → ℝ :=
+  fun n => (n : ℝ) * Real.sqrt (490 / (39 * Real.pi))
+```
+
+`solutionFrequency_valid` proves this computed answer agrees with the physical
+model via `source_mode_exact`. `solutionFrequency_unique` proves pointwise
+uniqueness, and `solution` returns the witness with these two proofs. The answer
+is not a premise or a formula in the trusted target. Rounding, non-equality to
+2 Hz and the error bound remain Candidate-derived audit results, rather than
+requirements embedded in the problem request.
 
 ### What changed
 
@@ -47,7 +75,8 @@ a claim that the original question literally describes endpoint constraints or
 that bending stiffness/damping of real steel has been analyzed. Positive modes
 are `n : ℕ+`; mode zero is not a physical oscillation in this API.
 
-The symbolic physics is preserved. The printed numerical equality is corrected
+The open-ended request is preserved as a witness-producing specification; the
+symbolic physics is preserved. The printed numerical equality is corrected
 to an approximation conditional on exact source values and `Real.pi`. No input
 uncertainty intervals or hidden rational replacement for π are introduced.
 
@@ -100,6 +129,15 @@ fₙ = n/(2L) c = n/(L d_cm) sqrt(T/(πρ)).
 
 These are derived relations, not the source solution copied into an assumption.
 The reusable module knows nothing about cylinders, steel or source constants.
+
+**P13 Candidate genuinely depends on VibratingString: YES.**
+`wave_speed_from_volume_density` invokes `FixedString.waveSpeed_pos` and
+`FixedString.waveSpeed_squared`; `cylindrical_frequency` invokes
+`FixedString.frequency`; `fundamental_formula` uses `FixedString.first_frequency`;
+and `natural_harmonics` calls `FixedString.harmonic_scaling`. In particular the
+returned witness is validated through `source_mode_exact`, which depends on
+these derived formulas. The import is an actual proof dependency, not decorative
+infrastructure or a locally duplicated fixed-string law.
 
 ## Native units and independent SI verification
 
@@ -197,13 +235,17 @@ fundamental must not be turned into an exact `fₙ=2n` theorem.
 ```text
 native source inputs → mm-to-cm conversion → radius/area → linear density
 → reusable fixed-string law → combined source formula
-→ exact π arithmetic → certified fundamental bounds → justified rounding
-→ exact harmonic family and controlled 2n approximation.
+→ exact π arithmetic → exact harmonic family
+→ validate the computed witness → unique returned family.
+
+Separate Candidate audit branch:
+exact fundamental → certified bounds → rounding and controlled 2n approximation.
 ```
 
 CandidateAnnotated labels each stage. Verify constructs source inputs, checks
-exact and approximate results, rejects exact 2, excludes mode zero, checks fixed
-endpoints and exercises the CGS/SI and dimensional bridges. The new reusable
+the returned witness and uniqueness, rejects the exact textbook 2n family, checks
+exact and approximate results, excludes mode zero, checks fixed
+endpoints and exercises the CGS/SI and dimensional bridges. The reusable
 module has an independent examples file. Mutations are initially deferred with
 an explicit empty manifest, consistent with recent demos.
 
@@ -215,11 +257,13 @@ lake env lean LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/VibratingStrin
 git diff --check
 ```
 
-Validation: `lake build` passed (3685 jobs); M00 and P01–P13 all passed.
+Validation after the witness-producing refactor: `lake build` passed;
+M00 and P01–P13 all passed.
 M00/P01/P02 passed all six mutation checks each; P03–P13 explicitly skipped
 deferred empty manifests. Direct `Units.lean` and independent reusable-example
 compilation, annotated-proof parity, source-only-input checks, new-file whitespace
 and `git diff --check` passed. Both final Candidate theorems use only
 `[propext, Classical.choice, Quot.sound]`; no `sorry`, new axiom, Float or
 native-evaluation proof was added. Dependency pins and previous demos remain
-unchanged. The only new reusable physics is the documented ideal string model.
+unchanged. The reusable physics remains the documented ideal string model;
+this refactor adds no PhyslibTemp declarations.

@@ -1,7 +1,12 @@
 import LeanVerificationDemo.PhysicsDemo.P13.Problem
+import Mathlib.Analysis.Real.Pi.Bounds
 
 namespace LeanVerificationDemo.PhysicsDemo.P13.Candidate
 open LeanVerificationDemo.PhyslibTemp.ClassicalMechanics
+
+/-- Solution-side interpretation of the printed integer-Hz answer: nearest
+integer with half-integer ties toward +∞. This is not a trusted target. -/
+def RoundsToWholeHz (x : ℝ) (k : ℤ) : Prop := (k : ℝ) - 1 / 2 ≤ x ∧ x < k + 1 / 2
 
 lemma circular_area (data : StringData) :
     areaCm2 data = Real.pi * diameterCm data ^ 2 / 4 := by
@@ -120,16 +125,36 @@ lemma mode_approximation_error (data : StringData) (source : SourceData data) (n
   rw [heq, abs_mul, abs_of_pos hn]
   simpa only [mul_div, mul_one] using mul_lt_mul_of_pos_left herror hn
 
-/-- Exact family: fₙ = n/(Ld) √(T/(πρ)) = n f₁, with n strictly positive.
-Source arithmetic: f₁ rounds to 2 Hz but is strictly smaller than 2, so 2n is
-not installed as an exact real-valued frequency family. -/
+/-- The computed answer for the four source values, in s⁻¹. Its agreement
+with the physical model is proved below, not built into the trusted target. -/
+noncomputable def solutionFrequency : ℕ+ → ℝ :=
+  fun n => (n : ℝ) * Real.sqrt (490 / (39 * Real.pi))
+
+/-- Geometry → reusable FixedString law → exact source specialization proves
+that the computed family satisfies the semantic success criterion. -/
+lemma solutionFrequency_valid (data : StringData) (source : SourceData data) :
+    IsNaturalFrequencySolution data solutionFrequency := by
+  intro n
+  exact (source_mode_exact data source n).symm
+
+/-- The model determines a single family; no independence or nondegeneracy
+claim about PDE eigenfunctions is needed for this function equality. -/
+lemma solutionFrequency_unique (data : StringData) (source : SourceData data)
+    (freq : ℕ+ → ℝ) (valid : IsNaturalFrequencySolution data freq) :
+    freq = solutionFrequency := by
+  funext n
+  exact (valid n).trans (solutionFrequency_valid data source n).symm
+
+/-- Return the explicitly computed family fₙ = n √(490/(39π)), n > 0,
+and prove it is the unique family of the ideal source string. The separate
+audit lemmas above compare this exact answer with the textbook's 2n Hz. -/
 theorem solution (data : StringData) (source : SourceData data) :
     TrustedPhysicsProblem data := by
-  have exactModes : ExactSpectrum data := cylindrical_frequency data
-  have harmonics : HarmonicSpectrum data := natural_harmonics data
-  have roundedFundamental : RoundsToWholeHz (fundamental data) 2 :=
-    printed_fundamental_rounds data source
-  have strictlyBelowTwo : fundamental data < 2 := fundamental_lt_two data source
-  exact ⟨exactModes, harmonics, roundedFundamental, strictlyBelowTwo⟩
+  have returnedFamily : IsNaturalFrequencySolution data
+      (fun n : ℕ+ => (n : ℝ) * Real.sqrt (490 / (39 * Real.pi))) :=
+    solutionFrequency_valid data source
+  have uniqueFamily : ∀ freq, IsNaturalFrequencySolution data freq →
+      freq = solutionFrequency := solutionFrequency_unique data source
+  exact ⟨solutionFrequency, returnedFamily, uniqueFamily⟩
 
 end LeanVerificationDemo.PhysicsDemo.P13.Candidate

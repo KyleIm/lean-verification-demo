@@ -187,3 +187,29 @@ P13-local:
 Pure mathematics:
   square roots, positive cancellation, π bounds and exact rational inequalities
 ```
+
+## Witness-producing specification and dependency audit
+
+The refined `Problem.lean` asks for `∃! freq, IsNaturalFrequencySolution data freq`.
+The success criterion is pointwise agreement with `(fixedString data).frequency`;
+that model is constructed only from source-native length/tension, circular area
+and material density. The former `ExactSpectrum`/`HarmonicSpectrum` target
+predicates were removed. Rounding moved to `Candidate.RoundsToWholeHz`; neither
+rounding nor a numerical answer occurs in the trusted target.
+
+The exact returned family is constructed in `Candidate.solutionFrequency`.
+Its validity depends on `source_mode_exact` → `natural_harmonics` and
+`fundamental_exact_source` → `fundamental_squared_source` → `fundamental_formula`
+→ `cylindrical_frequency` → `wave_speed_from_volume_density`.
+These invoke actual reusable `FixedString.harmonic_scaling`, `first_frequency`,
+`frequency`, `waveSpeed_squared` and `waveSpeed_pos` declarations. Thus
+**P13 Candidate genuinely depends on VibratingString: YES**. No local copy of
+the fixed-string mode law replaces that dependency. Function extensionality
+proves uniqueness within this adopted model; no PDE-spectrum completeness is
+inferred. Existing unit conversions/dimensional bridges and the independent
+VibratingString examples remain unchanged.
+
+Verification checks the semantic witness and uniqueness, and rejects the exact
+`2n` family using the proved fundamental non-equality. Numerical bounds and the
+approximation remain separately verified Candidate theorems. The reusable
+module contains no P13 geometry, unit-conversion or source constants.
