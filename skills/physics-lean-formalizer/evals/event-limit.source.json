@@ -1,0 +1,7 @@
+{
+  "problem_id": "77",
+  "category": "Classical Mechanics",
+  "topic": "Momentum conservation and linear coplanarity",
+  "problem": "A rocket launched vertically upward explodes at the highest point it reaches. The explosion produces three fragments. Prove that the vectors of the initial velocities of all three fragments are in one plane.",
+  "solution": "At the highest point the rocket velocity is zero. During the essentially instantaneous explosion the external gravitational impulse is negligible, so total momentum immediately before and after the explosion is conserved and equals zero. Hence m₁v₁ + m₂v₂ + m₃v₃ = 0. The three momentum vectors, and therefore the velocity vectors for positive masses, lie in one plane."
+}

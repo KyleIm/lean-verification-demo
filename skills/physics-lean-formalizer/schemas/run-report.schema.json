@@ -1,0 +1,882 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "skill_version": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "success",
+        "deferred",
+        "failed"
+      ]
+    },
+    "problem_id": {
+      "type": "string"
+    },
+    "problem_code": {
+      "type": "string",
+      "pattern": "^P[0-9]{2,}$"
+    },
+    "formalization_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "repository_commit": {
+      "type": "string"
+    },
+    "input_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "dependency_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lean_toolchain": {
+          "type": "string"
+        },
+        "mathlib_rev": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "physlib_rev": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "required": [
+        "lean_toolchain",
+        "mathlib_rev",
+        "physlib_rev"
+      ]
+    },
+    "physlib_reused": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "declaration": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "use": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "declaration",
+          "path",
+          "use"
+        ]
+      }
+    },
+    "physlibtemp_added": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "api": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "candidate_dependency": {
+            "type": "string"
+          },
+          "independent_examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "path",
+          "api",
+          "candidate_dependency",
+          "independent_examples"
+        ]
+      }
+    },
+    "units_checked": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "skipped",
+            "not_run",
+            "not_applicable"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "evidence",
+        "reason"
+      ]
+    },
+    "approximation_audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "exact_only",
+            "certified",
+            "not_applicable",
+            "unresolved"
+          ]
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "status",
+        "claims",
+        "evidence"
+      ]
+    },
+    "build_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "skipped",
+            "not_run",
+            "not_applicable"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "evidence",
+        "reason"
+      ]
+    },
+    "verification_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pairing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "annotated": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "walkthrough": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "axioms": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "non_vacuity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "negative_cases": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "mutations": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "regressions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "source_fidelity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "answer_separation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        },
+        "reuse_dependency": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "passed",
+                "failed",
+                "skipped",
+                "not_run",
+                "not_applicable"
+              ]
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "evidence",
+            "reason"
+          ]
+        }
+      },
+      "required": [
+        "pairing",
+        "annotated",
+        "walkthrough",
+        "axioms",
+        "non_vacuity",
+        "negative_cases",
+        "mutations",
+        "regressions",
+        "source_fidelity",
+        "answer_separation",
+        "reuse_dependency"
+      ]
+    },
+    "failure_category": {
+      "enum": [
+        null,
+        "invalid_input",
+        "source_ambiguity",
+        "missing_diagram_information",
+        "source_solution_inconsistency",
+        "missing_reusable_physics",
+        "physlib_gap_too_large",
+        "pde_analysis_infrastructure_missing",
+        "numerical_approximation_ambiguity",
+        "unit_infrastructure_gap",
+        "dependency_environment_failure",
+        "lean_proof_failure",
+        "verification_failure",
+        "timeout_resource_limit",
+        "copyright_source_data_issue",
+        "human_review_required"
+      ]
+    },
+    "last_completed_stage": {
+      "type": "string"
+    },
+    "retry_recommendation": {
+      "enum": [
+        "none",
+        "repair_environment",
+        "retry_proof",
+        "increase_budget",
+        "human_review",
+        "library_project",
+        "correct_input"
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ]
+      }
+    },
+    "omitted_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "reason"
+        ]
+      }
+    },
+    "evidence_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "skill_version",
+    "status",
+    "problem_id",
+    "problem_code",
+    "formalization_path",
+    "repository_commit",
+    "input_sha256",
+    "dependency_context",
+    "physlib_reused",
+    "physlibtemp_added",
+    "units_checked",
+    "approximation_audit",
+    "build_status",
+    "verification_status",
+    "failure_category",
+    "last_completed_stage",
+    "retry_recommendation",
+    "artifacts",
+    "omitted_artifacts",
+    "evidence_path",
+    "notes"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Formalization disposition v1",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "success"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "failure_category": {
+            "type": "null"
+          },
+          "formalization_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "build_status": {
+            "properties": {
+              "status": {
+                "const": "passed"
+              }
+            }
+          },
+          "units_checked": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "passed",
+                  "not_applicable"
+                ]
+              }
+            }
+          },
+          "approximation_audit": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "exact_only",
+                  "certified",
+                  "not_applicable"
+                ]
+              }
+            }
+          },
+          "verification_status": {
+            "properties": {
+              "pairing": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed"
+                    ]
+                  }
+                }
+              },
+              "annotated": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed"
+                    ]
+                  }
+                }
+              },
+              "walkthrough": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed"
+                    ]
+                  }
+                }
+              },
+              "axioms": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed"
+                    ]
+                  }
+                }
+              },
+              "non_vacuity": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed"
+                    ]
+                  }
+                }
+              },
+              "negative_cases": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed",
+                      "skipped",
+                      "not_applicable"
+                    ]
+                  }
+                }
+              },
+              "mutations": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed",
+                      "skipped",
+                      "not_applicable"
+                    ]
+                  }
+                }
+              },
+              "regressions": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed",
+                      "skipped",
+                      "not_applicable"
+                    ]
+                  }
+                }
+              },
+              "source_fidelity": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed"
+                    ]
+                  }
+                }
+              },
+              "answer_separation": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed"
+                    ]
+                  }
+                }
+              },
+              "reuse_dependency": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "passed",
+                      "not_applicable"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "failure_category": {
+            "type": "string",
+            "enum": [
+              "invalid_input",
+              "source_ambiguity",
+              "missing_diagram_information",
+              "source_solution_inconsistency",
+              "missing_reusable_physics",
+              "physlib_gap_too_large",
+              "pde_analysis_infrastructure_missing",
+              "numerical_approximation_ambiguity",
+              "unit_infrastructure_gap",
+              "dependency_environment_failure",
+              "lean_proof_failure",
+              "verification_failure",
+              "timeout_resource_limit",
+              "copyright_source_data_issue",
+              "human_review_required"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

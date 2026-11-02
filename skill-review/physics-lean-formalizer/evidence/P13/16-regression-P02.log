@@ -1,0 +1,51 @@
+============================================================
+Problem: P02 (321)
+Ideal gas equation for arbitrary mass
+============================================================
+
+Stage 1 - Valid source compilation
+
+  Problem.lean .................. PASS
+  Candidate.lean ................ PASS
+
+  Stage 1 result ................ PASS
+
+Stage 2 - Proposition / proof pairing
+
+  Trusted proposition:
+    LeanVerificationDemo.PhysicsDemo.P02.TrustedPhysicsProblem data
+
+  Candidate proof:
+    LeanVerificationDemo.PhysicsDemo.P02.Candidate.solution data evidence
+
+  Required judgment:
+    LeanVerificationDemo.PhysicsDemo.P02.Candidate.solution data evidence : LeanVerificationDemo.PhysicsDemo.P02.TrustedPhysicsProblem data
+
+  Lean result:
+    ACCEPT
+
+  Stage 2 result ................ PASS
+
+Stage 3 - Mutation verification
+
+  GAS-P001   Mass-amount relation corruption  REJECT -> REJECT  PASS
+  GAS-P002   Molar law corruption             REJECT -> REJECT  PASS
+  GAS-P003   Mass ratio inversion             REJECT -> REJECT  PASS
+  GAS-P004   Target specialization            REJECT -> REJECT  PASS
+  GAS-P005   Irrelevant addition              ACCEPT -> ACCEPT  PASS
+  GAS-P006   Required molar-law deletion      REJECT -> REJECT  PASS
+
+  Mutation result ............... 6 / 6 PASS
+
+Stage 4 - Human-readable proof audit
+
+  CandidateAnnotated.lean ....... PASS
+
+  Lean checks the Lean code in the annotated file.
+  The English comments are a human-audit layer, not a machine-checked proof.
+
+  Stage 4 result ................ PASS
+
+============================================================
+PROBLEM RESULT: PASS
+============================================================

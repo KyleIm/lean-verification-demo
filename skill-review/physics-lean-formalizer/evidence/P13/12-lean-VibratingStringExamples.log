@@ -1,0 +1,3 @@
+'LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.FixedString.harmonic_scaling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

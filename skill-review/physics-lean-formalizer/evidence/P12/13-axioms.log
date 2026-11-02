@@ -1,0 +1,4 @@
+'LeanVerificationDemo.PhysicsDemo.P12.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LeanVerificationDemo.PhysicsDemo.P12.CandidateAnnotated.solution' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

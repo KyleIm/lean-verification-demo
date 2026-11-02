@@ -1,0 +1,219 @@
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:28: warning: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:45: warning: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:61: warning: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:77: warning: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:93: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:104:2: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:93: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:104:2: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:28: warning: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:45: warning: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:61: warning: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:77: warning: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:93: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:93: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:30: warning: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:47: warning: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:63: warning: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:79: warning: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:30: warning: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:47: warning: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:63: warning: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:79: warning: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:30: warning: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:47: warning: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:63: warning: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:79: warning: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:30: warning: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:47: warning: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:63: warning: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:79: warning: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:95: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:95: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:99: warning: Unused tactic linter: `norm_num` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:95: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:95: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:99: warning: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:95: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:95: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:95: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:208:2: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Units.lean:208:2: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`

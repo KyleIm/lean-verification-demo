@@ -1,0 +1,51 @@
+============================================================
+Problem: M00 (math-sqrt2-irrational)
+sqrt(2) is irrational
+============================================================
+
+Stage 1 - Valid source compilation
+
+  Problem.lean .................. PASS
+  Candidate.lean ................ PASS
+
+  Stage 1 result ................ PASS
+
+Stage 2 - Proposition / proof pairing
+
+  Trusted proposition:
+    LeanVerificationDemo.MathDemo.M00.SqrtTwoIrrationalProblem
+
+  Candidate proof:
+    LeanVerificationDemo.MathDemo.M00.Candidate.solution
+
+  Required judgment:
+    LeanVerificationDemo.MathDemo.M00.Candidate.solution : LeanVerificationDemo.MathDemo.M00.SqrtTwoIrrationalProblem
+
+  Lean result:
+    ACCEPT
+
+  Stage 2 result ................ PASS
+
+Stage 3 - Mutation verification
+
+  MATH-M001  Assumption replacement      REJECT -> REJECT  PASS
+  MATH-M002  Contradiction corruption    REJECT -> REJECT  PASS
+  MATH-M003  Conclusion replacement      REJECT -> REJECT  PASS
+  MATH-M004  Target substitution         REJECT -> REJECT  PASS
+  MATH-M005  Irrelevant addition         ACCEPT -> ACCEPT  PASS
+  MATH-M006  Required-step deletion      REJECT -> REJECT  PASS
+
+  Mutation result ............... 6 / 6 PASS
+
+Stage 4 - Human-readable proof audit
+
+  CandidateAnnotated.lean ....... PASS
+
+  Lean checks the Lean code in the annotated file.
+  The English comments are a human-audit layer, not a machine-checked proof.
+
+  Stage 4 result ................ PASS
+
+============================================================
+PROBLEM RESULT: PASS
+============================================================

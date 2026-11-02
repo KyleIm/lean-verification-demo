@@ -1,0 +1,68 @@
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.friction_acceleration (data : PuckData) (model : SlidingModel data) :
+  deceleration data = data.μ * data.g
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_deceleration_before (data : PuckData)
+  (model : SlidingModel data) :
+  PhyslibTemp.ClassicalMechanics.HasConstantAcceleration data.before (-deceleration data • tangent)
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_deceleration_after (data : PuckData)
+  (model : SlidingModel data) :
+  PhyslibTemp.ClassicalMechanics.HasConstantAcceleration data.after (-deceleration data • tangent)
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_velocity (p : trackFrame.Particle) (a : ℝ)
+  (ha : PhyslibTemp.ClassicalMechanics.HasConstantAcceleration p (-a • tangent)) (t : ℝ) : speed p t = speed p 0 - a * t
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_travel (p : trackFrame.Particle) (a : ℝ)
+  (ha : PhyslibTemp.ClassicalMechanics.HasConstantAcceleration p (-a • tangent)) (t : ℝ) :
+  travel p t = t * speed p 0 - a * t ^ 2 / 2
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_speed_squared (p : trackFrame.Particle) (a : ℝ)
+  (ha : PhyslibTemp.ClassicalMechanics.HasConstantAcceleration p (-a • tangent)) (t : ℝ) :
+  speed p t ^ 2 = speed p 0 ^ 2 - 2 * a * travel p t
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.sliding_speeds_nonnegative (data : PuckData)
+  (model : SlidingModel data) :
+  (∀ t ∈ Set.Icc 0 data.firstDuration, 0 ≤ speed data.before t) ∧
+    ∀ t ∈ Set.Icc 0 data.secondDuration, 0 ≤ speed data.after t
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.impact_preserves_speed (data : PuckData) (model : SlidingModel data) :
+  |speed data.before data.firstDuration| = |speed data.after 0|
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.impact_speed_eq (data : PuckData) (model : SlidingModel data) :
+  speed data.before data.firstDuration = speed data.after 0
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.stopping_relation (data : PuckData) (model : SlidingModel data) :
+  data.initialSpeed ^ 2 = 2 * deceleration data * (data.firstPath + data.secondPath)
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.deceleration_from_stopping (data : PuckData)
+  (model : SlidingModel data) : deceleration data = data.initialSpeed ^ 2 / (2 * (data.firstPath + data.secondPath))
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_from_deceleration (data : PuckData)
+  (model : SlidingModel data) : data.μ = deceleration data / data.g
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.total_path (data : PuckData) (source : SourceData data) :
+  data.firstPath + data.secondPath = 25 / 2
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_symbolic (data : PuckData) (model : SlidingModel data) :
+  data.μ = data.initialSpeed ^ 2 / (2 * data.g * (data.firstPath + data.secondPath))
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_exact (data : PuckData) (source : SourceData data) :
+  data.μ = 5 / 49
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_source_value (data : PuckData) (source : SourceData data) :
+  |data.μ - 102 / 1000| < 1 / 2000
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_decimal_interval (data : PuckData)
+  (source : SourceData data) : 1020408 / 10000000 < data.μ ∧ data.μ < 1020409 / 10000000
+LeanVerificationDemo.PhysicsDemo.P09.Candidate.solution (data : PuckData) (source : SourceData data) :
+  TrustedPhysicsProblem data
+'LeanVerificationDemo.PhysicsDemo.P09.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+LeanVerificationDemo.PhysicsDemo.P09.Units.friction_dimensions_iff (d : Dimension LTMCTDimensionBase) :
+  d * Units.forceDim = Units.forceDim ↔ d = 1
+LeanVerificationDemo.PhysicsDemo.P09.Units.newton_dimensions : Dimension.M𝓭 * Units.accelerationDim = Units.forceDim
+LeanVerificationDemo.PhysicsDemo.P09.Units.speed_squared_dimensions :
+  Units.velocityDim ^ 2 = Units.accelerationDim * Dimension.L𝓭
+LeanVerificationDemo.PhysicsDemo.P09.Units.coefficient_dimensions :
+  Units.velocityDim * Units.velocityDim * (Units.accelerationDim * Dimension.L𝓭)⁻¹ = 1
+LeanVerificationDemo.PhysicsDemo.P09.Units.typed_coefficient_equation (data : PuckData) (model : SlidingModel data) :
+  { val := data.μ } =
+    Units.coefficientRhs { val := data.initialSpeed } { val := data.g }
+      ({ val := data.firstPath } + { val := data.secondPath })
+LeanVerificationDemo.PhysicsDemo.P09.Units.source_coefficient_in_SI :
+  Units.coefficientRhs (↑Units.initialVelocity LTMCTUnitChoices.SI) (↑Units.gravity LTMCTUnitChoices.SI)
+      (↑Units.firstDistance LTMCTUnitChoices.SI + ↑Units.secondDistance LTMCTUnitChoices.SI) =
+    { val := 5 / 49 }
+LeanVerificationDemo.PhysicsDemo.P09.Units.incorrect_formula_not_dimensionless :
+  Units.velocityDim / (Units.accelerationDim * Dimension.L𝓭) ≠ 1
+LeanVerificationDemo.PhysicsDemo.P09.Units.joule_is_newton_metre :
+  (↑DimEnergy.joule LTMCTUnitChoices.SI).cast ⋯ = ↑Units.newton LTMCTUnitChoices.SI * ↑Units.metre LTMCTUnitChoices.SI
+'LeanVerificationDemo.PhysicsDemo.P09.Units.typed_coefficient_equation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'LeanVerificationDemo.PhysicsDemo.P09.Units.source_coefficient_in_SI' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

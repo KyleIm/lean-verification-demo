@@ -1,0 +1,25 @@
+{
+  "problem_id": "650",
+  "category": "Classical Mechanics",
+  "topic": "Natural modes of an ideal stretched string",
+  "problem": "Find the frequencies of natural oscillations of a steel string with a length of l=50 cm and a diameter of d=1 mm if the tension of the string is T=2450 dynes. The density of steel is ρ=7.8 g/cm³.",
+  "solution": "The supplied solution states ν=ν₀ n for n=1,2,3,... and ν₀=(1/(l d))√(T/(πρ))=2 s⁻¹, hence νₙ=2n s⁻¹.",
+  "source_data": {
+    "length": {
+      "value": "50",
+      "unit": "cm"
+    },
+    "diameter": {
+      "value": "1",
+      "unit": "mm"
+    },
+    "tension": {
+      "value": "2450",
+      "unit": "dyn"
+    },
+    "volume_density": {
+      "value": "7.8",
+      "unit": "g/cm³"
+    }
+  }
+}

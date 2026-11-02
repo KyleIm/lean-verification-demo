@@ -1,0 +1,61 @@
+============================================================
+Problem: P12 (48)
+Friction coefficients extracted from a braking-distance table
+============================================================
+
+Stage 1 - Valid source compilation
+
+  Problem.lean .................. PASS
+  $ lake env lean LeanVerificationDemo/PhysicsDemo/P12/Problem.lean
+  Candidate.lean ................ PASS
+  $ lake env lean LeanVerificationDemo/PhysicsDemo/P12/Candidate.lean
+
+  Stage 1 result ................ PASS
+
+Stage 2 - Proposition / proof pairing
+
+  Trusted proposition:
+    LeanVerificationDemo.PhysicsDemo.P12.TrustedPhysicsProblem
+
+  Candidate proof:
+    LeanVerificationDemo.PhysicsDemo.P12.Candidate.solution
+
+  Required judgment:
+    LeanVerificationDemo.PhysicsDemo.P12.Candidate.solution : LeanVerificationDemo.PhysicsDemo.P12.TrustedPhysicsProblem
+
+  Lean result:
+    ACCEPT
+
+  $ lake env lean LeanVerificationDemo/PhysicsDemo/P12/Verify.lean
+LeanVerificationDemo/PhysicsDemo/P12/Verify.lean:85:24: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P12/Verify.lean:89:24: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P12/Verify.lean:85:24: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P12/Verify.lean:89:24: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+
+  Stage 2 result ................ PASS
+
+Stage 3 - Mutation verification
+
+  Stage 3 result ................ SKIPPED (no mutation cases configured)
+
+Stage 4 - Human-readable proof audit
+
+  CandidateAnnotated.lean ....... PASS
+  $ lake env lean LeanVerificationDemo/PhysicsDemo/P12/CandidateAnnotated.lean
+
+  Lean checks the Lean code in the annotated file.
+  The English comments are a human-audit layer, not a machine-checked proof.
+
+  Stage 4 result ................ PASS
+
+============================================================
+PROBLEM RESULT: PASS
+============================================================

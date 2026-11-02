@@ -1,0 +1,21 @@
+LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:31:63: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:31:63: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:37:31: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:37:31: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:42:61: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:42:61: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:124:43: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`

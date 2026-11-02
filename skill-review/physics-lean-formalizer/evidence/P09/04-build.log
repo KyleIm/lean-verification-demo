@@ -1,0 +1,760 @@
+⚠ [1898/1931] Replayed LeanVerificationDemo.MathDemo.M00.Problem
+warning: LeanVerificationDemo/MathDemo/M00/Problem.lean: imports `Mathlib.NumberTheory.Real.Irrational` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [1902/1931] Replayed LeanVerificationDemo.MathDemo.M00.PairingWalkthrough
+info: LeanVerificationDemo/MathDemo/M00/PairingWalkthrough.lean:13:0: LeanVerificationDemo.MathDemo.M00.SqrtTwoIrrationalProblem : Prop
+info: LeanVerificationDemo/MathDemo/M00/PairingWalkthrough.lean:14:0: LeanVerificationDemo.MathDemo.M00.Candidate.solution : SqrtTwoIrrationalProblem
+⚠ [3141/3472] Replayed LeanVerificationDemo.PhyslibTemp.Optics.Refraction
+warning: LeanVerificationDemo/PhyslibTemp/Optics/Refraction.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/Optics/Refraction.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3142/3472] Replayed LeanVerificationDemo.PhysicsDemo.P01.Problem
+warning: LeanVerificationDemo/PhysicsDemo/P01/Problem.lean: imports `Mathlib.Topology.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [3146/3472] Replayed LeanVerificationDemo.PhysicsDemo.P01.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P01/PairingWalkthrough.lean:13:0: LeanVerificationDemo.PhysicsDemo.P01.TrustedPhysicsProblem (data : PlateData) (ray : RayThroughPlate data) : Prop
+info: LeanVerificationDemo/PhysicsDemo/P01/PairingWalkthrough.lean:14:0: LeanVerificationDemo.PhysicsDemo.P01.Candidate.solution (data : PlateData) (ray : RayThroughPlate data) :
+  TrustedPhysicsProblem data ray
+ℹ [3170/3472] Replayed LeanVerificationDemo.PhysicsDemo.P02.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P02/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P02.TrustedPhysicsProblem (data : GasData) : Prop
+info: LeanVerificationDemo/PhysicsDemo/P02/PairingWalkthrough.lean:6:0: LeanVerificationDemo.PhysicsDemo.P02.Candidate.solution (data : GasData) (evidence : GasEvidence data) :
+  TrustedPhysicsProblem data
+info: LeanVerificationDemo/PhysicsDemo/P02/PairingWalkthrough.lean:7:0: 'LeanVerificationDemo.PhysicsDemo.P02.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3172/3472] Replayed LeanVerificationDemo.PhyslibTemp.Electromagnetism.PlaneCapacitor
+warning: LeanVerificationDemo/PhyslibTemp/Electromagnetism/PlaneCapacitor.lean: imports `Mathlib.Tactic.NormNum` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/Electromagnetism/PlaneCapacitor.lean: imports `Mathlib.Tactic.Ring` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/Electromagnetism/PlaneCapacitor.lean: imports `Mathlib.Tactic.Linarith` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [3178/3472] Replayed LeanVerificationDemo.PhysicsDemo.P03.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P03/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P03.TrustedPhysicsProblem (data : BatteryData) : Prop
+info: LeanVerificationDemo/PhysicsDemo/P03/PairingWalkthrough.lean:6:0: LeanVerificationDemo.PhysicsDemo.P03.Candidate.solution (data : BatteryData) (source : SourceData data) :
+  TrustedPhysicsProblem data
+info: LeanVerificationDemo/PhysicsDemo/P03/PairingWalkthrough.lean:7:0: LeanVerificationDemo.PhysicsDemo.P03.Candidate.glass_voltage_at_air_limit (data : BatteryData)
+  (source : SourceData data) : (data.glass.voltage data.airBreakdown.chargeAtLimit).val = 3000
+info: LeanVerificationDemo/PhysicsDemo/P03/PairingWalkthrough.lean:8:0: 'LeanVerificationDemo.PhysicsDemo.P03.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3179/3472] Replayed LeanVerificationDemo.PhyslibTemp.Electromagnetism.CapacitorNetwork
+warning: LeanVerificationDemo/PhyslibTemp/Electromagnetism/CapacitorNetwork.lean: imports `Mathlib.Algebra.BigOperators.Group.Finset.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3181/3472] Replayed LeanVerificationDemo.PhysicsDemo.P04.Candidate
+warning: LeanVerificationDemo/PhysicsDemo/P04/Candidate.lean: imports `Mathlib.Tactic.NormNum` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P04/Candidate.lean: imports `Mathlib.Tactic.Ring` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P04/Candidate.lean: imports `Mathlib.Tactic.Linarith` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3183/3472] Replayed LeanVerificationDemo.PhysicsDemo.P04.CandidateAnnotated
+warning: LeanVerificationDemo/PhysicsDemo/P04/CandidateAnnotated.lean: imports `Mathlib.Tactic.NormNum` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P04/CandidateAnnotated.lean: imports `Mathlib.Tactic.Ring` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P04/CandidateAnnotated.lean: imports `Mathlib.Tactic.Linarith` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [3184/3472] Replayed LeanVerificationDemo.PhysicsDemo.P04.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P04/PairingWalkthrough.lean:4:0: LeanVerificationDemo.PhysicsDemo.P04.Candidate.solution (data : CubeData) : TrustedPhysicsProblem data
+info: LeanVerificationDemo/PhysicsDemo/P04/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P04.Candidate.internal_potentials (data : CubeData)
+  (φ : Vertex → PhyslibTemp.Electromagnetism.Voltage) (h : (network data).NeutralInterior Vertex.A Vertex.B φ) :
+  (φ Vertex.v1).val = (3 * (φ Vertex.A).val + 2 * (φ Vertex.B).val) / 5 ∧
+    (φ Vertex.v2).val = (φ Vertex.v1).val ∧
+      (φ Vertex.v3).val = (φ Vertex.v1).val ∧
+        (φ Vertex.v4).val = (2 * (φ Vertex.A).val + 3 * (φ Vertex.B).val) / 5 ∧
+          (φ Vertex.v5).val = (φ Vertex.v4).val ∧ (φ Vertex.v6).val = (φ Vertex.v4).val
+info: LeanVerificationDemo/PhysicsDemo/P04/PairingWalkthrough.lean:6:0: 'LeanVerificationDemo.PhysicsDemo.P04.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3366/3472] Replayed LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.PlanarStatics
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/PlanarStatics.lean: imports `Mathlib.LinearAlgebra.CrossProduct` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/PlanarStatics.lean: imports `Mathlib.Algebra.BigOperators.Group.Finset.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3367/3472] Replayed LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.StaticFriction
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/StaticFriction.lean: imports `Mathlib.Basic.Real.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/StaticFriction.lean: imports `Mathlib.Algebra.Order.Ring.Abs` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3368/3472] Replayed LeanVerificationDemo.PhysicsDemo.P05.Problem
+warning: LeanVerificationDemo/PhysicsDemo/P05/Problem.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3369/3472] Replayed LeanVerificationDemo.PhysicsDemo.P05.Candidate
+warning: LeanVerificationDemo/PhysicsDemo/P05/Candidate.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3371/3472] Replayed LeanVerificationDemo.PhysicsDemo.P05.CandidateAnnotated
+warning: LeanVerificationDemo/PhysicsDemo/P05/CandidateAnnotated.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [3372/3472] Replayed LeanVerificationDemo.PhysicsDemo.P05.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P05/PairingWalkthrough.lean:4:0: LeanVerificationDemo.PhysicsDemo.P05.Candidate.solution (data : LadderData) : TrustedPhysicsProblem data
+info: LeanVerificationDemo/PhysicsDemo/P05/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P05.Candidate.reactions_required (data : LadderData) (s : ℝ) (r : Reactions)
+  (h : EquilibriumAt data s r) : r.N2 = data.G ∧ r.N1 = requiredFriction data s ∧ r.Ffr = requiredFriction data s
+info: LeanVerificationDemo/PhysicsDemo/P05/PairingWalkthrough.lean:6:0: LeanVerificationDemo.PhysicsDemo.P05.Candidate.required_strictMono (data : LadderData) :
+  StrictMono (requiredFriction data)
+info: LeanVerificationDemo/PhysicsDemo/P05/PairingWalkthrough.lean:7:0: LeanVerificationDemo.PhysicsDemo.P05.Candidate.admissible_iff (data : LadderData) {s : ℝ} (hs : 0 ≤ s) :
+  AdmissibleAt data s ↔ s ≤ criticalPosition data
+info: LeanVerificationDemo/PhysicsDemo/P05/PairingWalkthrough.lean:8:0: LeanVerificationDemo.PhysicsDemo.P05.Candidate.required_at_critical (data : LadderData) :
+  requiredFriction data (criticalPosition data) = data.μ * data.G
+info: LeanVerificationDemo/PhysicsDemo/P05/PairingWalkthrough.lean:9:0: LeanVerificationDemo.PhysicsDemo.P05.Candidate.reachable_threshold (data : LadderData) (h : ReachableThreshold data) :
+  OnLadder data (criticalPosition data) ∧
+    AdmissibleAt data (criticalPosition data) ∧
+      PhyslibTemp.ClassicalMechanics.LimitingStaticFriction data.μ data.G
+        (requiredFriction data (criticalPosition data))
+info: LeanVerificationDemo/PhysicsDemo/P05/PairingWalkthrough.lean:10:0: LeanVerificationDemo.PhysicsDemo.P05.Candidate.unreachable_threshold (data : LadderData) (h : ¬ReachableThreshold data)
+  (s : ℝ) (hs : OnLadder data s) :
+  s < criticalPosition data ∧ AdmissibleAt data s ∧ requiredFriction data s < data.μ * data.G
+info: LeanVerificationDemo/PhysicsDemo/P05/PairingWalkthrough.lean:11:0: 'LeanVerificationDemo.PhysicsDemo.P05.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [3379/3472] Replayed LeanVerificationDemo.PhysicsDemo.P06.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P06/PairingWalkthrough.lean:4:0: LeanVerificationDemo.PhysicsDemo.P06.TrustedPhysicsProblem (data : ReceptionData) : Prop
+info: LeanVerificationDemo/PhysicsDemo/P06/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P06.Candidate.solution (data : ReceptionData) (source : SourceData data) :
+  TrustedPhysicsProblem data
+info: LeanVerificationDemo/PhysicsDemo/P06/PairingWalkthrough.lean:6:0: 'LeanVerificationDemo.PhysicsDemo.P06.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3631/3685] Replayed LeanVerificationDemo.PhysicsDemo.P07.Problem
+warning: LeanVerificationDemo/PhysicsDemo/P07/Problem.lean: imports `Mathlib.Analysis.SpecialFunctions.Integrals.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P07/Problem.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [3635/3685] Replayed LeanVerificationDemo.PhysicsDemo.P07.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P07/PairingWalkthrough.lean:4:0: LeanVerificationDemo.PhysicsDemo.P07.TrustedPhysicsProblem (data : RingData) (response : Response data) : Prop
+info: LeanVerificationDemo/PhysicsDemo/P07/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P07.Candidate.current_per_width (data : RingData) (response : Response data) (x : ℝ)
+  (hx : x ∈ Set.Icc data.a.val data.b.val) (t : ℝ) :
+  response.currentPerWidth x t = sourceFactor * data.k * data.h.val / (2 * data.ρ.val) * x
+info: LeanVerificationDemo/PhysicsDemo/P07/PairingWalkthrough.lean:6:0: LeanVerificationDemo.PhysicsDemo.P07.Candidate.solution (data : RingData) (response : Response data) :
+  TrustedPhysicsProblem data response
+info: LeanVerificationDemo/PhysicsDemo/P07/PairingWalkthrough.lean:7:0: 'LeanVerificationDemo.PhysicsDemo.P07.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3637/3685] Replayed LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.ConstantAcceleration
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ConstantAcceleration.lean: imports `Mathlib.Analysis.Calculus.MeanValue` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ConstantAcceleration.lean: imports `Mathlib.Analysis.Calculus.Deriv.Pow` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ConstantAcceleration.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3639/3685] Replayed LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.ImpulseMomentum
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentum.lean: imports `Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentum.lean: imports `Mathlib.Analysis.Calculus.Deriv.Mul` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentum.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3640/3685] Replayed LeanVerificationDemo.PhysicsDemo.P08.Problem
+warning: LeanVerificationDemo/PhysicsDemo/P08/Problem.lean: imports `Mathlib.Analysis.Calculus.LocalExtr.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P08/Problem.lean: imports `Mathlib.Analysis.InnerProductSpace.PiL2` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P08/Problem.lean: imports `Mathlib.LinearAlgebra.FiniteDimensional.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P08/Problem.lean: imports `Mathlib.LinearAlgebra.Dimension.Constructions` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P08/Problem.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [3643/3685] Replayed LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.ImpulseMomentumExamples
+info: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentumExamples.lean:58:0: 'LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.MomentumBalance.total_change_eq_integral' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentumExamples.lean:59:0: 'LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.constant_impulse_tendsto_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ImpulseMomentumExamples.lean:60:0: 'LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.event_momentum_eq_of_impulse_limit' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3646/3685] Replayed LeanVerificationDemo.PhysicsDemo.P08.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:4:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.vertical_velocity_evolution (data : ExplosionData)
+  (source : SourceData data) (t : ℝ) : data.rocket.velocity t = (data.initialSpeed - data.g * t) • up
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.height_evolution (data : ExplosionData) (source : SourceData data)
+  (t : ℝ) : height data t = height data 0 + t * data.initialSpeed - data.g * t ^ 2 / 2
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:6:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.apex_time_pos (data : ExplosionData) : 0 < apexTime data
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:7:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.apex_height_maximal (data : ExplosionData) (source : SourceData data)
+  (t : ℝ) : height data t ≤ height data (apexTime data)
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:8:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.apex_vertical_velocity_zero (data : ExplosionData)
+  (source : SourceData data) : data.initialSpeed - data.g * apexTime data = 0
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:9:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.apex_velocity_zero (data : ExplosionData) (source : SourceData data) :
+  apexVelocity data = 0
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:10:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.pre_momentum_zero (data : ExplosionData) (source : SourceData data) :
+  preMomentum data = 0
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:11:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.internal_forces_cancel (data : ExplosionData) (source : SourceData data)
+  (ε : ℝ) (hε : 0 < ε) (t : ℝ) : ∑ i, ∑ j, data.internalForce ε i j t = 0
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:12:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.finite_duration_momentum_balance (data : ExplosionData)
+  (source : SourceData data) (ε : ℝ) (hε : 0 < ε) :
+  ∑ i, data.eventMomentum ε i ε - preMomentum data = gravitationalImpulse data ε
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:13:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.gravitational_impulse_eq (data : ExplosionData) (ε : ℝ) :
+  gravitationalImpulse data ε = ε • gravitationalForce data
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:14:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.gravitational_impulse_tendsto_zero (data : ExplosionData) :
+  Filter.Tendsto (gravitationalImpulse data) (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:15:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.total_momentum_endpoint_limit (data : ExplosionData)
+  (source : SourceData data) :
+  Filter.Tendsto (fun ε => ∑ i, data.eventMomentum ε i ε) (nhdsWithin 0 (Set.Ioi 0)) (nhds (totalMomentum data))
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:16:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.event_momentum_eq (data : ExplosionData) (source : SourceData data) :
+  totalMomentum data = preMomentum data
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:17:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.total_momentum_zero (data : ExplosionData) (source : SourceData data) :
+  momentum data 0 + momentum data 1 + momentum data 2 = 0
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:18:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.first_momentum_eq_neg_sum (data : ExplosionData)
+  (source : SourceData data) : momentum data 0 = -(momentum data 1 + momentum data 2)
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:19:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.momenta_coplanar (data : ExplosionData) (source : SourceData data) :
+  LinearCoplanar (momentum data)
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:20:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.velocity_mem_of_momentum_mem (data : ExplosionData) (i : Fin 3)
+  {plane : Submodule ℝ Vector3} (hp : momentum data i ∈ plane) : data.velocity i ∈ plane
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:21:0: LeanVerificationDemo.PhysicsDemo.P08.Candidate.solution (data : ExplosionData) (source : SourceData data) :
+  TrustedPhysicsProblem data
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:22:0: 'LeanVerificationDemo.PhysicsDemo.P08.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:23:0: 'LeanVerificationDemo.PhysicsDemo.P08.Candidate.event_momentum_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: LeanVerificationDemo/PhysicsDemo/P08/PairingWalkthrough.lean:24:0: 'LeanVerificationDemo.PhysicsDemo.P08.Candidate.gravitational_impulse_tendsto_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+ℹ [3654/3685] Replayed LeanVerificationDemo.PhysicsDemo.P09.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:6:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.friction_acceleration (data : PuckData) (model : SlidingModel data) :
+  deceleration data = data.μ * data.g
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:7:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_deceleration_before (data : PuckData)
+  (model : SlidingModel data) :
+  PhyslibTemp.ClassicalMechanics.HasConstantAcceleration data.before (-deceleration data • tangent)
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:8:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_deceleration_after (data : PuckData)
+  (model : SlidingModel data) :
+  PhyslibTemp.ClassicalMechanics.HasConstantAcceleration data.after (-deceleration data • tangent)
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:9:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_velocity (p : trackFrame.Particle) (a : ℝ)
+  (ha : PhyslibTemp.ClassicalMechanics.HasConstantAcceleration p (-a • tangent)) (t : ℝ) : speed p t = speed p 0 - a * t
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:10:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_travel (p : trackFrame.Particle) (a : ℝ)
+  (ha : PhyslibTemp.ClassicalMechanics.HasConstantAcceleration p (-a • tangent)) (t : ℝ) :
+  travel p t = t * speed p 0 - a * t ^ 2 / 2
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:11:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.segment_speed_squared (p : trackFrame.Particle) (a : ℝ)
+  (ha : PhyslibTemp.ClassicalMechanics.HasConstantAcceleration p (-a • tangent)) (t : ℝ) :
+  speed p t ^ 2 = speed p 0 ^ 2 - 2 * a * travel p t
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:12:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.sliding_speeds_nonnegative (data : PuckData)
+  (model : SlidingModel data) :
+  (∀ t ∈ Set.Icc 0 data.firstDuration, 0 ≤ speed data.before t) ∧
+    ∀ t ∈ Set.Icc 0 data.secondDuration, 0 ≤ speed data.after t
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:13:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.impact_preserves_speed (data : PuckData) (model : SlidingModel data) :
+  |speed data.before data.firstDuration| = |speed data.after 0|
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:14:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.impact_speed_eq (data : PuckData) (model : SlidingModel data) :
+  speed data.before data.firstDuration = speed data.after 0
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:15:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.stopping_relation (data : PuckData) (model : SlidingModel data) :
+  data.initialSpeed ^ 2 = 2 * deceleration data * (data.firstPath + data.secondPath)
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:16:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.deceleration_from_stopping (data : PuckData)
+  (model : SlidingModel data) : deceleration data = data.initialSpeed ^ 2 / (2 * (data.firstPath + data.secondPath))
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:17:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_from_deceleration (data : PuckData)
+  (model : SlidingModel data) : data.μ = deceleration data / data.g
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:18:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.total_path (data : PuckData) (source : SourceData data) :
+  data.firstPath + data.secondPath = 25 / 2
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:19:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_symbolic (data : PuckData) (model : SlidingModel data) :
+  data.μ = data.initialSpeed ^ 2 / (2 * data.g * (data.firstPath + data.secondPath))
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:20:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_exact (data : PuckData) (source : SourceData data) :
+  data.μ = 5 / 49
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:21:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_source_value (data : PuckData) (source : SourceData data) :
+  |data.μ - 102 / 1000| < 1 / 2000
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:22:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.coefficient_decimal_interval (data : PuckData)
+  (source : SourceData data) : 1020408 / 10000000 < data.μ ∧ data.μ < 1020409 / 10000000
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:23:0: LeanVerificationDemo.PhysicsDemo.P09.Candidate.solution (data : PuckData) (source : SourceData data) :
+  TrustedPhysicsProblem data
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:24:0: 'LeanVerificationDemo.PhysicsDemo.P09.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:25:0: LeanVerificationDemo.PhysicsDemo.P09.Units.friction_dimensions_iff (d : Dimension LTMCTDimensionBase) :
+  d * Units.forceDim = Units.forceDim ↔ d = 1
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:26:0: LeanVerificationDemo.PhysicsDemo.P09.Units.newton_dimensions : Dimension.M𝓭 * Units.accelerationDim = Units.forceDim
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:27:0: LeanVerificationDemo.PhysicsDemo.P09.Units.speed_squared_dimensions :
+  Units.velocityDim ^ 2 = Units.accelerationDim * Dimension.L𝓭
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:28:0: LeanVerificationDemo.PhysicsDemo.P09.Units.coefficient_dimensions :
+  Units.velocityDim * Units.velocityDim * (Units.accelerationDim * Dimension.L𝓭)⁻¹ = 1
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:29:0: LeanVerificationDemo.PhysicsDemo.P09.Units.typed_coefficient_equation (data : PuckData) (model : SlidingModel data) :
+  { val := data.μ } =
+    Units.coefficientRhs { val := data.initialSpeed } { val := data.g }
+      ({ val := data.firstPath } + { val := data.secondPath })
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:30:0: LeanVerificationDemo.PhysicsDemo.P09.Units.source_coefficient_in_SI :
+  Units.coefficientRhs (↑Units.initialVelocity LTMCTUnitChoices.SI) (↑Units.gravity LTMCTUnitChoices.SI)
+      (↑Units.firstDistance LTMCTUnitChoices.SI + ↑Units.secondDistance LTMCTUnitChoices.SI) =
+    { val := 5 / 49 }
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:31:0: LeanVerificationDemo.PhysicsDemo.P09.Units.incorrect_formula_not_dimensionless :
+  Units.velocityDim / (Units.accelerationDim * Dimension.L𝓭) ≠ 1
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:32:0: LeanVerificationDemo.PhysicsDemo.P09.Units.joule_is_newton_metre :
+  (↑DimEnergy.joule LTMCTUnitChoices.SI).cast ⋯ = ↑Units.newton LTMCTUnitChoices.SI * ↑Units.metre LTMCTUnitChoices.SI
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:33:0: 'LeanVerificationDemo.PhysicsDemo.P09.Units.typed_coefficient_equation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean:34:0: 'LeanVerificationDemo.PhysicsDemo.P09.Units.source_coefficient_in_SI' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+⚠ [3655/3685] Replayed LeanVerificationDemo.PhysicsDemo.P10.Problem
+warning: LeanVerificationDemo/PhysicsDemo/P10/Problem.lean: imports `Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P10/Problem.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3656/3685] Replayed LeanVerificationDemo.PhysicsDemo.P10.Candidate
+warning: LeanVerificationDemo/PhysicsDemo/P10/Candidate.lean: imports `Mathlib.Analysis.Calculus.Deriv.Mul` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P10/Candidate.lean: imports `Mathlib.Analysis.Calculus.Deriv.Pow` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3659/3685] Replayed LeanVerificationDemo.PhysicsDemo.P10.CandidateAnnotated
+warning: LeanVerificationDemo/PhysicsDemo/P10/CandidateAnnotated.lean: imports `Mathlib.Analysis.Calculus.Deriv.Mul` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P10/CandidateAnnotated.lean: imports `Mathlib.Analysis.Calculus.Deriv.Pow` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [3660/3685] Replayed LeanVerificationDemo.PhysicsDemo.P10.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:4:0: LeanVerificationDemo.PhysicsDemo.P10.Candidate.velocity_at_vertices (i : Fin 9) : velocity (time i) = ordinate i
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P10.Candidate.velocity_on_segment (i : Fin 8) :
+  Set.EqOn velocity (segment i) (Set.Icc (time i.castSucc) (time i.succ))
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:6:0: LeanVerificationDemo.PhysicsDemo.P10.Candidate.velocity_nonnegative_on_zero_ten (t : ℝ) :
+  t ∈ Set.Icc 0 10 → 0 ≤ velocity t
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:7:0: LeanVerificationDemo.PhysicsDemo.P10.Candidate.integral_linear_segment (a b u w : ℝ) (hab : a < b) :
+  ∫ (t : ℝ) in a..b, linearSegment a b u w t = (b - a) * (u + w) / 2
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:8:0: LeanVerificationDemo.PhysicsDemo.P10.Candidate.segment_areas (i : Fin 8) :
+  ∫ (t : ℝ) in time i.castSucc..time i.succ, velocity t = ![1 / 2, 1, 2, 7, 4, 7 / 2, 5, 2] i
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:9:0: LeanVerificationDemo.PhysicsDemo.P10.Candidate.distance_first_five : displacement 5 = 21 / 2
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:10:0: LeanVerificationDemo.PhysicsDemo.P10.Candidate.distance_first_ten : displacement 10 = 25
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:11:0: LeanVerificationDemo.PhysicsDemo.P10.Candidate.path_eq_displacement {T : ℝ} (hT : 0 ≤ T) (hTen : T ≤ 10) :
+  pathTravelled T = displacement T
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:12:0: LeanVerificationDemo.PhysicsDemo.P10.Candidate.solution : TrustedPhysicsProblem
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:13:0: LeanVerificationDemo.PhysicsDemo.P10.Units.typed_answers :
+  Units.typedMeanVelocity 5 = { val := 21 / 10 } ∧
+    Units.typedMeanAcceleration 5 = { val := 4 / 5 } ∧
+      Units.typedMeanVelocity 10 = { val := 5 / 2 } ∧ Units.typedMeanAcceleration 10 = { val := 1 / 5 }
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:14:0: 'LeanVerificationDemo.PhysicsDemo.P10.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:15:0: 'LeanVerificationDemo.PhysicsDemo.P10.Candidate.path_eq_displacement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: LeanVerificationDemo/PhysicsDemo/P10/PairingWalkthrough.lean:16:0: 'LeanVerificationDemo.PhysicsDemo.P10.Units.typed_answers' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3661/3685] Replayed LeanVerificationDemo.PhyslibTemp.Optics.Reflection
+warning: LeanVerificationDemo/PhyslibTemp/Optics/Reflection.lean: imports `Mathlib.Analysis.InnerProductSpace.Projection.Reflection` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/Optics/Reflection.lean: imports `Mathlib.Analysis.InnerProductSpace.PiL2` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/Optics/Reflection.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/Optics/Reflection.lean:27:0: automatically included section variable(s) unused in theorem `LeanVerificationDemo.PhyslibTemp.Optics.PlaneMirror.normal_ne_zero`:
+  [InnerProductSpace ℝ E]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [InnerProductSpace ℝ E] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: LeanVerificationDemo/PhyslibTemp/Optics/Reflection.lean:115:75: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhyslibTemp/Optics/Reflection.lean:115:75: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3662/3685] Replayed LeanVerificationDemo.PhyslibTemp.Optics.ReflectionExamples
+warning: LeanVerificationDemo/PhyslibTemp/Optics/ReflectionExamples.lean:33:75: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhyslibTemp/Optics/ReflectionExamples.lean:33:75: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: LeanVerificationDemo/PhyslibTemp/Optics/ReflectionExamples.lean:47:0: 'LeanVerificationDemo.PhyslibTemp.Optics.PlaneMirror.incidence_reflection_cosine' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+⚠ [3663/3685] Replayed LeanVerificationDemo.PhysicsDemo.P11.Problem
+warning: LeanVerificationDemo/PhysicsDemo/P11/Problem.lean: imports `Mathlib.Analysis.InnerProductSpace.PiL2` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P11/Problem.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P11/Problem.lean: imports `Mathlib.MeasureTheory.Measure.Lebesgue.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P11/Problem.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+⚠ [3664/3685] Replayed LeanVerificationDemo.PhysicsDemo.P11.Candidate
+warning: LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:31:63: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:31:63: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:37:31: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:37:31: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:42:61: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:42:61: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/Candidate.lean:124:43: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+⚠ [3667/3685] Replayed LeanVerificationDemo.PhysicsDemo.P11.CandidateAnnotated
+warning: LeanVerificationDemo/PhysicsDemo/P11/CandidateAnnotated.lean:31:63: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/CandidateAnnotated.lean:31:63: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/CandidateAnnotated.lean:37:31: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/CandidateAnnotated.lean:37:31: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/CandidateAnnotated.lean:42:61: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/CandidateAnnotated.lean:42:61: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P11/CandidateAnnotated.lean:127:43: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+ℹ [3668/3685] Replayed LeanVerificationDemo.PhysicsDemo.P11.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:4:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.reflection_geometry (g : Geometry) :
+  reflectedDirection g = point 1 (slope g)
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.incidence_ratio (g : Geometry) :
+  (incomingDirection g).ofLp 0 / -(incomingDirection g).ofLp 1 = Real.tan g.α
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:6:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.screen_hit_unique_iff (g : Geometry) (r z : ℝ) :
+  ScreenHit g r z ↔ 0 ≤ z ∧ r = g.l - z / slope g
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:7:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.boundary_ray_intersections (g : Geometry) :
+  reflectedRay g (-g.h / slope g) (g.l + g.h / slope g) = point g.l (baseHeight g + g.h) ∧
+    incidentRay g (g.h / slope g) (-g.h / slope g) = point 0 g.h ∧
+      reflectedRay g (g.h / slope g) (g.l - g.h / slope g) = point g.l (baseHeight g - g.h)
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:8:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.upright_shadow_interval (g : Geometry) :
+  uprightShadow g = Set.Icc (baseHeight g) (baseHeight g + g.h)
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:9:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.inverted_shadow_interval (g : Geometry) :
+  invertedShadow g = Set.Icc (max 0 (baseHeight g - g.h)) (baseHeight g)
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:10:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.threshold_characterization (g : Geometry) :
+  (baseHeight g - g.h = 0 ↔ g.l = g.h * Real.tan g.α) ∧
+    (g.h ≤ baseHeight g ↔ FarScreen g) ∧ (baseHeight g < g.h ↔ NearScreen g)
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:11:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.top_boundary_screen_iff (g : Geometry) :
+  ScreenHit g (g.h / slope g) (baseHeight g - g.h) ↔ FarScreen g
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:12:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.direct_subset_reflected (g : Geometry) :
+  directBlocked g ⊆ reflectedBlocked g
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:13:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.reflected_availability (g : Geometry) (z : ℝ) :
+  reflectedIlluminated g z ↔ ∃ r, ScreenHit g r z ∧ ¬(IncidentBlocked g r ∨ OutgoingBlocked g r)
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:14:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.far_screen_shadow_structure (g : Geometry) (far : FarScreen g) :
+  FarConclusion g
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:15:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.near_screen_shadow_structure (g : Geometry) (near : NearScreen g) :
+  NearConclusion g
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:16:0: LeanVerificationDemo.PhysicsDemo.P11.Candidate.solution (g : Geometry) : TrustedPhysicsProblem g
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:17:0: LeanVerificationDemo.PhysicsDemo.P11.Units.typed_far_regime (g : Geometry) :
+  FarScreen g ↔ Units.thresholdLength { val := g.h } g.α ≤ { val := g.l }
+info: LeanVerificationDemo/PhysicsDemo/P11/PairingWalkthrough.lean:18:0: 'LeanVerificationDemo.PhysicsDemo.P11.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3672/3685] Replayed LeanVerificationDemo.PhysicsDemo.P12.Verify
+warning: LeanVerificationDemo/PhysicsDemo/P12/Verify.lean:85:24: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P12/Verify.lean:89:24: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P12/Verify.lean:85:24: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P12/Verify.lean:89:24: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+ℹ [3674/3685] Replayed LeanVerificationDemo.PhysicsDemo.P12.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:4:0: LeanVerificationDemo.PhysicsDemo.P12.BrakingModel (run : BrakingRun) : Prop
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P12.TableSolution (coeff : Pavement → ℝ) : Prop
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:6:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.constant_deceleration (run : BrakingRun) (model : BrakingModel run) :
+  PhyslibTemp.ClassicalMechanics.HasConstantAcceleration run.particle (-deceleration run • tangent)
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:7:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.stopping_relation (run : BrakingRun) (model : BrakingModel run) :
+  run.initialSpeed ^ 2 = 2 * deceleration run * run.distance
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:8:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.friction_estimator (run : BrakingRun) (model : BrakingModel run) :
+  run.μ = frictionEstimate run.initialSpeed run.g run.distance
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:9:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.coefficient_from_row (p : Pavement) (i : Fin 10) (run : BrakingRun)
+  (model : BrakingModel run) (row : ObservesRow run p i) : run.μ = tableEstimate p i
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:10:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.rounded_numerators (p : Pavement) :
+  ⌊10 * tableEstimate p 0 + 1 / 2⌋ =
+    match p with
+    | Pavement.ice => 1
+    | Pavement.drySnow => 2
+    | Pavement.wetWoodBlock => 3
+    | Pavement.dryWoodBlock => 5
+    | Pavement.wetAsphalt => 4
+    | Pavement.dryAsphalt => 6
+    | Pavement.dryConcrete => 7
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:11:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.coefficient_values (p : Pavement) :
+  Candidate.coefficient p =
+    match p with
+    | Pavement.ice => 1 / 10
+    | Pavement.drySnow => 2 / 10
+    | Pavement.wetWoodBlock => 3 / 10
+    | Pavement.dryWoodBlock => 5 / 10
+    | Pavement.wetAsphalt => 4 / 10
+    | Pavement.dryAsphalt => 6 / 10
+    | Pavement.dryConcrete => 7 / 10
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:12:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.all_estimates_inside_bands (p : Pavement) (i : Fin 10) :
+  Candidate.coefficient p - 1 / 20 < tableEstimate p i ∧ tableEstimate p i < Candidate.coefficient p + 1 / 20
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:13:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.physical_table_compatibility :
+  PhysicalTableCompatibility Candidate.coefficient
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:14:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.table_solution_unique (other : Pavement → ℝ) (h : TableSolution other) :
+  other = Candidate.coefficient
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:15:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.rounded_speed_independent (p : Pavement) (i j : Fin 10) :
+  RoundsToTenth (tableEstimate p i) (Candidate.coefficient p) ∧
+    RoundsToTenth (tableEstimate p j) (Candidate.coefficient p)
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:16:0: LeanVerificationDemo.PhysicsDemo.P12.Candidate.solution : TrustedPhysicsProblem
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:17:0: LeanVerificationDemo.PhysicsDemo.P12.Units.kilometre_per_hour_in_SI :
+  ↑DimSpeed.oneKilometerPerHour LTMCTUnitChoices.SI = { val := 5 / 18 }
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:18:0: LeanVerificationDemo.PhysicsDemo.P12.Units.typed_table_estimate (p : Pavement) (i : Fin 10) :
+  Units.coefficientRhs (Units.velocitySI i) (↑Units.gravityQuantity LTMCTUnitChoices.SI)
+      (↑(Units.distanceQuantity p i) LTMCTUnitChoices.SI) =
+    { val := tableEstimate p i }
+info: LeanVerificationDemo/PhysicsDemo/P12/PairingWalkthrough.lean:19:0: 'LeanVerificationDemo.PhysicsDemo.P12.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3675/3685] Replayed LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.VibratingString
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/VibratingString.lean: imports `Mathlib.Analysis.Real.Sqrt` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/VibratingString.lean: imports `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/VibratingString.lean: imports `Mathlib.Data.PNat.Basic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/VibratingString.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+ℹ [3676/3685] Replayed LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.VibratingStringExamples
+info: LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/VibratingStringExamples.lean:31:0: 'LeanVerificationDemo.PhyslibTemp.ClassicalMechanics.FixedString.harmonic_scaling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+⚠ [3679/3685] Replayed LeanVerificationDemo.PhysicsDemo.P13.Candidate
+warning: LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean: imports `Mathlib.Analysis.Real.Pi.Bounds` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:34:2: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:34:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:46:2: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:46:6: Unused tactic linter: `ring` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:46:6: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:68:2: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:68:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3680/3685] Replayed LeanVerificationDemo.PhysicsDemo.P13.Units
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:28: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:45: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:61: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:77: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:93: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:104:2: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:103:93: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:104:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:28: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:45: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:61: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:77: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:93: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:113:93: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:30: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:47: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:63: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:79: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:30: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:47: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:63: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:79: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:30: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:47: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:63: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:79: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:30: This simp argument is unused:
+  NNReal.coe_rpow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_div, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:47: This simp argument is unused:
+  NNReal.coe_div
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_mul, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:63: This simp argument is unused:
+  NNReal.coe_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:79: This simp argument is unused:
+  NNReal.coe_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [NNReal.toReal, NNReal.coe_rpow, NNReal.coe_div, NNReal.coe_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:95: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:95: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:99: Unused tactic linter: `norm_num` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:95: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:95: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:133:99: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:126:95: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:141:95: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:148:95: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:208:2: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/Units.lean:208:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3682/3685] Replayed LeanVerificationDemo.PhysicsDemo.P13.CandidateAnnotated
+warning: LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean: imports `Mathlib.Analysis.Real.Pi.Bounds` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:38:2: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:38:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:51:2: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:51:6: Unused tactic linter: `ring` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:51:6: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:76:2: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:76:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+ℹ [3683/3685] Replayed LeanVerificationDemo.PhysicsDemo.P13.PairingWalkthrough
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:4:0: LeanVerificationDemo.PhysicsDemo.P13.SourceData (data : StringData) : Prop
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:5:0: LeanVerificationDemo.PhysicsDemo.P13.IsNaturalFrequencySolution (data : StringData) (freq : ℕ+ → ℝ) : Prop
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:6:0: def LeanVerificationDemo.PhysicsDemo.P13.TrustedPhysicsProblem : StringData → Prop :=
+fun data => ∃! freq, IsNaturalFrequencySolution data freq
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:7:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.circular_area (data : StringData) :
+  areaCm2 data = Real.pi * diameterCm data ^ 2 / 4
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:8:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.linear_density_formula (data : StringData) :
+  linearDensity data = Real.pi * data.densityGcm3 * diameterCm data ^ 2 / 4
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:9:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.cylindrical_frequency (data : StringData) (n : ℕ+) :
+  naturalFrequency data n = ↑↑n / (data.lengthCm * diameterCm data) * √(data.tensionDyn / (Real.pi * data.densityGcm3))
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:10:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.fundamental_exact_source (data : StringData) (source : SourceData data) :
+  fundamental data = √(490 / (39 * Real.pi))
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:11:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.fundamental_bounds (data : StringData) (source : SourceData data) :
+  19998 / 10000 < fundamental data ∧ fundamental data < 19999 / 10000
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:12:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.printed_fundamental_rounds (data : StringData)
+  (source : SourceData data) : Candidate.RoundsToWholeHz (fundamental data) 2
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:13:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.printed_fundamental_not_exact (data : StringData)
+  (source : SourceData data) : fundamental data ≠ 2
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:14:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.source_mode_exact (data : StringData) (source : SourceData data)
+  (n : ℕ+) : naturalFrequency data n = ↑↑n * √(490 / (39 * Real.pi))
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:15:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.mode_approximation_error (data : StringData) (source : SourceData data)
+  (n : ℕ+) : |naturalFrequency data n - 2 * ↑↑n| < ↑↑n / 5000
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:16:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.solutionFrequency : ℕ+ → ℝ
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:17:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.solutionFrequency_valid (data : StringData) (source : SourceData data) :
+  IsNaturalFrequencySolution data Candidate.solutionFrequency
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:18:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.solutionFrequency_unique (data : StringData) (source : SourceData data)
+  (freq : ℕ+ → ℝ) (valid : IsNaturalFrequencySolution data freq) : freq = Candidate.solutionFrequency
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:19:0: LeanVerificationDemo.PhysicsDemo.P13.Units.dyne_definition :
+  ↑Units.dyne Units.CGS =
+    (↑((CarriesDimension.toDimensionful Units.CGS) { val := 1 }) Units.CGS *
+            ↑((CarriesDimension.toDimensionful Units.CGS) { val := 1 }) Units.CGS /
+          (↑((CarriesDimension.toDimensionful Units.CGS) { val := 1 }) Units.CGS *
+            ↑((CarriesDimension.toDimensionful Units.CGS) { val := 1 }) Units.CGS)).cast
+      ⋯
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:20:0: LeanVerificationDemo.PhysicsDemo.P13.Units.source_in_SI (data : StringData) (source : SourceData data) :
+  ↑(Units.lengthQuantity data) LTMCTUnitChoices.SI = { val := 1 / 2 } ∧
+    ↑(Units.diameterQuantity data) LTMCTUnitChoices.SI = { val := 1 / 1000 } ∧
+      ↑(Units.tensionQuantity data) LTMCTUnitChoices.SI = { val := 49 / 2000 } ∧
+        ↑(Units.densityQuantity data) LTMCTUnitChoices.SI = { val := 7800 }
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:21:0: LeanVerificationDemo.PhysicsDemo.P13.Units.typed_source_SI (data : StringData) (source : SourceData data) :
+  Units.sourceFormulaQuantity (↑(Units.lengthQuantity data) LTMCTUnitChoices.SI)
+      (↑(Units.diameterQuantity data) LTMCTUnitChoices.SI) (↑(Units.tensionQuantity data) LTMCTUnitChoices.SI)
+      (↑(Units.densityQuantity data) LTMCTUnitChoices.SI) =
+    { val := fundamental data }
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:22:0: LeanVerificationDemo.PhysicsDemo.P13.Candidate.solution (data : StringData) (source : SourceData data) :
+  TrustedPhysicsProblem data
+info: LeanVerificationDemo/PhysicsDemo/P13/PairingWalkthrough.lean:23:0: 'LeanVerificationDemo.PhysicsDemo.P13.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (3685 jobs).

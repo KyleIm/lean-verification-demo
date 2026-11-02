@@ -1,0 +1,144 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "problem_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "problem_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "supplied_solution": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_data": {
+      "type": "object",
+      "description": "Preserve numeric spellings as strings and units, table axes/categories and provenance; do not synthesize entries."
+    },
+    "figures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "problem",
+              "solution_reference"
+            ]
+          },
+          "caption": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "geometry": {
+            "type": "object"
+          },
+          "provenance": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "caption",
+          "path",
+          "geometry",
+          "provenance"
+        ]
+      }
+    },
+    "source_provenance": {
+      "type": "string"
+    },
+    "target_repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "desired_code": {
+      "type": "string",
+      "pattern": "^P[0-9]{2,}$"
+    },
+    "dependency_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lean_toolchain": {
+          "type": "string"
+        },
+        "mathlib_rev": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "physlib_rev": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "required": [
+        "lean_toolchain",
+        "mathlib_rev",
+        "physlib_rev"
+      ]
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "wall_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_proof_attempts": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "wall_seconds",
+        "max_proof_attempts"
+      ]
+    },
+    "allow_existing_target": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "problem_id",
+    "problem_text",
+    "source_data",
+    "source_provenance",
+    "target_repository",
+    "base_commit",
+    "desired_code",
+    "dependency_context",
+    "budget"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Single physics formalization request v1"
+}

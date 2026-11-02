@@ -1,0 +1,31 @@
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.reflection_geometry (g : Geometry) :
+  reflectedDirection g = point 1 (slope g)
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.incidence_ratio (g : Geometry) :
+  (incomingDirection g).ofLp 0 / -(incomingDirection g).ofLp 1 = Real.tan g.α
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.screen_hit_unique_iff (g : Geometry) (r z : ℝ) :
+  ScreenHit g r z ↔ 0 ≤ z ∧ r = g.l - z / slope g
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.boundary_ray_intersections (g : Geometry) :
+  reflectedRay g (-g.h / slope g) (g.l + g.h / slope g) = point g.l (baseHeight g + g.h) ∧
+    incidentRay g (g.h / slope g) (-g.h / slope g) = point 0 g.h ∧
+      reflectedRay g (g.h / slope g) (g.l - g.h / slope g) = point g.l (baseHeight g - g.h)
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.upright_shadow_interval (g : Geometry) :
+  uprightShadow g = Set.Icc (baseHeight g) (baseHeight g + g.h)
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.inverted_shadow_interval (g : Geometry) :
+  invertedShadow g = Set.Icc (max 0 (baseHeight g - g.h)) (baseHeight g)
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.threshold_characterization (g : Geometry) :
+  (baseHeight g - g.h = 0 ↔ g.l = g.h * Real.tan g.α) ∧
+    (g.h ≤ baseHeight g ↔ FarScreen g) ∧ (baseHeight g < g.h ↔ NearScreen g)
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.top_boundary_screen_iff (g : Geometry) :
+  ScreenHit g (g.h / slope g) (baseHeight g - g.h) ↔ FarScreen g
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.direct_subset_reflected (g : Geometry) :
+  directBlocked g ⊆ reflectedBlocked g
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.reflected_availability (g : Geometry) (z : ℝ) :
+  reflectedIlluminated g z ↔ ∃ r, ScreenHit g r z ∧ ¬(IncidentBlocked g r ∨ OutgoingBlocked g r)
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.far_screen_shadow_structure (g : Geometry) (far : FarScreen g) :
+  FarConclusion g
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.near_screen_shadow_structure (g : Geometry) (near : NearScreen g) :
+  NearConclusion g
+LeanVerificationDemo.PhysicsDemo.P11.Candidate.solution (g : Geometry) : TrustedPhysicsProblem g
+LeanVerificationDemo.PhysicsDemo.P11.Units.typed_far_regime (g : Geometry) :
+  FarScreen g ↔ Units.thresholdLength { val := g.h } g.α ≤ { val := g.l }
+'LeanVerificationDemo.PhysicsDemo.P11.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]

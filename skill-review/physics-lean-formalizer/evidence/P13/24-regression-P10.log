@@ -1,0 +1,44 @@
+============================================================
+Problem: P10 (23)
+Mean velocity and acceleration from a caption-defined velocity graph
+============================================================
+
+Stage 1 - Valid source compilation
+
+  Problem.lean .................. PASS
+  Candidate.lean ................ PASS
+
+  Stage 1 result ................ PASS
+
+Stage 2 - Proposition / proof pairing
+
+  Trusted proposition:
+    LeanVerificationDemo.PhysicsDemo.P10.TrustedPhysicsProblem
+
+  Candidate proof:
+    LeanVerificationDemo.PhysicsDemo.P10.Candidate.solution
+
+  Required judgment:
+    LeanVerificationDemo.PhysicsDemo.P10.Candidate.solution : LeanVerificationDemo.PhysicsDemo.P10.TrustedPhysicsProblem
+
+  Lean result:
+    ACCEPT
+
+  Stage 2 result ................ PASS
+
+Stage 3 - Mutation verification
+
+  Stage 3 result ................ SKIPPED (no mutation cases configured)
+
+Stage 4 - Human-readable proof audit
+
+  CandidateAnnotated.lean ....... PASS
+
+  Lean checks the Lean code in the annotated file.
+  The English comments are a human-audit layer, not a machine-checked proof.
+
+  Stage 4 result ................ PASS
+
+============================================================
+PROBLEM RESULT: PASS
+============================================================

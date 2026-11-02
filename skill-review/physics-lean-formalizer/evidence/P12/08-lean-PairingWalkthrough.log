@@ -1,0 +1,47 @@
+LeanVerificationDemo.PhysicsDemo.P12.BrakingModel (run : BrakingRun) : Prop
+LeanVerificationDemo.PhysicsDemo.P12.TableSolution (coeff : Pavement → ℝ) : Prop
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.constant_deceleration (run : BrakingRun) (model : BrakingModel run) :
+  PhyslibTemp.ClassicalMechanics.HasConstantAcceleration run.particle (-deceleration run • tangent)
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.stopping_relation (run : BrakingRun) (model : BrakingModel run) :
+  run.initialSpeed ^ 2 = 2 * deceleration run * run.distance
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.friction_estimator (run : BrakingRun) (model : BrakingModel run) :
+  run.μ = frictionEstimate run.initialSpeed run.g run.distance
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.coefficient_from_row (p : Pavement) (i : Fin 10) (run : BrakingRun)
+  (model : BrakingModel run) (row : ObservesRow run p i) : run.μ = tableEstimate p i
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.rounded_numerators (p : Pavement) :
+  ⌊10 * tableEstimate p 0 + 1 / 2⌋ =
+    match p with
+    | Pavement.ice => 1
+    | Pavement.drySnow => 2
+    | Pavement.wetWoodBlock => 3
+    | Pavement.dryWoodBlock => 5
+    | Pavement.wetAsphalt => 4
+    | Pavement.dryAsphalt => 6
+    | Pavement.dryConcrete => 7
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.coefficient_values (p : Pavement) :
+  Candidate.coefficient p =
+    match p with
+    | Pavement.ice => 1 / 10
+    | Pavement.drySnow => 2 / 10
+    | Pavement.wetWoodBlock => 3 / 10
+    | Pavement.dryWoodBlock => 5 / 10
+    | Pavement.wetAsphalt => 4 / 10
+    | Pavement.dryAsphalt => 6 / 10
+    | Pavement.dryConcrete => 7 / 10
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.all_estimates_inside_bands (p : Pavement) (i : Fin 10) :
+  Candidate.coefficient p - 1 / 20 < tableEstimate p i ∧ tableEstimate p i < Candidate.coefficient p + 1 / 20
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.physical_table_compatibility :
+  PhysicalTableCompatibility Candidate.coefficient
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.table_solution_unique (other : Pavement → ℝ) (h : TableSolution other) :
+  other = Candidate.coefficient
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.rounded_speed_independent (p : Pavement) (i j : Fin 10) :
+  RoundsToTenth (tableEstimate p i) (Candidate.coefficient p) ∧
+    RoundsToTenth (tableEstimate p j) (Candidate.coefficient p)
+LeanVerificationDemo.PhysicsDemo.P12.Candidate.solution : TrustedPhysicsProblem
+LeanVerificationDemo.PhysicsDemo.P12.Units.kilometre_per_hour_in_SI :
+  ↑DimSpeed.oneKilometerPerHour LTMCTUnitChoices.SI = { val := 5 / 18 }
+LeanVerificationDemo.PhysicsDemo.P12.Units.typed_table_estimate (p : Pavement) (i : Fin 10) :
+  Units.coefficientRhs (Units.velocitySI i) (↑Units.gravityQuantity LTMCTUnitChoices.SI)
+      (↑(Units.distanceQuantity p i) LTMCTUnitChoices.SI) =
+    { val := tableEstimate p i }
+'LeanVerificationDemo.PhysicsDemo.P12.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]

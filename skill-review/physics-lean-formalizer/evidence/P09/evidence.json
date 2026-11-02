@@ -1,0 +1,289 @@
+{
+  "schema_version": "1.0.0",
+  "code": "P09",
+  "repository": "/home/hea/lean-verification-demo",
+  "commands": [
+    {
+      "label": "head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.004,
+      "log": "/tmp/physics-lean-p09-baseline-v1/00-head.log"
+    },
+    {
+      "label": "initial-status",
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.008,
+      "log": "/tmp/physics-lean-p09-baseline-v1/01-initial-status.log"
+    },
+    {
+      "label": "pin-mathlib",
+      "argv": [
+        "git",
+        "-C",
+        "/home/hea/lean-verification-demo/.lake/packages/mathlib",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.004,
+      "log": "/tmp/physics-lean-p09-baseline-v1/02-pin-mathlib.log"
+    },
+    {
+      "label": "pin-Physlib",
+      "argv": [
+        "git",
+        "-C",
+        "/home/hea/lean-verification-demo/.lake/packages/Physlib",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.004,
+      "log": "/tmp/physics-lean-p09-baseline-v1/03-pin-Physlib.log"
+    },
+    {
+      "label": "build",
+      "argv": [
+        "lake",
+        "build"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.719,
+      "log": "/tmp/physics-lean-p09-baseline-v1/04-build.log"
+    },
+    {
+      "label": "verifier",
+      "argv": [
+        "python3",
+        "scripts/verify.py",
+        "P09",
+        "--verbose"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 10.255,
+      "log": "/tmp/physics-lean-p09-baseline-v1/05-verifier.log"
+    },
+    {
+      "label": "lean-Candidate",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "LeanVerificationDemo/PhysicsDemo/P09/Candidate.lean"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.626,
+      "log": "/tmp/physics-lean-p09-baseline-v1/06-lean-Candidate.log"
+    },
+    {
+      "label": "lean-CandidateAnnotated",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "LeanVerificationDemo/PhysicsDemo/P09/CandidateAnnotated.lean"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.577,
+      "log": "/tmp/physics-lean-p09-baseline-v1/07-lean-CandidateAnnotated.log"
+    },
+    {
+      "label": "lean-PairingWalkthrough",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.274,
+      "log": "/tmp/physics-lean-p09-baseline-v1/08-lean-PairingWalkthrough.log"
+    },
+    {
+      "label": "lean-Problem",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "LeanVerificationDemo/PhysicsDemo/P09/Problem.lean"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.375,
+      "log": "/tmp/physics-lean-p09-baseline-v1/09-lean-Problem.log"
+    },
+    {
+      "label": "lean-Units",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "LeanVerificationDemo/PhysicsDemo/P09/Units.lean"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 3.126,
+      "log": "/tmp/physics-lean-p09-baseline-v1/10-lean-Units.log"
+    },
+    {
+      "label": "lean-Verify",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "LeanVerificationDemo/PhysicsDemo/P09/Verify.lean"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.776,
+      "log": "/tmp/physics-lean-p09-baseline-v1/11-lean-Verify.log"
+    },
+    {
+      "label": "lean-ConstantAccelerationExamples",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "LeanVerificationDemo/PhyslibTemp/ClassicalMechanics/ConstantAccelerationExamples.lean"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.625,
+      "log": "/tmp/physics-lean-p09-baseline-v1/12-lean-ConstantAccelerationExamples.log"
+    },
+    {
+      "label": "axioms",
+      "argv": [
+        "lake",
+        "env",
+        "lean",
+        "/tmp/physics-lean-axioms-aofjenes/Axioms.lean"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.324,
+      "log": "/tmp/physics-lean-p09-baseline-v1/13-axioms.log"
+    },
+    {
+      "label": "whitespace",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/home/hea/lean-verification-demo",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.004,
+      "log": "/tmp/physics-lean-p09-baseline-v1/14-whitespace.log"
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "axioms": {
+    "LeanVerificationDemo.PhysicsDemo.P09.Candidate.solution": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "LeanVerificationDemo.PhysicsDemo.P09.CandidateAnnotated.solution": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "mutations_status": "skipped",
+  "technical_pass": true,
+  "semantic_acceptance": "not_evaluated",
+  "artifacts": [
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/README.md",
+      "sha256": "157d8194c9e8ba4d95a5d8bec8eeaef4d6e7dc43479319e2f72d49da6c9d6b59"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/Problem.lean",
+      "sha256": "6b9e8a584bb9ee6962c780d15c355c59f6b534f62d081e06e5d95707feda34c4"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/mutations.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/source.jsonl",
+      "sha256": "3ec5b161bd1a6566153b96dc366e84bd71d034c559e2c754e1dd21ad84958cd3"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/CandidateAnnotated.lean",
+      "sha256": "3b126f5203382ca385549512fa9ae5fb9b2e57486ce13fe332764b9a583fb465"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/Units.lean",
+      "sha256": "4234ea4cd7d02c0f4c444b19d938bd98c94f09913ddbf56d6c29cf476526c562"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/Verify.lean",
+      "sha256": "65244675a7f3f1129bcd3c3c4469ae643047448230262d651680e1808b53eb9c"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/CLASSIFICATION.md",
+      "sha256": "c1e5fbc5bcf63be74e6e14689e6e71a25406ac32f972ea5556ab59d36f42e955"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/verification.json",
+      "sha256": "86d6fff7ef87d624dd52dcf406e138046c05acf535be65dfda1a6fcd3efd2154"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/PHYSLIB_AUDIT.md",
+      "sha256": "af733e92ff328ffc74ae08206932a301cd098f7accdb2c923e9038bbc2e415c5"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/PairingWalkthrough.lean",
+      "sha256": "b87b735f55c7b019099026d29a84bef597ca346d225346710c87b0789ac66170"
+    },
+    {
+      "path": "LeanVerificationDemo/PhysicsDemo/P09/Candidate.lean",
+      "sha256": "cd7fa8678ffe90574cc7c38b41201e34c8fe30f76374c508b3b8825fb1f27a4c"
+    }
+  ],
+  "repository_commit": "db175110266e96e4ee77b340697e9b7b34e98968",
+  "initial_dirty_state": "?? skills/\n",
+  "mutation_count": 0,
+  "dependency_context": {
+    "lean_toolchain": "leanprover/lean4:v4.35.0",
+    "mathlib_rev": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "physlib_rev": "96a6bc5e3c50a2856c64a6c9951c0a1c23790b58"
+  }
+}

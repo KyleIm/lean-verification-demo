@@ -1,0 +1,257 @@
+{
+  "skill_name": "physics-lean-formalizer",
+  "skill_version": "0.1.0",
+  "corpus_commit": "db175110266e96e4ee77b340697e9b7b34e98968",
+  "protocol": "references/operation.md#evaluation-protocol",
+  "evals": [
+    {
+      "id": 1,
+      "name": "mechanics-two-segments",
+      "prompt": "Formalize the supplied puck problem. Derive the stopping relation through existing kinematics, construct the requested coefficient using a semantic specification, and audit the printed decimal. Do not copy the gold target.",
+      "files": [
+        "mechanics-two-segments.source.json"
+      ],
+      "gold_reference": "LeanVerificationDemo/PhysicsDemo/P09",
+      "expected_output": "One new PXX formalization and schema-valid report; gold implementation hidden from generating agent",
+      "assertions": [
+        "build and verifier succeed; no admissions; final axioms approved",
+        "Newton/friction lead to a=\u03bcg and v\u00b2 relation; no stopping-formula premise",
+        "Candidate computes 5/49 and proves approximation to .102, and a negative exact-.102 check",
+        "typed equations/scalar bridges compile; no new duplicate friction API"
+      ],
+      "qualitative_review": [
+        "Is the new find target answer-free despite legacy P09?",
+        "Are separate oriented segments and the physical stopping intervals respected?",
+        "Does final validity depend on reused ConstantAcceleration rather than decorative imports?"
+      ],
+      "expected_status": "success",
+      "execution_status": "not_run",
+      "objective_checks": [
+        "Run check_run.py with final and annotated theorem names; inspect all exit codes",
+        "Compile a probe showing returned coefficient = 5/49 and != 102/1000; compile typed/scalar bridge"
+      ],
+      "critical_review_gates": [
+        "Source fidelity and no answer leakage through the trusted dependency closure",
+        "No new unapproved axioms, false exact equality, or unsupported physical assumptions"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "figure-vs-solution",
+      "prompt": "Formalize the supplied mirror/shadow question using only problem-figure geometry as source input. Audit solution-reference geometry, derive any regimes, and provide meaningful regime tests.",
+      "files": [
+        "figure-vs-solution.source.json"
+      ],
+      "gold_reference": "LeanVerificationDemo/PhysicsDemo/P11",
+      "expected_output": "One new PXX formalization and schema-valid report; gold implementation hidden from generating agent",
+      "assertions": [
+        "source figure data omit h/l/alpha labels and far-screen inequality as given facts",
+        "far/near/threshold consistency examples compile",
+        "generic reflection API is actually used; shared module contains no screen/source thresholds",
+        "negative direct-light versus reflected-shadow example compiles"
+      ],
+      "qualitative_review": [
+        "Are source geometry, coordinate choices, solution constructions and rendering choices separated?",
+        "Does upright/inverted orientation remain distinct from unreflected channel blockage?",
+        "Are shadow results derived from actual ray obstruction semantics?"
+      ],
+      "expected_status": "success",
+      "execution_status": "not_run",
+      "objective_checks": [
+        "Run check_run.py and compile far/near/threshold examples",
+        "If a diagram generator is emitted, run its --check and inspect declared source-only inputs",
+        "Compile a test point with direct illumination and reflected blockage"
+      ],
+      "critical_review_gates": [
+        "Source fidelity and no answer leakage through the trusted dependency closure",
+        "No new unapproved axioms, false exact equality, or unsupported physical assumptions"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "table-resolution",
+      "prompt": "Using the original table, find friction coefficients to the requested first decimal. Audit the supplied solution and justify the returned assignment using both physics and all table entries.",
+      "files": [
+        "table-resolution.source.json"
+      ],
+      "gold_reference": "LeanVerificationDemo/PhysicsDemo/P12",
+      "expected_output": "One new PXX formalization and schema-valid report; gold implementation hidden from generating agent",
+      "assertions": [
+        "all original 70 decimal strings preserved with km/h and m axes",
+        "km/h to SI conversion and typed estimator bridge compile",
+        "Candidate constructs assignment; all 70 bands and uniqueness within adopted grid are proved",
+        "raw first/last ice estimates unequal; wrong assignment rejected; per-row physical witnesses compile",
+        "Problem has no seven-value answer mapping; final proof includes physical compatibility"
+      ],
+      "qualitative_review": [
+        "Is requested resolution distinguished from exact equality and measurement uncertainty?",
+        "Is g=9.8 labeled a choice?",
+        "Is a first-column extraction followed by all-column validation rather than sample-only acceptance?"
+      ],
+      "expected_status": "success",
+      "execution_status": "not_run",
+      "objective_checks": [
+        "Run check_run.py; compare every raw fixture table string and unit label with source.jsonl",
+        "Compile all 70 grid-band obligations and first/last ice-estimate inequality",
+        "Compile per-row BrakingModel/ObservesRow witnesses and typed km/h conversion"
+      ],
+      "critical_review_gates": [
+        "Source fidelity and no answer leakage through the trusted dependency closure",
+        "No new unapproved axioms, false exact equality, or unsupported physical assumptions"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "open-find-exact-approx",
+      "prompt": "Find the natural frequencies for the supplied steel string. Preserve source units and audit the supplied integer-Hz solution. Return an explicit answer satisfying a semantic model specification.",
+      "files": [
+        "open-find-exact-approx.source.json"
+      ],
+      "gold_reference": "LeanVerificationDemo/PhysicsDemo/P13",
+      "expected_output": "One new PXX formalization and schema-valid report; gold implementation hidden from generating agent",
+      "assertions": [
+        "Problem trusted closure omits combined cylindrical formula, sqrt(490/(39*pi)) answer and exact 2n target",
+        "Candidate constructs explicit positive-mode family and proves model validity",
+        "exact fundamental sqrt(490/(39*pi)); bounds 1.9998 < f1 < 1.9999; f1 != 2 compile",
+        "wrong exact 2n family rejected; scaled error <n/5000 proved without all-mode rounding claim",
+        "CGS/SI conversions and typed/scalar bridges compile",
+        "new PhyslibTemp if any is source-independent and used in validity proof"
+      ],
+      "qualitative_review": [
+        "Is reusable FixedString semantics allowed without mistaking it for leakage?",
+        "Is adopted mode law distinguished from PDE completeness?",
+        "Are uniqueness and rounding kept at their correct logical scope?"
+      ],
+      "expected_status": "success",
+      "execution_status": "not_run",
+      "objective_checks": [
+        "Run check_run.py with axiom probes and compile unit bridges",
+        "Warn if trusted closure contains known answer tokens 490, 19998, 19999 or solutionFrequency; human must resolve false positives and aliases",
+        "Compile f1 != 2, exact sqrt formula, tight bounds and failure of exact 2n as a solution"
+      ],
+      "critical_review_gates": [
+        "Source fidelity and no answer leakage through the trusted dependency closure",
+        "No new unapproved axioms, false exact equality, or unsupported physical assumptions"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "event-limit",
+      "prompt": "Formalize the explosion coplanarity claim; audit the short-duration argument without equating finite gravitational impulse to zero.",
+      "files": [
+        "event-limit.source.json"
+      ],
+      "gold_reference": "LeanVerificationDemo/PhysicsDemo/P08",
+      "expected_output": "One new PXX formalization and schema-valid report; gold implementation hidden from generating agent",
+      "assertions": [
+        "derive apex rest rather than supply it",
+        "finite positive-duration nonzero impulse and zero-duration limit checks compile",
+        "Newton II/III cancellation and endpoint convergence are actual proof dependencies",
+        "linear plane dimension <=2 allows degenerate velocities; model witnesses compile"
+      ],
+      "qualitative_review": [
+        "Are regularization existence and endpoint matching explicit assumptions?",
+        "Is momentum equality derived rather than smuggled into event inputs?"
+      ],
+      "expected_status": "success",
+      "execution_status": "not_run",
+      "objective_checks": [
+        "Run check_run.py and independent ImpulseMomentumExamples",
+        "Compile positive-duration nonzero gravitational impulse and zero-duration convergence; degenerate and nonzero source witnesses"
+      ],
+      "critical_review_gates": [
+        "Source fidelity and no answer leakage through the trusted dependency closure",
+        "No new unapproved axioms, false exact equality, or unsupported physical assumptions"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "missing-essential-diagram",
+      "prompt": "Find the equivalent capacitance between A and B of the network in the attached figure. All capacitors are C.",
+      "files": [],
+      "assertions": [
+        "Return deferred with missing_diagram_information",
+        "Do not infer cube connectivity from a familiar answer",
+        "Report schema validates without requiring Lean artifacts"
+      ],
+      "qualitative_review": [
+        "Does the request identify missing topology precisely?"
+      ],
+      "expected_status": "deferred",
+      "execution_status": "not_run",
+      "objective_checks": [
+        "Validate run-report schema, status deferred and category missing_diagram_information; no Lean artifact requirement"
+      ],
+      "critical_review_gates": [
+        "Deferral is justified and no fabricated source/model/answer is emitted"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "required-pde-completeness",
+      "prompt": "Derive the full fixed-string spectrum and spectral completeness from the wave PDE in the pinned repository. An adopted normal-mode law or endpoint-only sine checks do not satisfy this request. Resource budget: 120 seconds, one strategy.",
+      "files": [],
+      "assertions": [
+        "Return a justified bounded deferral if required infrastructure is unavailable",
+        "Use pde_analysis_infrastructure_missing or timeout_resource_limit with evidence",
+        "Do not claim FixedString model adoption proves PDE completeness"
+      ],
+      "qualitative_review": [
+        "Was pinned PDE infrastructure inspected before diagnosing the gap?"
+      ],
+      "expected_status": "deferred",
+      "execution_status": "not_run",
+      "objective_checks": [
+        "Validate report schema and evidence of budget/gap; inspect no falsely certified completeness theorem"
+      ],
+      "critical_review_gates": [
+        "Deferral is justified and no fabricated source/model/answer is emitted"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "no-supplied-solution",
+      "prompt": "Find the fundamental and positive-mode frequencies of an ideal uniform string fixed at both ends, L=1 m, tension=16 N and linear density=1 kg/m. No supplied solution or figure exists.",
+      "files": [],
+      "assertions": [
+        "Candidate derives f_n=2n Hz with exact fundamental 2 for these values",
+        "No false general rule that exact 2 Hz is always invalid",
+        "Semantic find target, unit bridge and no-solution provenance recorded"
+      ],
+      "qualitative_review": [
+        "Does the skill generalize beyond the P13 constants?"
+      ],
+      "expected_status": "success",
+      "execution_status": "not_run",
+      "objective_checks": [
+        "Run check_run.py; compile returned fundamental=2 and all positive modes=2n; source record has no supplied solution"
+      ],
+      "critical_review_gates": [
+        "Source fidelity and no answer leakage through the trusted dependency closure",
+        "No new unapproved axioms, false exact equality, or unsupported physical assumptions"
+      ]
+    }
+  ],
+  "transfer_variants": [
+    {
+      "base_case": 1,
+      "change": "Change both distances/initial speed and provide no printed coefficient",
+      "purpose": "Detect copying .102 or 5/49 instead of constructing the answer"
+    },
+    {
+      "base_case": 2,
+      "change": "Move source geometry to an essential missing-caption case",
+      "purpose": "Detect deriving trusted facts from the solution figure"
+    },
+    {
+      "base_case": 3,
+      "change": "Perturb a cell enough that no common tenth-band assignment exists",
+      "purpose": "Require honest inconsistency/deferral instead of smoothing; preserve original entries"
+    },
+    {
+      "base_case": 4,
+      "change": "Use L=1m,T=16N,mu=1kg/m, both ends fixed",
+      "purpose": "Exact 2 is correct here; avoid overfitting P13 non-equality"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+import LeanVerificationDemo.PhysicsDemo.P11.Candidate
+import LeanVerificationDemo.PhysicsDemo.P11.CandidateAnnotated
+import LeanVerificationDemo.PhysicsDemo.P11.PairingWalkthrough
+import LeanVerificationDemo.PhysicsDemo.P11.Problem
+import LeanVerificationDemo.PhysicsDemo.P11.Units
+import LeanVerificationDemo.PhysicsDemo.P11.Verify
+#print axioms LeanVerificationDemo.PhysicsDemo.P11.Candidate.solution
+#print axioms LeanVerificationDemo.PhysicsDemo.P11.CandidateAnnotated.solution

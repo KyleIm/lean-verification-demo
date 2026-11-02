@@ -1,0 +1,91 @@
+============================================================
+Problem: P13 (650)
+Fixed-string normal modes and audited frequency approximation
+============================================================
+
+Stage 1 - Valid source compilation
+
+  Problem.lean .................. PASS
+  $ lake env lean LeanVerificationDemo/PhysicsDemo/P13/Problem.lean
+  Candidate.lean ................ PASS
+  $ lake env lean LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean
+LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:34:2: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:34:2: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:46:2: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:46:6: warning: Unused tactic linter: `ring` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:46:6: warning: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:68:2: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/Candidate.lean:68:2: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+
+  Stage 1 result ................ PASS
+
+Stage 2 - Proposition / proof pairing
+
+  Trusted proposition:
+    LeanVerificationDemo.PhysicsDemo.P13.TrustedPhysicsProblem data
+
+  Candidate proof:
+    LeanVerificationDemo.PhysicsDemo.P13.Candidate.solution data source
+
+  Required judgment:
+    LeanVerificationDemo.PhysicsDemo.P13.Candidate.solution data source : LeanVerificationDemo.PhysicsDemo.P13.TrustedPhysicsProblem data
+
+  Lean result:
+    ACCEPT
+
+  $ lake env lean LeanVerificationDemo/PhysicsDemo/P13/Verify.lean
+
+  Stage 2 result ................ PASS
+
+Stage 3 - Mutation verification
+
+  Stage 3 result ................ SKIPPED (no mutation cases configured)
+
+Stage 4 - Human-readable proof audit
+
+  CandidateAnnotated.lean ....... PASS
+  $ lake env lean LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean
+LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:38:2: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:38:2: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:51:2: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:51:6: warning: Unused tactic linter: `ring` does nothing.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:51:6: warning: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:76:2: warning: Unused tactic linter: `<;>` should be replaced with `;` or be removed.
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+LeanVerificationDemo/PhysicsDemo/P13/CandidateAnnotated.lean:76:2: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+
+  Lean checks the Lean code in the annotated file.
+  The English comments are a human-audit layer, not a machine-checked proof.
+
+  Stage 4 result ................ PASS
+
+============================================================
+PROBLEM RESULT: PASS
+============================================================

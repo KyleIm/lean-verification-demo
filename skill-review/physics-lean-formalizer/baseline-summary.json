@@ -1,0 +1,157 @@
+{
+  "skill_version": "0.1.0",
+  "corpus_commit": "db175110266e96e4ee77b340697e9b7b34e98968",
+  "scope": "Technical baseline on EXISTING gold implementations; not model-generated skill evaluations.",
+  "gold_files_modified": false,
+  "contract_tests": {
+    "passed": 7,
+    "failed": 0
+  },
+  "missing_target_failure_test": "passed",
+  "skill_validator": "passed",
+  "llm_behavioral_evals": "not_run",
+  "cases": [
+    {
+      "code": "P09",
+      "technical_pass": true,
+      "semantic_acceptance": "not_evaluated",
+      "mutations_status": "skipped",
+      "axioms": {
+        "LeanVerificationDemo.PhysicsDemo.P09.Candidate.solution": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "LeanVerificationDemo.PhysicsDemo.P09.CandidateAnnotated.solution": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "evidence": "skill-review/physics-lean-formalizer/evidence/P09/evidence.json",
+      "commands": 15,
+      "failures": []
+    },
+    {
+      "code": "P11",
+      "technical_pass": true,
+      "semantic_acceptance": "not_evaluated",
+      "mutations_status": "skipped",
+      "axioms": {
+        "LeanVerificationDemo.PhysicsDemo.P11.Candidate.solution": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "LeanVerificationDemo.PhysicsDemo.P11.CandidateAnnotated.solution": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "evidence": "skill-review/physics-lean-formalizer/evidence/P11/evidence.json",
+      "commands": 15,
+      "failures": []
+    },
+    {
+      "code": "P12",
+      "technical_pass": true,
+      "semantic_acceptance": "not_evaluated",
+      "mutations_status": "skipped",
+      "axioms": {
+        "LeanVerificationDemo.PhysicsDemo.P12.Candidate.solution": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "LeanVerificationDemo.PhysicsDemo.P12.CandidateAnnotated.solution": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "evidence": "skill-review/physics-lean-formalizer/evidence/P12/evidence.json",
+      "commands": 15,
+      "failures": []
+    },
+    {
+      "code": "P13",
+      "technical_pass": true,
+      "semantic_acceptance": "not_evaluated",
+      "mutations_status": "skipped",
+      "axioms": {
+        "LeanVerificationDemo.PhysicsDemo.P13.Candidate.solution": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "LeanVerificationDemo.PhysicsDemo.P13.CandidateAnnotated.solution": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      "evidence": "skill-review/physics-lean-formalizer/evidence/P13/evidence.json",
+      "commands": 29,
+      "failures": []
+    }
+  ],
+  "gold_regressions": [
+    {
+      "code": "M00",
+      "exit_code": 0
+    },
+    {
+      "code": "P01",
+      "exit_code": 0
+    },
+    {
+      "code": "P02",
+      "exit_code": 0
+    },
+    {
+      "code": "P03",
+      "exit_code": 0
+    },
+    {
+      "code": "P04",
+      "exit_code": 0
+    },
+    {
+      "code": "P05",
+      "exit_code": 0
+    },
+    {
+      "code": "P06",
+      "exit_code": 0
+    },
+    {
+      "code": "P07",
+      "exit_code": 0
+    },
+    {
+      "code": "P08",
+      "exit_code": 0
+    },
+    {
+      "code": "P09",
+      "exit_code": 0
+    },
+    {
+      "code": "P10",
+      "exit_code": 0
+    },
+    {
+      "code": "P11",
+      "exit_code": 0
+    },
+    {
+      "code": "P12",
+      "exit_code": 0
+    },
+    {
+      "code": "P13",
+      "exit_code": 0
+    }
+  ]
+}

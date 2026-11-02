@@ -1,0 +1,47 @@
+LeanVerificationDemo.PhysicsDemo.P13.SourceData (data : StringData) : Prop
+LeanVerificationDemo.PhysicsDemo.P13.IsNaturalFrequencySolution (data : StringData) (freq : ℕ+ → ℝ) : Prop
+def LeanVerificationDemo.PhysicsDemo.P13.TrustedPhysicsProblem : StringData → Prop :=
+fun data => ∃! freq, IsNaturalFrequencySolution data freq
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.circular_area (data : StringData) :
+  areaCm2 data = Real.pi * diameterCm data ^ 2 / 4
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.linear_density_formula (data : StringData) :
+  linearDensity data = Real.pi * data.densityGcm3 * diameterCm data ^ 2 / 4
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.cylindrical_frequency (data : StringData) (n : ℕ+) :
+  naturalFrequency data n = ↑↑n / (data.lengthCm * diameterCm data) * √(data.tensionDyn / (Real.pi * data.densityGcm3))
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.fundamental_exact_source (data : StringData) (source : SourceData data) :
+  fundamental data = √(490 / (39 * Real.pi))
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.fundamental_bounds (data : StringData) (source : SourceData data) :
+  19998 / 10000 < fundamental data ∧ fundamental data < 19999 / 10000
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.printed_fundamental_rounds (data : StringData)
+  (source : SourceData data) : Candidate.RoundsToWholeHz (fundamental data) 2
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.printed_fundamental_not_exact (data : StringData)
+  (source : SourceData data) : fundamental data ≠ 2
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.source_mode_exact (data : StringData) (source : SourceData data)
+  (n : ℕ+) : naturalFrequency data n = ↑↑n * √(490 / (39 * Real.pi))
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.mode_approximation_error (data : StringData) (source : SourceData data)
+  (n : ℕ+) : |naturalFrequency data n - 2 * ↑↑n| < ↑↑n / 5000
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.solutionFrequency : ℕ+ → ℝ
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.solutionFrequency_valid (data : StringData) (source : SourceData data) :
+  IsNaturalFrequencySolution data Candidate.solutionFrequency
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.solutionFrequency_unique (data : StringData) (source : SourceData data)
+  (freq : ℕ+ → ℝ) (valid : IsNaturalFrequencySolution data freq) : freq = Candidate.solutionFrequency
+LeanVerificationDemo.PhysicsDemo.P13.Units.dyne_definition :
+  ↑Units.dyne Units.CGS =
+    (↑((CarriesDimension.toDimensionful Units.CGS) { val := 1 }) Units.CGS *
+            ↑((CarriesDimension.toDimensionful Units.CGS) { val := 1 }) Units.CGS /
+          (↑((CarriesDimension.toDimensionful Units.CGS) { val := 1 }) Units.CGS *
+            ↑((CarriesDimension.toDimensionful Units.CGS) { val := 1 }) Units.CGS)).cast
+      ⋯
+LeanVerificationDemo.PhysicsDemo.P13.Units.source_in_SI (data : StringData) (source : SourceData data) :
+  ↑(Units.lengthQuantity data) LTMCTUnitChoices.SI = { val := 1 / 2 } ∧
+    ↑(Units.diameterQuantity data) LTMCTUnitChoices.SI = { val := 1 / 1000 } ∧
+      ↑(Units.tensionQuantity data) LTMCTUnitChoices.SI = { val := 49 / 2000 } ∧
+        ↑(Units.densityQuantity data) LTMCTUnitChoices.SI = { val := 7800 }
+LeanVerificationDemo.PhysicsDemo.P13.Units.typed_source_SI (data : StringData) (source : SourceData data) :
+  Units.sourceFormulaQuantity (↑(Units.lengthQuantity data) LTMCTUnitChoices.SI)
+      (↑(Units.diameterQuantity data) LTMCTUnitChoices.SI) (↑(Units.tensionQuantity data) LTMCTUnitChoices.SI)
+      (↑(Units.densityQuantity data) LTMCTUnitChoices.SI) =
+    { val := fundamental data }
+LeanVerificationDemo.PhysicsDemo.P13.Candidate.solution (data : StringData) (source : SourceData data) :
+  TrustedPhysicsProblem data
+'LeanVerificationDemo.PhysicsDemo.P13.Candidate.solution' depends on axioms: [propext, Classical.choice, Quot.sound]

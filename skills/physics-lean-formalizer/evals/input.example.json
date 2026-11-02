@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "problem_id": "mohsen-string-001",
+  "problem_text": "Find the natural frequencies of an ideal uniform string fixed at both ends, length 0.5 m, tension 0.0245 N and linear density 39*pi/20000 kg/m.",
+  "supplied_solution": null,
+  "source_data": {
+    "length": {
+      "value": "0.5",
+      "unit": "m"
+    },
+    "tension": {
+      "value": "0.0245",
+      "unit": "N"
+    },
+    "linear_density": {
+      "value": "39*pi/20000",
+      "unit": "kg/m"
+    }
+  },
+  "figures": [],
+  "source_provenance": "Researcher-provided example; not a copied corpus record.",
+  "target_repository": "/workspace/lean-verification-demo",
+  "base_commit": "db175110266e96e4ee77b340697e9b7b34e98968",
+  "desired_code": "P14",
+  "dependency_context": {
+    "lean_toolchain": "leanprover/lean4:v4.35.0",
+    "mathlib_rev": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "physlib_rev": "96a6bc5e3c50a2856c64a6c9951c0a1c23790b58"
+  },
+  "budget": {
+    "wall_seconds": 1800,
+    "max_proof_attempts": 3
+  },
+  "allow_existing_target": false
+}

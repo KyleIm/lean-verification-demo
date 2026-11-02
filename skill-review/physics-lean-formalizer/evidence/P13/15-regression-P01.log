@@ -1,0 +1,51 @@
+============================================================
+Problem: P01 (physics-stratified-plate)
+Stratified transparent plate
+============================================================
+
+Stage 1 - Valid source compilation
+
+  Problem.lean .................. PASS
+  Candidate.lean ................ PASS
+
+  Stage 1 result ................ PASS
+
+Stage 2 - Proposition / proof pairing
+
+  Trusted proposition:
+    LeanVerificationDemo.PhysicsDemo.P01.TrustedPhysicsProblem data ray
+
+  Candidate proof:
+    LeanVerificationDemo.PhysicsDemo.P01.Candidate.solution data ray
+
+  Required judgment:
+    LeanVerificationDemo.PhysicsDemo.P01.Candidate.solution data ray : LeanVerificationDemo.PhysicsDemo.P01.TrustedPhysicsProblem data ray
+
+  Lean result:
+    ACCEPT
+
+  Stage 2 result ................ PASS
+
+Stage 3 - Mutation verification
+
+  PHYS-P001  Entrance relation corruption     REJECT -> REJECT  PASS
+  PHYS-P002  Internal relation corruption     REJECT -> REJECT  PASS
+  PHYS-P003  Exit relation corruption         REJECT -> REJECT  PASS
+  PHYS-P004  Target specialization            REJECT -> REJECT  PASS
+  PHYS-P005  Irrelevant addition              ACCEPT -> ACCEPT  PASS
+  PHYS-P006  Required internal-link deletion  REJECT -> REJECT  PASS
+
+  Mutation result ............... 6 / 6 PASS
+
+Stage 4 - Human-readable proof audit
+
+  CandidateAnnotated.lean ....... PASS
+
+  Lean checks the Lean code in the annotated file.
+  The English comments are a human-audit layer, not a machine-checked proof.
+
+  Stage 4 result ................ PASS
+
+============================================================
+PROBLEM RESULT: PASS
+============================================================
