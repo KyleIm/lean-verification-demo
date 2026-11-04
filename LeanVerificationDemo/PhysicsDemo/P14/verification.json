@@ -1,0 +1,15 @@
+{
+  "id": "638",
+  "title": "Small-oscillation modes of two spring-linked pendulums",
+  "code": "P14",
+  "domain": "physics",
+  "problem_file": "LeanVerificationDemo/PhysicsDemo/P14/Problem.lean",
+  "candidate_file": "LeanVerificationDemo/PhysicsDemo/P14/Candidate.lean",
+  "verify_file": "LeanVerificationDemo/PhysicsDemo/P14/Verify.lean",
+  "annotated_file": "LeanVerificationDemo/PhysicsDemo/P14/CandidateAnnotated.lean",
+  "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P14/PairingWalkthrough.lean",
+  "mutation_manifest": "LeanVerificationDemo/PhysicsDemo/P14/mutations.json",
+  "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P14.TrustedPhysicsProblem data",
+  "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P14.Candidate.solution data",
+  "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P14.Candidate.solution data : LeanVerificationDemo.PhysicsDemo.P14.TrustedPhysicsProblem data"
+}

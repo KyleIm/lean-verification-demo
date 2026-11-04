@@ -1,6 +1,6 @@
 # Lean Verification Demo
 
-Problem-centric Lean verification prototype for one mathematics problem and thirteen
+Problem-centric Lean verification prototype for one mathematics problem and fourteen
 physics problems.
 
 ## Purpose
@@ -45,6 +45,20 @@ of finite-duration endpoint momenta then derive across-event momentum equality.
 Constant downward acceleration, initial upward velocity and the existence and
 matching of the regularized event states are explicit model assumptions. Lean
 does not prove that a physical explosion literally has zero duration.
+
+## Direct source-image evidence in P14
+
+[P14](LeanVerificationDemo/PhysicsDemo/P14/README.md) prototypes the revised image
+policy: the user-provided original Fig. 228 is inspected directly as source
+information, alongside the prose. Both bob masses are labelled m in that image,
+although mass is absent from the question text. The new schematic is authored
+from that visual analysis, without a trusted-caption intermediary. The solution
+figure remains a different evidence class. Lean checks the interpreted model;
+visual interpretation remains an explicit multimodal/human audit boundary.
+Earlier P04/P07/P10/P11 caption-based provenance remains historical and may need
+later project-wide policy clarification; it is not relabelled retroactively.
+P14 reuses stable Physlib pendulum, small-angle, Hooke and oscillator APIs and
+adds no PhyslibTemp module.
 
 ## Reusable constant-acceleration layer
 
@@ -135,7 +149,7 @@ For each problem:
 3. Run six controlled mutation tests.
 4. Compile an annotated proof for human audit.
 
-P03–P13 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
+P03–P14 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
 an empty manifest. Existing demos still run their six mutation checks.
 
 The six mutation tests are part of Stage 3.  They are not six separate
@@ -193,6 +207,7 @@ project.
 | Physics | `677` | `P11` | [problem README](LeanVerificationDemo/PhysicsDemo/P11/README.md), [trusted Fig. 237 caption](LeanVerificationDemo/PhysicsDemo/P11/figure_caption.txt), [caption reconstruction](LeanVerificationDemo/PhysicsDemo/P11/problem_diagram.svg), [mirror/shadow audit](LeanVerificationDemo/PhysicsDemo/P11/PHYSLIB_AUDIT.md) |
 | Physics | `48` | `P12` | [problem README and Table 1](LeanVerificationDemo/PhysicsDemo/P12/README.md), [braking/unit audit](LeanVerificationDemo/PhysicsDemo/P12/PHYSLIB_AUDIT.md) |
 | Physics | `650` | `P13` | [problem README](LeanVerificationDemo/PhysicsDemo/P13/README.md), [wave/unit audit](LeanVerificationDemo/PhysicsDemo/P13/PHYSLIB_AUDIT.md) |
+| Physics | `638` | `P14` | [problem README](LeanVerificationDemo/PhysicsDemo/P14/README.md), [source-image schematic](LeanVerificationDemo/PhysicsDemo/P14/problem_diagram.svg), [pendulum audit](LeanVerificationDemo/PhysicsDemo/P14/PHYSLIB_AUDIT.md) |
 
 ## Run
 
@@ -219,6 +234,7 @@ python3 scripts/verify.py P10
 python3 scripts/verify.py P11
 python3 scripts/verify.py P12
 python3 scripts/verify.py P13
+python3 scripts/verify.py P14
 ```
 
 Or by full problem ID:
@@ -250,6 +266,7 @@ or ID.  Add `--verbose` to show raw Lean diagnostics for each command.
 | `677` (P11) | PASS | PASS | SKIPPED | PASS | PASS |
 | `48` (P12) | PASS | PASS | SKIPPED | PASS | PASS |
 | `650` (P13) | PASS | PASS | SKIPPED | PASS | PASS |
+| `638` (P14) | PASS | PASS | SKIPPED | PASS | PASS |
 
 ## Environment
 
