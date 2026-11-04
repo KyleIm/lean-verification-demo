@@ -50,7 +50,25 @@ Fig. 228**, even though the prose does not name it. Positive gravity and a posit
 pivot separation parameterize the physical/coordinate model. The source does not
 label the separation; it drops out of the answer.
 
-## Direct image evidence and the new schematic
+## Source-image reconstruction workflow
+
+For problems whose geometry is communicated through a figure, the original
+problem image itself should be inspected directly. P14 uses this workflow:
+
+```text
+original problem text
++
+original problem image
+→ direct multimodal interpretation
+→ formal model
+→ newly drawn source-faithful schematic
+```
+
+The schematic is drawn while visually referring to the original problem figure,
+in the same image-referenced spirit as P07. It preserves only information in the
+original statement and problem figure. Solution-only annotations, force diagrams,
+derived quantities and formulas are excluded. P07's separately documented
+provenance limitations remain part of its historical record.
 
 The user identified `Pictures/Screenshots/Screenshot from 2026-11-04 15-00-14.png`.
 That actual image was opened and inspected. It shows the original **Fig. 228**:
@@ -68,6 +86,17 @@ Candidate proof or Fig. 479. Pixel coordinates, coil count and glyph positions a
 rendering choices. It depicts only the original equilibrium apparatus, with l and
 m labels; no force arrows, displaced-mode construction or frequency formulas.
 
+The reconstructed diagram therefore contains only:
+
+- the two fixed suspension points;
+- the two equal pendulums of length l;
+- the two equal masses m;
+- the spring connecting the two bobs;
+- the vertical equilibrium configuration.
+
+The original textbook scan is not copied into the repository. The clean new
+schematic uses Fig. 228 directly as its visual reference.
+
 ```bash
 python3 LeanVerificationDemo/PhysicsDemo/P14/generate_problem_diagram.py --check
 ```
@@ -80,7 +109,9 @@ The task also describes **Fig. 479**, a solution-side force diagram. The supplie
 file is Fig. 228 only; no separate Fig. 479 image was inspected. The supplied
 solution text is used to audit the intended derivation. Fig. 479 remains
 reference-only and supplies no premise, construction or rendering content to
-the trusted problem or the new source schematic.
+the trusted problem or the new source schematic. A solution figure may be
+inspected to understand or audit the supplied solution, but it must not serve as
+the visual reference for the trusted problem diagram.
 
 ## Source facts and modeling inputs
 
