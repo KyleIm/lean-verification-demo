@@ -1,0 +1,32 @@
+[
+  {
+    "id": "764",
+    "title": "Two-source paraxial bright-fringe spacing",
+    "code": "P15",
+    "domain": "physics",
+    "problem_file": "LeanVerificationDemo/PhysicsDemo/P15P16/Problem764.lean",
+    "candidate_file": "LeanVerificationDemo/PhysicsDemo/P15P16/Candidate764.lean",
+    "verify_file": "LeanVerificationDemo/PhysicsDemo/P15P16/Verify.lean",
+    "annotated_file": "LeanVerificationDemo/PhysicsDemo/P15P16/CandidateAnnotated764.lean",
+    "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P15P16/PairingWalkthrough.lean",
+    "mutation_manifest": "LeanVerificationDemo/PhysicsDemo/P15P16/mutations.json",
+    "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P15P16.P764.TrustedPhysicsProblem data",
+    "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P15P16.P764.Candidate.solution data",
+    "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P15P16.P764.Candidate.solution data : LeanVerificationDemo.PhysicsDemo.P15P16.P764.TrustedPhysicsProblem data"
+  },
+  {
+    "id": "766",
+    "title": "Lloyd-mirror phase reversal and relative pattern shift",
+    "code": "P16",
+    "domain": "physics",
+    "problem_file": "LeanVerificationDemo/PhysicsDemo/P15P16/Problem766.lean",
+    "candidate_file": "LeanVerificationDemo/PhysicsDemo/P15P16/Candidate766.lean",
+    "verify_file": "LeanVerificationDemo/PhysicsDemo/P15P16/Verify.lean",
+    "annotated_file": "LeanVerificationDemo/PhysicsDemo/P15P16/CandidateAnnotated766.lean",
+    "pairing_walkthrough_file": "LeanVerificationDemo/PhysicsDemo/P15P16/PairingWalkthrough.lean",
+    "mutation_manifest": "LeanVerificationDemo/PhysicsDemo/P15P16/mutations.json",
+    "trusted_type_display": "LeanVerificationDemo.PhysicsDemo.P15P16.P766.TrustedPhysicsProblem data",
+    "candidate_term_display": "LeanVerificationDemo.PhysicsDemo.P15P16.P766.Candidate.solution data",
+    "required_judgment_display": "LeanVerificationDemo.PhysicsDemo.P15P16.P766.Candidate.solution data : LeanVerificationDemo.PhysicsDemo.P15P16.P766.TrustedPhysicsProblem data"
+  }
+]

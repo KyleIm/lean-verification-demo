@@ -1,6 +1,6 @@
 # Lean Verification Demo
 
-Problem-centric Lean verification prototype for one mathematics problem and fourteen
+Problem-centric Lean verification prototype for one mathematics problem and sixteen
 physics problems.
 
 ## Purpose
@@ -140,6 +140,21 @@ document the reuse boundary. P13 supplies its cylinder geometry and native CGS
 data, verifies SI conversions, and audits the printed 2 Hz as an approximation:
 the exact fundamental is strictly between 1.9998 and 1.9999 Hz.
 
+## Paired interference foundations (P15/P16)
+
+[P15/P16](LeanVerificationDemo/PhysicsDemo/P15P16/README.md) share one directory
+and README preserving Problems 764/766 and the textbook cross-reference. Each
+has its own semantic specification, computed witness and annotated proof; P16
+imports no previous Candidate. Directly inspected Fig. 253/255 images guide two
+new schematics. The shared paraxial model is explicit, and Lloyd's pi reversal
+is audited as half the ordinary bright-to-bright fringe spacing.
+
+[TwoBeamInterference](LeanVerificationDemo/PhyslibTemp/Optics/TwoBeamInterference.lean)
+adds a quantitative coherent two-beam phase/intensity model over stable Physlib
+Wavelength, with extrema and phase-reversal theorems and independent examples.
+The paired `verification.json` is a list of two legacy-shaped records; discovery
+also retains every existing single-object config and the same four stages.
+
 ## Verification Pipeline
 
 For each problem:
@@ -149,7 +164,7 @@ For each problem:
 3. Run six controlled mutation tests.
 4. Compile an annotated proof for human audit.
 
-P03–P14 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
+P03–P16 currently defer mutation cases; Stage 3 explicitly reports `SKIPPED` for
 an empty manifest. Existing demos still run their six mutation checks.
 
 The six mutation tests are part of Stage 3.  They are not six separate
@@ -208,6 +223,8 @@ project.
 | Physics | `48` | `P12` | [problem README and Table 1](LeanVerificationDemo/PhysicsDemo/P12/README.md), [braking/unit audit](LeanVerificationDemo/PhysicsDemo/P12/PHYSLIB_AUDIT.md) |
 | Physics | `650` | `P13` | [problem README](LeanVerificationDemo/PhysicsDemo/P13/README.md), [wave/unit audit](LeanVerificationDemo/PhysicsDemo/P13/PHYSLIB_AUDIT.md) |
 | Physics | `638` | `P14` | [problem README](LeanVerificationDemo/PhysicsDemo/P14/README.md), [source-image schematic](LeanVerificationDemo/PhysicsDemo/P14/problem_diagram.svg), [pendulum audit](LeanVerificationDemo/PhysicsDemo/P14/PHYSLIB_AUDIT.md) |
+| Physics | `764` | `P15` | [paired README: Problem 764](LeanVerificationDemo/PhysicsDemo/P15P16/README.md#problem-764), [schematic](LeanVerificationDemo/PhysicsDemo/P15P16/problem764_diagram.svg) |
+| Physics | `766` | `P16` | [paired README: Problem 766](LeanVerificationDemo/PhysicsDemo/P15P16/README.md#problem-766), [schematic](LeanVerificationDemo/PhysicsDemo/P15P16/problem766_diagram.svg) |
 
 ## Run
 
@@ -235,6 +252,8 @@ python3 scripts/verify.py P11
 python3 scripts/verify.py P12
 python3 scripts/verify.py P13
 python3 scripts/verify.py P14
+python3 scripts/verify.py P15
+python3 scripts/verify.py P16
 ```
 
 Or by full problem ID:
@@ -267,6 +286,8 @@ or ID.  Add `--verbose` to show raw Lean diagnostics for each command.
 | `48` (P12) | PASS | PASS | SKIPPED | PASS | PASS |
 | `650` (P13) | PASS | PASS | SKIPPED | PASS | PASS |
 | `638` (P14) | PASS | PASS | SKIPPED | PASS | PASS |
+| `764` (P15) | PASS | PASS | SKIPPED | PASS | PASS |
+| `766` (P16) | PASS | PASS | SKIPPED | PASS | PASS |
 
 ## Environment
 

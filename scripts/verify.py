@@ -92,24 +92,26 @@ def lean_file(path: Path) -> list[str]:
 def discover_problems() -> list[ProblemConfig]:
     configs: list[ProblemConfig] = []
     for path in sorted((ROOT / "LeanVerificationDemo").rglob("verification.json")):
-        raw: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
-        configs.append(
-            ProblemConfig(
-                id=raw["id"],
-                title=raw["title"],
-                code=raw["code"],
-                domain=raw["domain"],
-                problem_file=ROOT / raw["problem_file"],
-                candidate_file=ROOT / raw["candidate_file"],
-                verify_file=ROOT / raw["verify_file"],
-                annotated_file=ROOT / raw["annotated_file"],
-                pairing_walkthrough_file=ROOT / raw["pairing_walkthrough_file"],
-                mutation_manifest=ROOT / raw["mutation_manifest"],
-                trusted_type_display=raw["trusted_type_display"],
-                candidate_term_display=raw["candidate_term_display"],
-                required_judgment_display=raw["required_judgment_display"],
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        records = payload if isinstance(payload, list) else [payload]
+        for raw in records:
+            configs.append(
+                ProblemConfig(
+                    id=raw["id"],
+                    title=raw["title"],
+                    code=raw["code"],
+                    domain=raw["domain"],
+                    problem_file=ROOT / raw["problem_file"],
+                    candidate_file=ROOT / raw["candidate_file"],
+                    verify_file=ROOT / raw["verify_file"],
+                    annotated_file=ROOT / raw["annotated_file"],
+                    pairing_walkthrough_file=ROOT / raw["pairing_walkthrough_file"],
+                    mutation_manifest=ROOT / raw["mutation_manifest"],
+                    trusted_type_display=raw["trusted_type_display"],
+                    candidate_term_display=raw["candidate_term_display"],
+                    required_judgment_display=raw["required_judgment_display"],
+                )
             )
-        )
     return configs
 
 

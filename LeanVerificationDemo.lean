@@ -81,3 +81,13 @@ import LeanVerificationDemo.PhysicsDemo.P14.Units
 import LeanVerificationDemo.PhysicsDemo.P14.Verify
 import LeanVerificationDemo.PhysicsDemo.P14.CandidateAnnotated
 import LeanVerificationDemo.PhysicsDemo.P14.PairingWalkthrough
+import LeanVerificationDemo.PhyslibTemp.Optics.TwoBeamInterferenceExamples
+import LeanVerificationDemo.PhysicsDemo.P15P16.Problem764
+import LeanVerificationDemo.PhysicsDemo.P15P16.Problem766
+import LeanVerificationDemo.PhysicsDemo.P15P16.Candidate764
+import LeanVerificationDemo.PhysicsDemo.P15P16.Candidate766
+import LeanVerificationDemo.PhysicsDemo.P15P16.Units
+import LeanVerificationDemo.PhysicsDemo.P15P16.Verify
+import LeanVerificationDemo.PhysicsDemo.P15P16.CandidateAnnotated764
+import LeanVerificationDemo.PhysicsDemo.P15P16.CandidateAnnotated766
+import LeanVerificationDemo.PhysicsDemo.P15P16.PairingWalkthrough

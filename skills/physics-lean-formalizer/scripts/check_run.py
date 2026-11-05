@@ -50,6 +50,15 @@ def contained(root, value):
     return path
 
 
+def load_configs(root):
+    """Select one problem per run, including records in paired directories."""
+    configs = []
+    for path in (root/'LeanVerificationDemo').rglob('verification.json'):
+        payload = json.loads(path.read_text())
+        configs.extend(payload if isinstance(payload, list) else [payload])
+    return configs
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--repo', required=True, type=Path)
@@ -94,8 +103,7 @@ def main():
     try:
         _, head = run('head', ['git','rev-parse','HEAD']); evidence['repository_commit'] = head.strip()
         _, dirty = run('initial-status', ['git','status','--short']); evidence['initial_dirty_state'] = dirty
-        config_paths = list((root/'LeanVerificationDemo').rglob('verification.json'))
-        configs = [json.loads(p.read_text()) for p in config_paths]
+        configs = load_configs(root)
         matches = [c for c in configs if c['code'] == args.code]
         if len(matches) != 1: raise ValueError('Expected exactly one matching verification config')
         config = matches[0]; directory = contained(root, config['problem_file']).parent
@@ -106,7 +114,9 @@ def main():
         required = CORE if args.code != 'M00' else [n for n in CORE if n not in
                     ['source.jsonl','CLASSIFICATION.md','PHYSLIB_AUDIT.md']]
         if args.code == 'P01': required = [n for n in required if n != 'PHYSLIB_AUDIT.md']
-        for name in required:
+        # Lean artifact paths were already checked through the selected config;
+        # paired problems use Problem764/Candidate766 rather than canonical names.
+        for name in (n for n in required if not n.endswith('.lean')):
             if not (directory/name).is_file(): evidence['errors'].append(f'Missing artifact: {name}')
         sources = list(directory.glob('*.lean'))
         temp_root = root/'LeanVerificationDemo/PhyslibTemp'
@@ -115,15 +125,17 @@ def main():
             code = lean_code(path.read_text())
             hits = re.findall(r'\b(?:sorry|admit|axiom|native_decide|sorryAx)\b', code)
             if hits: evidence['errors'].append(f'Admission/axiom shortcut screen: {path.relative_to(root)}: {hits}')
-        problem = lean_code((directory/'Problem.lean').read_text())
-        if re.search(r'^\s*import\s+.*\.(Candidate|CandidateAnnotated|Verify|Units)\b', problem, re.M):
+        problem = lean_code(contained(root, config['problem_file']).read_text())
+        if re.search(r'^\s*import\s+.*\.(Candidate(?:Annotated)?\d*|Verify|Units)\b', problem, re.M):
             evidence['errors'].append('Problem imports a solution-side module')
         for token in args.forbid_answer_token:
             if token in problem: evidence['warnings'].append(f'Answer-token review needed: {token!r}')
         source = directory/'source.jsonl'
         if source.exists():
             records = [json.loads(line) for line in source.read_text().splitlines() if line.strip()]
-            if len(records) != 1: evidence['errors'].append('Expected one source JSONL record')
+            selected = records if len(records) == 1 else [
+                r for r in records if r.get('problem_id') == config['id']]
+            if len(selected) != 1: evidence['errors'].append('Expected one selected source JSONL record')
         cases = json.loads(contained(root, config['mutation_manifest']).read_text())
         if not isinstance(cases,list): raise ValueError('Mutation manifest must be a list')
         # Commands are executed by the existing reviewed repository verifier, not from input source data.
